@@ -1,0 +1,16 @@
+{
+  "name": "farmier/farm_sli",
+  "description": "Sustainable Land Initiative module for farmOS.",
+  "type": "drupal-module",
+  "homepage": "https://github.com/farmier/farm_sli",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Michael Stenta",
+      "email": "mike@farmier.com"
+    }
+  ],
+  "require": {
+    "farmos/farmos": "^3"
+  }
+}

@@ -1,0 +1,5 @@
+name: Sustainable Land Initiative
+description: Sustainable Land Initiative module for farmOS.
+type: module
+package: farmOS Contrib
+core_version_requirement: ^10
