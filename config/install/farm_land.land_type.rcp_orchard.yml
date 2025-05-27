@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_pastureland
-label: Pastureland
+      - farm_rcp
+id: rcp_orchard
+label: Orchard

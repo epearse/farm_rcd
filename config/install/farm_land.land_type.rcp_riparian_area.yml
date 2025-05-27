@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_natural_area
-label: Natural Area
+      - farm_rcp
+id: rcp_riparian_area
+label: Riparian Area

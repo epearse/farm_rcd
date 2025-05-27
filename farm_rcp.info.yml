@@ -1,5 +1,5 @@
-name: Sustainable Land Initiative
-description: Sustainable Land Initiative module for farmOS.
+name: Resource Conservation Plan
+description: Resource conservation planning module for farmOS.
 type: module
 package: farmOS Contrib
 core_version_requirement: ^11

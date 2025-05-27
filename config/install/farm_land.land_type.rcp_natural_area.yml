@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_vineyard
-label: Vineyard
+      - farm_rcp
+id: rcp_natural_area
+label: Natural Area

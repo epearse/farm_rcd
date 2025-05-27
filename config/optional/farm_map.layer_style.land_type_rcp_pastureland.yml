@@ -3,11 +3,11 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: land_type_sli_riparian_area
-color: blue
+      - farm_rcp
+id: land_type_rcp_pastureland
+color: yellow
 conditions:
   asset_type:
     - land
   land_type:
-    - sli_riparian_area
+    - rcp_pastureland

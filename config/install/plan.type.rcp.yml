@@ -3,9 +3,9 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_conservation
-label: 'SLI Conservation'
+      - farm_rcp
+id: rcp
+label: Resource conservation
 description: ''
 workflow: plan_default
 new_revision: true

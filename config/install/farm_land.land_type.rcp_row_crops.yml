@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_riparian_area
-label: Riparian Area
+      - farm_rcp
+id: rcp_row_crops
+label: Row Crops

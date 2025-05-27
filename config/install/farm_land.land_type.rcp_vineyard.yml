@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_row_crops
-label: Row Crops
+      - farm_rcp
+id: rcp_vineyard
+label: Vineyard

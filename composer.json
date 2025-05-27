@@ -1,8 +1,8 @@
 {
-  "name": "farmier/farm_sli",
-  "description": "Sustainable Land Initiative module for farmOS.",
+  "name": "drupal/farm_rcp",
+  "description": "Resource conservation planning module for farmOS.",
   "type": "drupal-module",
-  "homepage": "https://github.com/farmier/farm_sli",
+  "homepage": "https://drupal.org/project/farm_rcp",
   "license": "GPL-2.0-or-later",
   "authors": [
     {

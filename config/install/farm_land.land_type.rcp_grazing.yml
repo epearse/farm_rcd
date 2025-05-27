@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: sli_grazing
+      - farm_rcp
+id: rcp_grazing
 label: Grazing

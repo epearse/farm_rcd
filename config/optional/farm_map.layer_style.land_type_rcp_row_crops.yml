@@ -3,11 +3,11 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_sli
-id: land_type_sli_pastureland
-color: yellow
+      - farm_rcp
+id: land_type_rcp_row_crops
+color: green
 conditions:
   asset_type:
     - land
   land_type:
-    - sli_pastureland
+    - rcp_row_crops
