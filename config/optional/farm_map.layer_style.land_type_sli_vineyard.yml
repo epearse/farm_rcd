@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - farm_sli
+id: land_type_sli_vineyard
+color: purple
+conditions:
+  asset_type:
+    - land
+  land_type:
+    - sli_vineyard
