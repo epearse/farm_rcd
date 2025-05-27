@@ -1,0 +1,72 @@
+rcp_workflow:
+  id: rcp_workflow
+  group: plan
+  label: 'Resource Conservation Plan Workflow'
+  states:
+    intake:
+      label: Intake
+    awaiting_funding:
+      label: Awaiting funding
+    received_funding:
+      label: Received funding
+    implementation:
+      label: Implementation
+    mrv:
+      label: MRV
+    archived:
+      label: Archived
+  transitions:
+    intake:
+      label: 'To Intake'
+      from:
+        - awaiting_funding
+        - received_funding
+        - implementation
+        - mrv
+        - archived
+      to: intake
+    awaiting_funding:
+      label: 'To Awaiting Funding'
+      from:
+        - intake
+        - received_funding
+        - implementation
+        - mrv
+        - archived
+      to: awaiting_funding
+    received_funding:
+      label: 'To Received Funding'
+      from:
+        - intake
+        - awaiting_funding
+        - implementation
+        - mrv
+        - archived
+      to: received_funding
+    implementation:
+      label: 'To Implementation'
+      from:
+        - intake
+        - awaiting_funding
+        - received_funding
+        - mrv
+        - archived
+      to: implementation
+    mrv:
+      label: 'To MRV'
+      from:
+        - intake
+        - awaiting_funding
+        - received_funding
+        - implementation
+        - archived
+      to: mrv
+    archive:
+      label: 'Archive'
+      from:
+        - intake
+        - awaiting_funding
+        - received_funding
+        - implementation
+        - mrv
+      to: archived

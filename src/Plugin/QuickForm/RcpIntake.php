@@ -585,7 +585,7 @@ class RcpIntake extends QuickFormBase {
       'rcp_interests' => array_keys(array_filter($form_state->getValue(['interests', 'interests', 'resource_interests']))),
       'rcp_interests_comments' => $form_state->getValue(['interests', 'interests', 'comments']),
       'rcp_sharing_allowed' => $form_state->getValue(['stakeholder', 'general', 'share_rcds']) === 'yes',
-      'status' => 'active',
+      'status' => 'intake',
     ]);
   }
 
