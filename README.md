@@ -6,6 +6,17 @@ conservation planning processes.
 This module is an add-on for the [farmOS](http://drupal.org/project/farm)
 Drupal distribution.
 
+Note that this module makes some opinionated changes to the default farmOS data
+model and UI with the intention of creating a system for managing records and
+workflows that are specific to Resource Conservation Districts. Therefore,
+installing this module in a farmOS instance used for other purposes is not
+recommended. This may change in the future if there is demand and sponsorship
+for separating the features and overrides.
+
+Refer to the included CHANGELOG.md for an overview of all the additions,
+changes, and overrides this module makes to the default farmOS data model and
+UI.
+
 ## Maintainers
 
 Current maintainers:
