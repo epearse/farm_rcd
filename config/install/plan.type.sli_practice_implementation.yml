@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - farm_sli
+id: sli_practice_implementation
+label: Practice implementation plan
+description: ''
+workflow: sli_practice_implementation
+new_revision: true

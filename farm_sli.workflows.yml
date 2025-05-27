@@ -1,0 +1,42 @@
+sli_practice_implementation:
+  id: sli_practice_implementation
+  group: plan
+  label: 'Practice implementation'
+  states:
+    planning:
+      label: Planning
+    awaiting_funding:
+      label: Awaiting funding
+    implementing:
+      label: Implementing
+    review:
+      label: Review
+    done:
+      label: Done
+    abandoned:
+      label: Abandoned
+  transitions:
+    to_planning:
+      label: 'To Planning'
+      from: [ awaiting_funding, implementing, review, done, abandoned ]
+      to: planning
+    to_awaiting_funding:
+      label: 'To awaiting funding'
+      from: [ planning, implementing, review, done, abandoned ]
+      to: awaiting_funding
+    to_implementing:
+      label: 'To implementing'
+      from: [ planning, awaiting_funding, review, done, abandoned ]
+      to: implementing
+    to_review:
+      label: 'To review'
+      from: [ planning, awaiting_funding, implementing, done, abandoned ]
+      to: review
+    to_done:
+      label: 'To done'
+      from: [ planning, awaiting_funding, implementing, review, abandoned ]
+      to: done
+    to_abandoned:
+      label: 'To abandoned'
+      from: [ planning, awaiting_funding, implementing, review, done ]
+      to: abandoned

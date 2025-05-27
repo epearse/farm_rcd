@@ -112,6 +112,56 @@ class SliAllowedValues {
   }
 
   /**
+   * Practices.
+   *
+   * @return array
+   *   Returns an array of allowed value options.
+   */
+  public static function practices() {
+    return [
+      'bda' => t('Beaver Dam Analog (BDA)'),
+      'biochar' => t('Bio-char'),
+      'brush_mgmt' => t('Brush Management'),
+      'conservation_cover' => t('Conservation Cover'),
+      'constructed_wetland' => t('Constructed Wetland'),
+      'controlled_burn' => t('Controlled burn'),
+      'contour_orchard_perennials' => t('Contour Orchard and Perennials'),
+      'cover_crop' => t('Cover Crop'),
+      'critical_area_planting' => t('Critical Area Planting'),
+      'filter_strip' => t('Filter Strip'),
+      'forage_biomass_planting' => t('Forage Biomass Planting'),
+      'forest_stand_mgmt' => t('Forest Stand Management'),
+      'fuel_break' => t('Fuel Break'),
+      'grassed_waterway' => t('Grassed Waterway'),
+      'hedgerow_planting' => t('Hedgerow Planting'),
+      'irrigation_water_mgmt' => t('Irrigation Water Management'),
+      'keyline_plow' => t('Keyline Plow'),
+      'mulching' => t('Mulching'),
+      'nutrient_mgmt' => t('Nutrient Management'),
+      'pollinator_habitat' => t('Pollinator Habitat Enhancement'),
+      'prescribed_burn' => t('Prescribed Burn'),
+      'prescribed_grazing' => t('Prescribed Grazing'),
+      'range_planting' => t('Range Planting'),
+      'residue_tillage_mgmt_no_till' => t('Residue and Tillage Management, No Till'),
+      'riparian_forest_buffer' => t('Riparian Forest Buffer'),
+      'riparian_herbaceous_planting' => t('Riparian Herbaceous Planting'),
+      'roof_runoff_strucfture' => t('Roof Runoff Structure'),
+      'silvopasture' => t('Silvopasture'),
+      'soil_carbon_amendment' => t('Soil Carbon Amendment (e.g. compost)'),
+      'stream_habitat_mgmt' => t('Stream Habitat Improvement and Management'),
+      'streambank_shoreline_improvement' => t('Streambank/Shoreline Improvement'),
+      'structure_water_control' => t('Structure for Water Control'),
+      'structure_wildlife' => t('Structures for Wildlife'),
+      'tree_shrub_establishment' => t('Tree/Shrub Establishment'),
+      'upland_wildlife_mgmt' => t('Upland Wildlife Management'),
+      'water_sediment_control_basin' => t('Water and Sediment Control Basin'),
+      'wildlife_habitat_planting' => t('Wildlife Habitat Planting'),
+      'windbreak_shelterbelt' => t('Windreak/Shelterbelt'),
+      'other' => t('Other'),
+    ];
+  }
+
+  /**
    * States.
    *
    * @return array
