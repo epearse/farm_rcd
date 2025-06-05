@@ -6,6 +6,10 @@ namespace Drupal\farm_rcp\Plugin\QuickForm;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
+use Drupal\farm_rcp\RcpAllowedValues;
+use Drupal\organization\Entity\Organization;
+use Drupal\organization\Entity\OrganizationInterface;
+use Drupal\plan\Entity\Plan;
 
 /**
  * RCP Intake quick form.
@@ -469,6 +473,20 @@ class RcpIntake extends QuickFormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
+    // Generate and validate entities.
+    $farm = $this->generateFarm($form_state);
+    $plan = $this->generatePlan($form_state, $farm);
+    $farm_violations = $farm->validate();
+    $plan_violations = $plan->validate();
+    if ($farm_violations->count() > 0 || $plan_violations->count() > 0) {
+      $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
+    }
+
+    // Save the generated entities to form state storage.
+    $form_state->setStorage([
+      'farm' => $farm,
+      'plan' => $plan,
+    ]);
   }
 
   /**
@@ -476,6 +494,99 @@ class RcpIntake extends QuickFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    // Load the form state storage.
+    $storage = $form_state->getStorage();
+
+    // Save the farm and plan.
+    $storage['farm']->save();
+    $storage['plan']->save();
+  }
+
+  /**
+   * Generate a farm organization entity from $form_state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   *
+   * @return \Drupal\organization\Entity\OrganizationInterface
+   *   Returns an unsaved farm organization entity.
+   */
+  protected function generateFarm(FormStateInterface $form_state) {
+
+    // Establish the name of the Farm Organization. This will be the farm/ranch
+    // name, if available. Otherwise, it will be the stakeholder name.
+    $stakeholder_name = $form_state->getValue(['stakeholder', 'personal', 'name']);
+    $farm_name = $form_state->getValue(['property', 'info', 'farm_name']);
+    $name = !empty($farm_name) ? $farm_name : $stakeholder_name;
+
+    // Return a farm organization entity.
+    return Organization::create([
+      'type' => 'farm',
+      'name' => $name,
+      'status' => 'active',
+    ]);
+  }
+
+  /**
+   * Generate an RCP plan entity from $form_state.
+   *
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   * @param \Drupal\organization\Entity\OrganizationInterface $farm
+   *   The farm organization entity to associate with the plan.
+   *
+   * @return \Drupal\plan\Entity\PlanInterface
+   *   Returns an unsaved rcp plan entity.
+   */
+  protected function generatePlan(FormStateInterface $form_state, OrganizationInterface $farm) {
+
+    // Generate a case number for the plan name.
+    // Count how many plans have been created this year, add one, pad with
+    // zeroes, and concatenate to the current year.
+    $plan_number = \Drupal::entityQuery('organization')
+      ->condition('type', 'rcp')
+      ->condition('created', [strtotime('first day of January this year'), time()], 'BETWEEN')
+      ->accessCheck(FALSE)
+      ->count()
+      ->execute();
+    $case_number = 'Case ' . date('Y') . str_pad((string) ($plan_number + 1), 4, '0', STR_PAD_LEFT);
+
+    // Return an RCP plan entity.
+    return Plan::create([
+      'type' => 'rcp',
+      'name' => $case_number,
+      'farm' => [$farm],
+      'rcp_rcd' => $form_state->getValue(['stakeholder', 'general', 'rcd_name']),
+      'rcp_stakeholder_name' => $form_state->getValue(['stakeholder', 'personal', 'name']),
+      'rcp_stakeholder_email' => $form_state->getValue(['stakeholder', 'personal', 'email']),
+      'rcp_stakeholder_phone' => $form_state->getValue(['stakeholder', 'personal', 'phone']),
+      'rcp_stakeholder_street' => $form_state->getValue(['stakeholder', 'address', 'street']),
+      'rcp_stakeholder_city' => $form_state->getValue(['stakeholder', 'address', 'city']),
+      'rcp_stakeholder_zip' => $form_state->getValue(['stakeholder', 'address', 'zip']),
+      'rcp_stakeholder_type' => $form_state->getValue(['stakeholder', 'address', 'type']),
+      'rcp_stakeholder_own_or_lease' => $form_state->getValue(['stakeholder', 'stakeholder', 'own_or_lease']),
+      'rcp_stakeholder_group' => array_keys(array_filter($form_state->getValue(['stakeholder', 'stakeholder', 'group']))),
+      'rcp_property_acreage' => $form_state->getValue(['property', 'info', 'acreage']),
+      'rcp_property_street' => $form_state->getValue(['property', 'info', 'street']),
+      'rcp_property_city' => $form_state->getValue(['property', 'info', 'city']),
+      'rcp_property_zip' => $form_state->getValue(['property', 'info', 'zip']),
+      'rcp_property_parcel_gps' => $form_state->getValue(['property', 'info', 'parcel_gps']),
+      'rcp_property_land_use' => array_keys(array_filter($form_state->getValue(['property', 'land_use', 'land_use']))),
+      'rcp_property_land_use_grazing_acreage' => $form_state->getValue(['property', 'land_use', 'grazing_acreage']),
+      'rcp_property_land_use_vineyards_acreage' => $form_state->getValue(['property', 'land_use', 'vineyards_acreage']),
+      'rcp_property_land_use_orchards_acreage' => $form_state->getValue(['property', 'land_use', 'orchards_acreage']),
+      'rcp_property_land_use_rowcrops_acreage' => $form_state->getValue(['property', 'land_use', 'rowcrops_acreage']),
+      'rcp_property_land_use_natural_acreage' => $form_state->getValue(['property', 'land_use', 'natural_acreage']),
+      'rcp_property_land_use_other' => $form_state->getValue(['property', 'land_use', 'other']),
+      'rcp_property_land_use_other_acreage' => $form_state->getValue(['property', 'land_use', 'other_acreage']),
+      'rcp_goals' => array_keys(array_filter($form_state->getValue(['goals', 'stakeholder', 'goals']))),
+      'rcp_goals_other' => $form_state->getValue(['goals', 'stakeholder', 'other']),
+      'rcp_goals_comments' => $form_state->getValue(['goals', 'stakeholder', 'comments']),
+      'rcp_interests' => array_keys(array_filter($form_state->getValue(['interests', 'interests', 'resource_interests']))),
+      'rcp_interests_comments' => $form_state->getValue(['interests', 'interests', 'comments']),
+      'rcp_sharing_allowed' => $form_state->getValue(['stakeholder', 'general', 'share_rcds']) === 'yes',
+      'status' => 'active',
+    ]);
   }
 
 }
