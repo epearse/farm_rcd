@@ -36,12 +36,6 @@ class Rcp extends FarmPlanType {
         'required' => TRUE,
       ],
 
-      // RCD.
-      'rcp_rcd' => [
-        'type' => 'string',
-        'label' => $this->t('Resource Conservation District'),
-      ],
-
       // Stakeholder information.
       'rcp_stakeholder_name' => [
         'type' => 'string',

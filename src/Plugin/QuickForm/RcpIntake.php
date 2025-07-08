@@ -77,14 +77,6 @@ class RcpIntake extends QuickFormBase {
       '#open' => TRUE,
     ];
 
-    // RCD name.
-    $form['stakeholder']['general']['rcd_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Enter the RCD name of your local district'),
-      '#description' => $this->t('Click the link to find your local Resource Conservation District. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://carcd.org/page/interactive-rcd-map']),
-      '#required' => TRUE,
-    ];
-
     // Share with other RCDs.
     $form['stakeholder']['general']['share_rcds'] = [
       '#type' => 'radios',
@@ -555,7 +547,6 @@ class RcpIntake extends QuickFormBase {
       'type' => 'rcp',
       'name' => $case_number,
       'farm' => [$farm],
-      'rcp_rcd' => $form_state->getValue(['stakeholder', 'general', 'rcd_name']),
       'rcp_stakeholder_name' => $form_state->getValue(['stakeholder', 'personal', 'name']),
       'rcp_stakeholder_email' => $form_state->getValue(['stakeholder', 'personal', 'email']),
       'rcp_stakeholder_phone' => $form_state->getValue(['stakeholder', 'personal', 'phone']),
