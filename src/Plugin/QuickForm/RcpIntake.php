@@ -70,25 +70,6 @@ class RcpIntake extends QuickFormBase {
       '#group' => 'tabs',
     ];
 
-    // General section.
-    $form['stakeholder']['general'] = [
-      '#type' => 'details',
-      '#title' => $this->t('General'),
-      '#open' => TRUE,
-    ];
-
-    // Share with other RCDs.
-    $form['stakeholder']['general']['share_rcds'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Would you like to share the application information with other RCDs?'),
-      '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your Sustainable land initiatives in order to collaborate and share best practices.'),
-      '#options' => [
-        'yes' => $this->t('Yes'),
-        'no' => $this->t('No'),
-      ],
-      '#required' => TRUE,
-    ];
-
     // Personal information section.
     $form['stakeholder']['personal'] = [
       '#type' => 'details',
@@ -178,6 +159,18 @@ class RcpIntake extends QuickFormBase {
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('Read more about the Social disadvantage community. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
       '#options' => RcpAllowedValues::stakeholderGroups(),
+    ];
+
+    // Share with other RCDs.
+    $form['stakeholder']['stakeholder']['share_rcds'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Would you like to share the application information with other RCDs?'),
+      '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your Sustainable land initiatives in order to collaborate and share best practices.'),
+      '#options' => [
+        'yes' => $this->t('Yes'),
+        'no' => $this->t('No'),
+      ],
+      '#required' => TRUE,
     ];
 
     // Property description tab.
@@ -574,7 +567,7 @@ class RcpIntake extends QuickFormBase {
       'rcp_goals_comments' => $form_state->getValue(['goals', 'stakeholder', 'comments']),
       'rcp_interests' => array_keys(array_filter($form_state->getValue(['interests', 'interests', 'resource_interests']))),
       'rcp_interests_comments' => $form_state->getValue(['interests', 'interests', 'comments']),
-      'rcp_sharing_allowed' => $form_state->getValue(['stakeholder', 'general', 'share_rcds']) === 'yes',
+      'rcp_sharing_allowed' => $form_state->getValue(['stakeholder', 'stakeholder', 'share_rcds']) === 'yes',
       'status' => 'intake',
     ]);
   }
