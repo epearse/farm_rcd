@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Drupal\farm_rcp\Plugin\QuickForm;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\farm_quick\Attribute\QuickForm;
 use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
 use Drupal\farm_rcp\RcpAllowedValues;
 use Drupal\organization\Entity\Organization;
@@ -13,17 +15,14 @@ use Drupal\plan\Entity\Plan;
 
 /**
  * RCP Intake quick form.
- *
- * @QuickForm(
- *   id = "rcp_intake",
- *   label = @Translation("Resource Conservation Plan Intake Form"),
- *   description = @Translation(""),
- *   helpText = @Translation(""),
- *   permissions = {
- *     "create rcp plan",
- *   }
- * )
  */
+#[QuickForm(
+  id: 'rcp_intake',
+  label: new TranslatableMarkup('Resource Conservation Plan Intake Form'),
+  description: new TranslatableMarkup(''),
+  helpText: new TranslatableMarkup(''),
+  permissions: ['create rcp plan']),
+]
 class RcpIntake extends QuickFormBase {
 
   /**
