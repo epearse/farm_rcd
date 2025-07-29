@@ -63,6 +63,14 @@ class Intake extends FarmLogType {
           'lease' => $this->t('Lease'),
         ],
       ],
+      'intake_stakeholder_lease_expiration' => [
+        'type' => 'timestamp',
+        'label' => $this->t('Lease expiration'),
+      ],
+      'intake_property_owner' => [
+        'type' => 'string',
+        'label' => $this->t('Property owner'),
+      ],
       'intake_stakeholder_group' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder group'),

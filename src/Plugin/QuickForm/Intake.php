@@ -152,6 +152,28 @@ class Intake extends QuickFormBase {
       '#required' => TRUE,
     ];
 
+    // Lease expiration.
+    $form['stakeholder']['stakeholder']['lease_expiration'] = [
+      '#type' => 'date',
+      '#title' => $this->t('If you lease the land, when does the lease expire?'),
+      '#states' => [
+        'visible' => [
+          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
+        ],
+      ],
+    ];
+
+    // Property owner.
+    $form['stakeholder']['stakeholder']['property_owner'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Who is the property owner?'),
+      '#states' => [
+        'visible' => [
+          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
+        ],
+      ],
+    ];
+
     // Stakeholder group.
     $form['stakeholder']['stakeholder']['group'] = [
       '#type' => 'checkboxes',
@@ -497,6 +519,8 @@ class Intake extends QuickFormBase {
       'intake_stakeholder_zip' => $form_state->getValue(['stakeholder', 'address', 'zip']),
       'intake_stakeholder_type' => $form_state->getValue(['stakeholder', 'address', 'type']),
       'intake_stakeholder_own_or_lease' => $form_state->getValue(['stakeholder', 'stakeholder', 'own_or_lease']),
+      'intake_stakeholder_lease_expiration' => $form_state->getValue(['stakeholder', 'stakeholder', 'lease_expiration']),
+      'intake_property_owner' => $form_state->getValue(['stakeholder', 'stakeholder', 'property_owner']),
       'intake_stakeholder_group' => array_keys(array_filter($form_state->getValue(['stakeholder', 'stakeholder', 'group']))),
       'intake_property_acreage' => $form_state->getValue(['property', 'info', 'acreage']),
       'intake_property_street' => $form_state->getValue(['property', 'info', 'street']),
