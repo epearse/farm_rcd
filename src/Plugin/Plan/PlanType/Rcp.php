@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_rcp\Plugin\Plan\PlanType;
+namespace Drupal\farm_sli\Plugin\Plan\PlanType;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
-use Drupal\farm_rcp\RcpAllowedValues;
+use Drupal\farm_sli\RcpAllowedValues;
 
 /**
  * Provides the resource conservation plan type.

@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_rcp
+      - farm_sli
 id: land_type_rcp_natural_area
 color: darkgreen
 conditions:

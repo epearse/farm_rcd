@@ -3,6 +3,6 @@ status: true
 dependencies:
   enforced:
     module:
-      - farm_rcp
+      - farm_sli
 id: rcp_vineyard
 label: Vineyard

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_rcp;
+namespace Drupal\farm_sli;
 
 /**
  * Define allowed values RCP fields.

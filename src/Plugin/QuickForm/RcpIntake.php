@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_rcp\Plugin\QuickForm;
+namespace Drupal\farm_sli\Plugin\QuickForm;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_quick\Attribute\QuickForm;
 use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
-use Drupal\farm_rcp\RcpAllowedValues;
+use Drupal\farm_sli\RcpAllowedValues;
 use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\Plan;
