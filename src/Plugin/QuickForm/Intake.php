@@ -14,16 +14,16 @@ use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\Plan;
 
 /**
- * RCP Intake quick form.
+ * SLI Intake quick form.
  */
 #[QuickForm(
-  id: 'rcp_intake',
-  label: new TranslatableMarkup('Resource Conservation Plan Intake Form'),
+  id: 'intake',
+  label: new TranslatableMarkup('Intake Form'),
   description: new TranslatableMarkup(''),
   helpText: new TranslatableMarkup(''),
   permissions: ['create rcp plan']),
 ]
-class RcpIntake extends QuickFormBase {
+class Intake extends QuickFormBase {
 
   /**
    * {@inheritdoc}
