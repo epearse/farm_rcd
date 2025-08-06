@@ -534,8 +534,6 @@ class Intake extends QuickFormBase {
     $form['land_use']['other'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Specify other land usage'),
-      '#min' => 0,
-      '#step' => 1,
       '#default_value' => $saved_values['land_use']['other'] ?? '',
       '#states' => [
         'required' => [
