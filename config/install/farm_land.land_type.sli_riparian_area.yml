@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp_natural_area
-label: Natural Area
+id: sli_riparian_area
+label: Riparian Area

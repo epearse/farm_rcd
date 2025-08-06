@@ -4,10 +4,10 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: land_type_rcp_pastureland
-color: yellow
+id: land_type_sli_row_crops
+color: green
 conditions:
   asset_type:
     - land
   land_type:
-    - rcp_pastureland
+    - sli_row_crops

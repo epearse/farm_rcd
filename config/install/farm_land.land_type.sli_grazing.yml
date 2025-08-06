@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp_riparian_area
-label: Riparian Area
+id: sli_grazing
+label: Grazing

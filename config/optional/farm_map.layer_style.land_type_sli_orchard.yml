@@ -4,10 +4,10 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: land_type_rcp_vineyard
-color: purple
+id: land_type_sli_orchard
+color: orange
 conditions:
   asset_type:
     - land
   land_type:
-    - rcp_vineyard
+    - sli_orchard

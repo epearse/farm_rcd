@@ -4,10 +4,10 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: land_type_rcp_natural_area
-color: darkgreen
+id: land_type_sli_riparian_area
+color: blue
 conditions:
   asset_type:
     - land
   land_type:
-    - rcp_natural_area
+    - sli_riparian_area

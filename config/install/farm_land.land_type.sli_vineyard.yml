@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp_row_crops
-label: Row Crops
+id: sli_vineyard
+label: Vineyard

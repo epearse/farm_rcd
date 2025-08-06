@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp_vineyard
-label: Vineyard
+id: sli_pastureland
+label: Pastureland

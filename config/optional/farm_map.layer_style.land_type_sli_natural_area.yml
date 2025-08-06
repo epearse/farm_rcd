@@ -4,10 +4,10 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: land_type_rcp_grazing
-color: red
+id: land_type_sli_natural_area
+color: darkgreen
 conditions:
   asset_type:
     - land
   land_type:
-    - rcp_grazing
+    - sli_natural_area

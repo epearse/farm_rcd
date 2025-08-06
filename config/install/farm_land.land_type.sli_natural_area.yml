@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp_orchard
-label: Orchard
+id: sli_natural_area
+label: Natural Area
