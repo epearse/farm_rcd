@@ -1,7 +1,7 @@
 rcp_workflow:
   id: rcp_workflow
   group: plan
-  label: 'Resource Conservation Plan Workflow'
+  label: 'Resource Conservation Profile Workflow'
   states:
     intake:
       label: Intake
