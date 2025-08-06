@@ -63,7 +63,7 @@ class Intake extends FarmLogType {
           'lease' => $this->t('Lease'),
         ],
       ],
-      'intake_stakeholder_lease_expiration' => [
+      'intake_stakeholder_lease_exp' => [
         'type' => 'timestamp',
         'label' => $this->t('Lease expiration'),
       ],
@@ -100,42 +100,42 @@ class Intake extends FarmLogType {
         'type' => 'string',
         'label' => $this->t('Parcel number or GPS coordinates'),
       ],
-      'intake_property_land_use' => [
+      'intake_property_use' => [
         'type' => 'list_string',
         'label' => $this->t('Land use'),
         'allowed_values' => SliAllowedValues::landUses(),
         'multiple' => TRUE,
       ],
-      'intake_property_land_use_grazing_acreage' => [
+      'intake_property_use_grazing_ac' => [
         'type' => 'integer',
         'label' => $this->t('Grazing land use acreage'),
         'min' => 0,
       ],
-      'intake_property_land_use_vineyards_acreage' => [
+      'intake_property_use_vineyard_ac' => [
         'type' => 'integer',
         'label' => $this->t('Vineyards land use acreage'),
         'min' => 0,
       ],
-      'intake_property_land_use_orchards_acreage' => [
+      'intake_property_use_orchard_ac' => [
         'type' => 'integer',
         'label' => $this->t('Orchards land use acreage'),
         'min' => 0,
       ],
-      'intake_property_land_use_rowcrops_acreage' => [
+      'intake_property_use_rowcrop_ac' => [
         'type' => 'integer',
         'label' => $this->t('Row crops land use acreage'),
         'min' => 0,
       ],
-      'intake_property_land_use_natural_acreage' => [
+      'intake_property_use_natural_ac' => [
         'type' => 'integer',
         'label' => $this->t('Natural land use acreage'),
         'min' => 0,
       ],
-      'intake_property_land_use_other' => [
+      'intake_property_use_other' => [
         'type' => 'string',
         'label' => $this->t('Other land use'),
       ],
-      'intake_property_land_use_other_acreage' => [
+      'intake_property_use_other_ac' => [
         'type' => 'integer',
         'label' => $this->t('Other land use acreage'),
         'min' => 0,
