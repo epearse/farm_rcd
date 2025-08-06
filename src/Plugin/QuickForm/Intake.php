@@ -272,6 +272,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('If you lease the land, when does the lease expire?'),
       '#default_value' => $saved_values['stakeholder']['lease_expiration'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
+        ],
         'visible' => [
           ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
         ],
@@ -284,6 +287,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('Who is the property owner?'),
       '#default_value' => $saved_values['stakeholder']['property_owner'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
+        ],
         'visible' => [
           ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
         ],
@@ -369,6 +375,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('Street'),
       '#default_value' => $saved_values['info']['street'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
+        ],
         'visible' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
         ],
@@ -381,6 +390,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('City'),
       '#default_value' => $saved_values['info']['city'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
+        ],
         'visible' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
         ],
@@ -393,6 +405,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('Postal code'),
       '#default_value' => $saved_values['info']['zip'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
+        ],
         'visible' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
         ],
@@ -405,6 +420,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('If no address exists, please enter the parcel number or GPS coordinates'),
       '#default_value' => $saved_values['info']['parcel_gps'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'no'],
+        ],
         'visible' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'no'],
         ],
@@ -435,6 +453,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['grazing_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][grazing]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][grazing]"]' => ['checked' => TRUE],
         ],
@@ -449,6 +470,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['vineyards_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE],
         ],
@@ -463,6 +487,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['orchards_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE],
         ],
@@ -477,6 +504,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['rowcrops_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE],
         ],
@@ -491,6 +521,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['natural_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][natural]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][natural]"]' => ['checked' => TRUE],
         ],
@@ -505,6 +538,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['other'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
         ],
@@ -519,6 +555,9 @@ class Intake extends QuickFormBase {
       '#step' => 1,
       '#default_value' => $saved_values['land_use']['other_acreage'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
         ],
@@ -561,6 +600,9 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('If other, please elaborate'),
       '#default_value' => $saved_values['goals']['other'] ?? '',
       '#states' => [
+        'required' => [
+          ':input[name="goals[goals][goals][other]"]' => ['checked' => TRUE],
+        ],
         'visible' => [
           ':input[name="goals[goals][goals][other]"]' => ['checked' => TRUE],
         ],
