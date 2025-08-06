@@ -80,7 +80,7 @@ class Intake extends FarmLogType {
 
       // Property information.
       'intake_property_acreage' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Property acreage'),
         'min' => 0,
       ],
@@ -107,27 +107,27 @@ class Intake extends FarmLogType {
         'multiple' => TRUE,
       ],
       'intake_property_use_grazing_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Grazing land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_vineyard_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Vineyards land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_orchard_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Orchards land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_rowcrop_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Row crops land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_natural_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Natural land use acreage'),
         'min' => 0,
       ],
@@ -136,7 +136,7 @@ class Intake extends FarmLogType {
         'label' => $this->t('Other land use'),
       ],
       'intake_property_use_other_ac' => [
-        'type' => 'integer',
+        'type' => 'decimal',
         'label' => $this->t('Other land use acreage'),
         'min' => 0,
       ],

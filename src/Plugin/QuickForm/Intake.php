@@ -352,7 +352,7 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('Approximate total acreage'),
       '#description' => $this->t('If exact acreage is not known please provide the approximate acreage of the land, so we can get a sense of your project.'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['info']['acreage'] ?? '',
       '#required' => TRUE,
     ];
@@ -450,7 +450,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Grazing acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['grazing_acreage'] ?? '',
       '#states' => [
         'required' => [
@@ -467,7 +467,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Vineyards acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['vineyards_acreage'] ?? '',
       '#states' => [
         'required' => [
@@ -484,7 +484,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Orchards acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['orchards_acreage'] ?? '',
       '#states' => [
         'required' => [
@@ -501,7 +501,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Row crops acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['rowcrops_acreage'] ?? '',
       '#states' => [
         'required' => [
@@ -518,7 +518,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Natural lands acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['natural_acreage'] ?? '',
       '#states' => [
         'required' => [
@@ -550,7 +550,7 @@ class Intake extends QuickFormBase {
       '#type' => 'number',
       '#title' => $this->t('Other land use acreage'),
       '#min' => 0,
-      '#step' => 1,
+      '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['other_acreage'] ?? '',
       '#states' => [
         'required' => [
