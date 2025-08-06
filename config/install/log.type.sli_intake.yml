@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - farm_log
+  enforced:
+    module:
+      - farm_sli
+id: sli_intake
+label: Intake
+description: ''
+name_pattern: 'Intake [log:id]'
+workflow: farm_log_workflow
+new_revision: true
