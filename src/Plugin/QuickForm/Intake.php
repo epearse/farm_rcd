@@ -795,7 +795,7 @@ class Intake extends QuickFormBase {
       'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
       'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
       'intake_stakeholder_own_or_lease' => $saved_values['stakeholder']['stakeholder']['own_or_lease'],
-      'intake_stakeholder_lease_exp' => $saved_values['stakeholder']['stakeholder']['lease_expiration'],
+      'intake_stakeholder_lease_exp' => $saved_values['stakeholder']['stakeholder']['lease_expiration'] ? strtotime($saved_values['stakeholder']['stakeholder']['lease_expiration']) : NULL,
       'intake_property_owner' => $saved_values['stakeholder']['stakeholder']['property_owner'],
       'intake_stakeholder_group' => array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])),
       'intake_property_acreage' => $saved_values['property']['info']['acreage'],
