@@ -7,7 +7,7 @@ namespace Drupal\farm_sli\Plugin\Plan\PlanType;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
-use Drupal\farm_sli\RcpAllowedValues;
+use Drupal\farm_sli\SliAllowedValues;
 
 /**
  * Provides the resource conservation plan type.
@@ -64,7 +64,7 @@ class Rcp extends FarmPlanType {
       'rcp_stakeholder_type' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder type'),
-        'allowed_values' => RcpAllowedValues::stakeholderTypes(),
+        'allowed_values' => SliAllowedValues::stakeholderTypes(),
       ],
       'rcp_stakeholder_own_or_lease' => [
         'type' => 'list_string',
@@ -77,7 +77,7 @@ class Rcp extends FarmPlanType {
       'rcp_stakeholder_group' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder group'),
-        'allowed_values' => RcpAllowedValues::stakeholderGroups(),
+        'allowed_values' => SliAllowedValues::stakeholderGroups(),
         'multiple' => TRUE,
       ],
 
@@ -106,7 +106,7 @@ class Rcp extends FarmPlanType {
       'rcp_property_land_use' => [
         'type' => 'list_string',
         'label' => $this->t('Land use'),
-        'allowed_values' => RcpAllowedValues::landUses(),
+        'allowed_values' => SliAllowedValues::landUses(),
         'multiple' => TRUE,
       ],
       'rcp_property_land_use_grazing_acreage' => [
@@ -148,7 +148,7 @@ class Rcp extends FarmPlanType {
       'rcp_goals' => [
         'type' => 'list_string',
         'label' => $this->t('Goals'),
-        'allowed_values' => RcpAllowedValues::goals(),
+        'allowed_values' => SliAllowedValues::goals(),
         'multiple' => TRUE,
       ],
       'rcp_goals_other' => [
@@ -164,7 +164,7 @@ class Rcp extends FarmPlanType {
       'rcp_interests' => [
         'type' => 'list_string',
         'label' => $this->t('Interests'),
-        'allowed_values' => RcpAllowedValues::interests(),
+        'allowed_values' => SliAllowedValues::interests(),
         'multiple' => TRUE,
       ],
       'rcp_interests_comments' => [

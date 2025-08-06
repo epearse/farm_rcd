@@ -8,7 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_quick\Attribute\QuickForm;
 use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
-use Drupal\farm_sli\RcpAllowedValues;
+use Drupal\farm_sli\SliAllowedValues;
 use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\Plan;
@@ -131,7 +131,7 @@ class RcpIntake extends QuickFormBase {
     $form['stakeholder']['address']['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Stakeholder type'),
-      '#options' => RcpAllowedValues::stakeholderTypes(),
+      '#options' => SliAllowedValues::stakeholderTypes(),
       '#required' => TRUE,
     ];
 
@@ -158,7 +158,7 @@ class RcpIntake extends QuickFormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('Read more about the Social disadvantage community. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
-      '#options' => RcpAllowedValues::stakeholderGroups(),
+      '#options' => SliAllowedValues::stakeholderGroups(),
     ];
 
     // Share with other RCDs.
@@ -269,7 +269,7 @@ class RcpIntake extends QuickFormBase {
     $form['property']['land_use']['land_use'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Select at least one'),
-      '#options' => RcpAllowedValues::landUses(),
+      '#options' => SliAllowedValues::landUses(),
       '#required' => TRUE,
     ];
 
@@ -382,7 +382,7 @@ class RcpIntake extends QuickFormBase {
     $form['goals']['stakeholder']['goals'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Select at least one'),
-      '#options' => RcpAllowedValues::goals(),
+      '#options' => SliAllowedValues::goals(),
       '#required' => TRUE,
     ];
 
