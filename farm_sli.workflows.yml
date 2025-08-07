@@ -13,8 +13,6 @@ rcp_workflow:
       label: Implementation
     mrv:
       label: MRV
-    archived:
-      label: Archived
   transitions:
     intake:
       label: 'To Intake'
@@ -23,7 +21,6 @@ rcp_workflow:
         - received_funding
         - implementation
         - mrv
-        - archived
       to: intake
     awaiting_funding:
       label: 'To Awaiting Funding'
@@ -32,7 +29,6 @@ rcp_workflow:
         - received_funding
         - implementation
         - mrv
-        - archived
       to: awaiting_funding
     received_funding:
       label: 'To Received Funding'
@@ -41,7 +37,6 @@ rcp_workflow:
         - awaiting_funding
         - implementation
         - mrv
-        - archived
       to: received_funding
     implementation:
       label: 'To Implementation'
@@ -50,7 +45,6 @@ rcp_workflow:
         - awaiting_funding
         - received_funding
         - mrv
-        - archived
       to: implementation
     mrv:
       label: 'To MRV'
@@ -59,14 +53,4 @@ rcp_workflow:
         - awaiting_funding
         - received_funding
         - implementation
-        - archived
       to: mrv
-    archive:
-      label: 'Archive'
-      from:
-        - intake
-        - awaiting_funding
-        - received_funding
-        - implementation
-        - mrv
-      to: archived
