@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Drupal\farm_sli\Plugin\QuickForm;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_quick\Attribute\QuickForm;
@@ -13,6 +16,7 @@ use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
 use Drupal\farm_sli\SliAllowedValues;
 use Drupal\log\Entity\Log;
 use Drupal\log\Entity\LogInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * SLI Intake quick form.
@@ -24,6 +28,51 @@ use Drupal\log\Entity\LogInterface;
   helpText: new TranslatableMarkup(''),
 )]
 class Intake extends QuickFormBase {
+
+  /**
+   * The flood service.
+   *
+   * @var \Drupal\Core\Flood\FloodInterface
+   */
+  protected $flood;
+
+  /**
+   * Constructs a QuickFormBase object.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the plugin instance.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   Current user object.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
+   * @param \Drupal\Core\Flood\FloodInterface $flood
+   *   The flood service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, MessengerInterface $messenger, FloodInterface $flood) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $current_user, $messenger);
+    $this->flood = $flood;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager'),
+      $container->get('current_user'),
+      $container->get('messenger'),
+      $container->get('flood'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -83,6 +132,18 @@ class Intake extends QuickFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['#tree'] = TRUE;
+
+    // If flood control restrictions have been exceeded, display a message.
+    // A threshold of 2 means that the form can be submitted once per hour.
+    if (!$this->flood->isAllowed('sli_intake_form', 2)) {
+      $form['status'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#value' => $this->t('You have already submitted the form. Please try again later or contact your RCD directly.'),
+      ];
+      $form['actions']['submit']['#access'] = FALSE;
+      return $form;
+    }
 
     // If the form has been submitted, only display a message to the user.
     if ($form_state->has('submitted') && $form_state->get('submitted')) {
@@ -801,6 +862,11 @@ class Intake extends QuickFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+
+    // Register a flood control event if this is an anonymous user.
+    if ($this->currentUser->isAnonymous()) {
+      $this->flood->register('sli_intake_form');
+    }
 
     // Load the log from storage and save it.
     $storage = $form_state->getStorage();
