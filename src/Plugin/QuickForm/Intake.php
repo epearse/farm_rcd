@@ -107,6 +107,11 @@ class Intake extends QuickFormBase {
         '#percent' => $this->steps()[$step]['progress'],
         '#message' => $this->steps()[$step]['message'],
       ];
+
+      // Fix issue with progress library not being added in some contexts (eg:
+      // the intake quick form for anonymous users).
+      // @see https://www.drupal.org/project/drupal/issues/3540259
+      $form['progress']['#attached']['library'][] = 'core/drupal.progress';
     }
 
     // Load saved values for this step.
