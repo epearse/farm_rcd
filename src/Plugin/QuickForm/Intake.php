@@ -100,10 +100,12 @@ class Intake extends QuickFormBase {
     }
 
     // Load saved values for this step.
+    // The review step gets all saved values.
     $saved_values = [];
     if ($form_state->has('saved_values')) {
-      if (isset($form_state->get('saved_values')[$step])) {
-        $saved_values = $form_state->get('saved_values')[$step];
+      $saved_values = $form_state->get('saved_values');
+      if ($step != 'review' && isset($saved_values[$step])) {
+        $saved_values = $saved_values[$step];
       }
     }
 
@@ -689,7 +691,15 @@ class Intake extends QuickFormBase {
    *   The render array defining the elements of the form.
    */
   public function buildReviewForm(array $saved_values) {
-    return [];
+    $form = [];
+
+    // Generate log entity.
+    $log = $this->generateIntakeLog($saved_values);
+
+    // Render the log entity.
+    $form['log'] = \Drupal::entityTypeManager()->getViewBuilder('log')->view($log);
+
+    return $form;
   }
 
   /**
