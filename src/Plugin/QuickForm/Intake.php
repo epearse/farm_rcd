@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Drupal\farm_sli\Plugin\QuickForm;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_quick\Attribute\QuickForm;
 use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
@@ -20,9 +22,17 @@ use Drupal\log\Entity\LogInterface;
   label: new TranslatableMarkup('Intake Form'),
   description: new TranslatableMarkup(''),
   helpText: new TranslatableMarkup(''),
-  permissions: ['create sli_intake log']),
-]
+)]
 class Intake extends QuickFormBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function access(AccountInterface $account) {
+
+    // Allow anonymous access.
+    return AccessResult::allowed();
+  }
 
   /**
    * Define the steps in this multistep form.
