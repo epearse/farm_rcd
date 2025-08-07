@@ -74,6 +74,13 @@ class Intake extends QuickFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['#tree'] = TRUE;
 
+    // If the form has been submitted, only display a message to the user.
+    if ($form_state->has('submitted') && $form_state->get('submitted')) {
+      $form['#markup'] = $this->t('Thank you for your interest. A staff member will review your information and follow up with you shortly.');
+      $form['actions']['submit']['#access'] = FALSE;
+      return $form;
+    }
+
     // This is a multistep form. We track which step we are on via a step
     // property in $form_state. Each step has a corresponding form method that
     // we use to build it
@@ -773,6 +780,10 @@ class Intake extends QuickFormBase {
     // Load the log from storage and save it.
     $storage = $form_state->getStorage();
     $storage['log']->save();
+
+    // Remember that the form was submitted, so we can display a message to the user.
+    $form_state->set('submitted', TRUE);
+    $form_state->setRebuild(TRUE);
   }
 
   /**
