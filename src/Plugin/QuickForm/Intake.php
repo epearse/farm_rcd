@@ -712,7 +712,7 @@ class Intake extends QuickFormBase {
     $log = $this->generateIntakeLog($saved_values);
 
     // Render the log entity.
-    $form['log'] = \Drupal::entityTypeManager()->getViewBuilder('log')->view($log, 'sli_intake_preview');
+    $form['log'] = $this->entityTypeManager->getViewBuilder('log')->view($log, 'sli_intake_preview');
 
     return $form;
   }
