@@ -806,6 +806,20 @@ class Intake extends QuickFormBase {
    *   Returns an unsaved sli_intake log entity, or null if something goes wrong.
    */
   protected function generateIntakeLog(array $saved_values): ?LogInterface {
+
+    // Convert date to timestamp.
+    $intake_stakeholder_lease_exp = $saved_values['stakeholder']['stakeholder']['lease_expiration'] ? strtotime($saved_values['stakeholder']['stakeholder']['lease_expiration']) : NULL;
+
+    // Process checkboxes.
+    $intake_stakeholder_group = isset($saved_values['stakeholder']['stakeholder']['group']) ? array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])) : NULL;
+    $intake_property_use = isset($saved_values['property']['land_use']['land_use']) ? array_keys(array_filter($saved_values['property']['land_use']['land_use'])) : NULL;
+    $intake_goals = isset($saved_values['goals']['goals']['goals']) ? array_keys(array_filter($saved_values['goals']['goals']['goals'])) : NULL;
+    $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
+
+    // Process booleans.
+    $intake_rcd_sharing_allowed = $saved_values['stakeholder']['stakeholder']['share_rcds'] === 'yes';
+
+    // Create and return the log.
     return Log::create([
       'type' => 'sli_intake',
       'intake_stakeholder_name' => $saved_values['stakeholder']['personal']['name'],
@@ -816,16 +830,16 @@ class Intake extends QuickFormBase {
       'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
       'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
       'intake_stakeholder_own_or_lease' => $saved_values['stakeholder']['stakeholder']['own_or_lease'],
-      'intake_stakeholder_lease_exp' => $saved_values['stakeholder']['stakeholder']['lease_expiration'] ? strtotime($saved_values['stakeholder']['stakeholder']['lease_expiration']) : NULL,
+      'intake_stakeholder_lease_exp' => $intake_stakeholder_lease_exp,
       'intake_property_owner' => $saved_values['stakeholder']['stakeholder']['property_owner'],
-      'intake_stakeholder_group' => array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])),
+      'intake_stakeholder_group' => $intake_stakeholder_group,
       'intake_farm_name' => $saved_values['property']['info']['farm_name'],
       'intake_property_acreage' => $saved_values['property']['info']['acreage'],
       'intake_property_street' => $saved_values['property']['info']['street'],
       'intake_property_city' => $saved_values['property']['info']['city'],
       'intake_property_zip' => $saved_values['property']['info']['zip'],
       'intake_property_parcel_gps' => $saved_values['property']['info']['parcel_gps'],
-      'intake_property_use' => array_keys(array_filter($saved_values['property']['land_use']['land_use'])),
+      'intake_property_use' => $intake_property_use,
       'intake_property_use_grazing_ac' => $saved_values['property']['land_use']['grazing_acreage'],
       'intake_property_use_vineyard_ac' => $saved_values['property']['land_use']['vineyards_acreage'],
       'intake_property_use_orchard_ac' => $saved_values['property']['land_use']['orchards_acreage'],
@@ -833,12 +847,12 @@ class Intake extends QuickFormBase {
       'intake_property_use_natural_ac' => $saved_values['property']['land_use']['natural_acreage'],
       'intake_property_use_other' => $saved_values['property']['land_use']['other'],
       'intake_property_use_other_ac' => $saved_values['property']['land_use']['other_acreage'],
-      'intake_goals' => array_keys(array_filter($saved_values['goals']['goals']['goals'])),
+      'intake_goals' => $intake_goals,
       'intake_goals_other' => $saved_values['goals']['goals']['other'],
       'intake_goals_comments' => $saved_values['goals']['goals']['comments'],
-      'intake_interests' => array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])),
+      'intake_interests' => $intake_interests,
       'intake_interests_comments' => $saved_values['interests']['interests']['comments'],
-      'intake_rcd_sharing_allowed' => $saved_values['stakeholder']['stakeholder']['share_rcds'] === 'yes',
+      'intake_rcd_sharing_allowed' => $intake_rcd_sharing_allowed,
     ]);
   }
 
