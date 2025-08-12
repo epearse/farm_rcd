@@ -10,5 +10,6 @@ dependencies:
   - farm_farm
   - farm_land
   - farm_log
+  - farm_manager
   - farm_quick
   - plan
