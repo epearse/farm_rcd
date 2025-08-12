@@ -935,7 +935,6 @@ class Intake extends QuickFormBase {
       'intake_interests_comments' => $saved_values['interests']['interests']['comments'],
       'intake_rcd_sharing_allowed' => $intake_rcd_sharing_allowed,
       'status' => 'pending',
-      'flag' => ['review'],
     ]);
   }
 
