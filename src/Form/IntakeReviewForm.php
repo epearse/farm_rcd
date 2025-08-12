@@ -75,6 +75,11 @@ class IntakeReviewForm extends FormBase {
       return AccessResult::forbidden();
     }
 
+    // If the log does not have a status of "pending", deny access.
+    if ($log->get('status')->value != 'pending') {
+      return AccessResult::forbidden();
+    }
+
     // If all checks have passed, allow access.
     return AccessResult::allowed();
   }
