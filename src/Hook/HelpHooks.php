@@ -21,7 +21,7 @@ class HelpHooks {
 
     // Intake review form.
     if ($route_name == 'farm_sli.intake_review') {
-      return $this->t('Use this form to review an intake, assign ownership, and decide whether to continue, postpone, or abandon.');
+      return $this->t('Use this form to review an intake, assign ownership, and decide whether to continue or abandon.');
     }
 
     return NULL;

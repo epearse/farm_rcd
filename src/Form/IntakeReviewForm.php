@@ -116,7 +116,6 @@ class IntakeReviewForm extends FormBase {
       '#title' => $this->t('Decision'),
       '#options' => [
         'continue' => $this->t('Continue'),
-        'postpone' => $this->t('Postpone'),
         'abandon' => $this->t('Abandon'),
       ],
       '#required' => TRUE,
