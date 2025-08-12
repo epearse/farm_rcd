@@ -105,6 +105,11 @@ class IntakeReviewForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Default to the current user, if they exist in the list.
+    if (array_key_exists($this->currentUser()->id(), $owner_options)) {
+      $form['owner']['#default_value'] = $this->currentUser()->id();
+    }
+
     // Decision radios.
     $form['decision'] = [
       '#type' => 'radios',
