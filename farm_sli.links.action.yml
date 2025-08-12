@@ -1,0 +1,5 @@
+farm_sli.intake_review:
+  title: Review intake
+  route_name: farm_sli.intake_review
+  appears_on:
+   - entity.log.canonical
