@@ -12,6 +12,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\log\Entity\LogInterface;
 use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
+use Drupal\plan\Entity\Plan;
+use Drupal\plan\Entity\PlanInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -191,6 +193,22 @@ class IntakeReviewForm extends FormBase {
       ],
     ];
 
+    // Checkbox to create a new Resource Conservation Plan.
+    $form['create_plan'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Start a Resource Conservation Plan'),
+      '#default_value' => TRUE,
+      '#required' => TRUE,
+      '#states' => [
+        'required' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+        ],
+        'visible' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+        ],
+      ],
+    ];
+
     // Create form actions with submit button.
     $form['actions'] = [
       '#type' => 'actions',
@@ -248,6 +266,18 @@ class IntakeReviewForm extends FormBase {
     }
     $storage['organization'] = $organization;
 
+    // Generate and validate a resource conservation plan, if necessary, and
+    // store it in form state storage.
+    if (!empty($form_state->getValue('create_plan'))) {
+      $plan = $this->generatePlan($organization);
+      $violations = $plan->validate();
+      if ($violations->count() > 0) {
+        $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
+        return;
+      }
+      $storage['plan'] = $plan;
+    }
+
     // Save form state storage.
     $form_state->setStorage($storage);
   }
@@ -282,10 +312,13 @@ class IntakeReviewForm extends FormBase {
     // Save the log.
     $log->save();
 
-    // Load generated organization from form state storage, if available.
+    // Load generated organization and plan from form state storage, if
+    // available.
     $storage = $form_state->getStorage();
     /** @var \Drupal\organization\Entity\OrganizationInterface $organization */
     $organization = !empty($storage['organization']) ? $storage['organization'] : NULL;
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = !empty($storage['plan']) ? $storage['plan'] : NULL;
 
     // Save new farm organization, if necessary, and display a message to the
     // user.
@@ -293,6 +326,15 @@ class IntakeReviewForm extends FormBase {
       $organization->save();
       $this->messenger()->addStatus($this->t('Farm created: <a href=":uri">%name</a>', [':uri' => $organization->toUrl()->toString(), '%name' => $organization->label()]));
     }
+
+    // Save the plan, if necessary, and display a message to the user.
+    if (!empty($form_state->getValue('create_plan')) && !empty($plan)) {
+      $plan->save();
+      $this->messenger()->addStatus($this->t('Plan created: <a href=":uri">%name</a>', [':uri' => $plan->toUrl()->toString(), '%name' => $plan->label()]));
+    }
+
+    // Redirect to the plan.
+    $form_state->setRedirect('entity.plan.canonical', ['plan' => $plan->id()]);
   }
 
   /**
@@ -308,6 +350,23 @@ class IntakeReviewForm extends FormBase {
     return Organization::create([
       'type' => 'farm',
       'name' => $name,
+    ]);
+  }
+
+  /**
+   * Generate a sli_rcp plan entity.
+   *
+   * @param \Drupal\organization\Entity\OrganizationInterface $farm
+   *   The farm organization entity.
+   *
+   * @return \Drupal\plan\Entity\PlanInterface|null
+   *   Returns an unsaved farm organization entity, or null if something goes wrong.
+   */
+  protected function generatePlan(OrganizationInterface $farm): ?PlanInterface {
+    return Plan::create([
+      'type' => 'sli_rcp',
+      'name' => $farm->label() . ' RCP',
+      'farm' => $farm,
     ]);
   }
 
