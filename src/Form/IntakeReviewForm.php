@@ -10,6 +10,8 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\log\Entity\LogInterface;
+use Drupal\organization\Entity\Organization;
+use Drupal\organization\Entity\OrganizationInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -132,6 +134,63 @@ class IntakeReviewForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Load the farm/ranch name from the intake, if available.
+    $farm_name = '';
+    if (!$log->get('intake_farm_name')->isEmpty()) {
+      $farm_name = $log->get('intake_farm_name')->value;
+    }
+
+    // Autocomplete for selecting an existing farm organization.
+    $form['existing_farm'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Assign to existing farm/ranch'),
+      '#description' => $this->t('Search for an existing farm/ranch to associate this with.'),
+      '#target_type' => 'organization',
+      '#states' => [
+        'visible' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+          ':input[name="new_farm"]' => ['checked' => FALSE],
+        ],
+        'required' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+          ':input[name="new_farm"]' => ['checked' => FALSE],
+        ],
+      ],
+    ];
+
+    // If an existing farm organization exists, pre-populate the autocomplete.
+    $farms = $this->entityTypeManager->getStorage('organization')->loadByProperties(['name' => $farm_name]);
+    if (!empty($farms)) {
+      $form['existing_farm']['#default_value'] = reset($farms);
+    }
+
+    // Checkbox to create a new farm organization
+    $form['new_farm'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Create a new farm/ranch'),
+      '#description' => $this->t('If an existing farm/ranch does not exist, create a new one.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+        ],
+      ],
+    ];
+
+    // New farm organization name.
+    $form['farm_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Farm/ranch name'),
+      '#default_value' => $farm_name,
+      '#states' => [
+        'required' => [
+          ':input[name="new_farm"]' => ['checked' => TRUE],
+        ],
+        'visible' => [
+          ':input[name="new_farm"]' => ['checked' => TRUE],
+        ],
+      ],
+    ];
+
     // Create form actions with submit button.
     $form['actions'] = [
       '#type' => 'actions',
@@ -159,6 +218,38 @@ class IntakeReviewForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
+    // Load form state storage.
+    $storage = $form_state->getStorage();
+
+    // Generate and validate a new farm organization, or load an existing one,
+    // and store it in form state storage.
+    $organization = NULL;
+    if (!empty($form_state->getValue('new_farm'))) {
+      $organization = $this->generateOrganization($form_state->getValue('farm_name'));
+      $violations = $organization->validate();
+      if ($violations->count() > 0) {
+        $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
+        return;
+      }
+    }
+    else {
+
+      // Attempt to load the existing farm.
+      $farm_id = $form_state->getValue('existing_farm');
+      if (!empty($farm_id)) {
+        $organization = $this->entityTypeManager->getStorage('organization')->load($farm_id);
+      }
+
+      // If the farm organization could not be loaded, throw an error.
+      if (is_null($organization)) {
+        $form_state->setErrorByName('existing_farm', $this->t('An existing farm/ranch by that name could not be found. Please select a valid farm/ranch from the dropdown that appears while typing a name, or create a new farm/ranch.'));
+        return;
+      }
+    }
+    $storage['organization'] = $organization;
+
+    // Save form state storage.
+    $form_state->setStorage($storage);
   }
 
   /**
@@ -190,6 +281,34 @@ class IntakeReviewForm extends FormBase {
 
     // Save the log.
     $log->save();
+
+    // Load generated organization from form state storage, if available.
+    $storage = $form_state->getStorage();
+    /** @var \Drupal\organization\Entity\OrganizationInterface $organization */
+    $organization = !empty($storage['organization']) ? $storage['organization'] : NULL;
+
+    // Save new farm organization, if necessary, and display a message to the
+    // user.
+    if (!empty($form_state->getValue('new_farm')) && !empty($organization)) {
+      $organization->save();
+      $this->messenger()->addStatus($this->t('Farm created: <a href=":uri">%name</a>', [':uri' => $organization->toUrl()->toString(), '%name' => $organization->label()]));
+    }
+  }
+
+  /**
+   * Generate a farm organization entity.
+   *
+   * @param string $name
+   *   The farm organization name.
+   *
+   * @return \Drupal\organization\Entity\OrganizationInterface|null
+   *   Returns an unsaved farm organization entity, or null if something goes wrong.
+   */
+  protected function generateOrganization(string $name): ?OrganizationInterface {
+    return Organization::create([
+      'type' => 'farm',
+      'name' => $name,
+    ]);
   }
 
 }
