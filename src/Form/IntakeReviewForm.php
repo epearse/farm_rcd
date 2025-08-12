@@ -87,7 +87,13 @@ class IntakeReviewForm extends FormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?LogInterface $log = NULL) {
+
+    // Save the intake log for future use.
+    $form['intake'] = [
+      '#type' => 'value',
+      '#value' => $log,
+    ];
 
     // Build a list of active managers.
     $users = $this->entityTypeManager->getStorage('user')->loadByProperties([
@@ -126,6 +132,25 @@ class IntakeReviewForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Create form actions with submit button.
+    $form['actions'] = [
+      '#type' => 'actions',
+      '#weight' => 1000,
+    ];
+    $form['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Submit'),
+      '#states' => [
+        'visible' => [
+          ':input[name="decision"]' => [
+            ['value' => 'continue'],
+            'or',
+            ['value' => 'abandon'],
+          ],
+        ],
+      ],
+    ];
+
     return $form;
   }
 
@@ -141,6 +166,30 @@ class IntakeReviewForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
+    // Load the intake log.
+    /** @var \Drupal\log\Entity\LogInterface $log */
+    $log = $form_state->getValue('intake');
+
+    // Assign log ownership.
+    /** @var \Drupal\user\UserInterface $owner */
+    $owner = $this->entityTypeManager->getStorage('user')->load($form_state->getValue('owner'));
+    if (!empty($owner)) {
+      $log->set('owner', $owner);
+    }
+
+    // Transition the intake log status.
+    /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItemInterface $state_item */
+    $state_item = $log->get('status')->first();
+    $target_status = $form_state->getValue('decision') == 'continue' ? 'done' : 'abandoned';
+    $transition = $state_item->getWorkflow()->findTransition($state_item->getOriginalId(), $target_status);
+    $state_item->applyTransition($transition);
+
+    // Set a revision message.
+    $log->setNewRevision(TRUE);
+    $log->setRevisionLogMessage($this->t('Intake reviewed by @current_user, assigned to @owner, marked as @status.', ['@current_user' => $this->currentUser()->getDisplayName(), '@owner' => $owner->getDisplayName(), '@status' => $target_status]));
+
+    // Save the log.
+    $log->save();
   }
 
 }
