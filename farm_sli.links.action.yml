@@ -1,6 +1,0 @@
-farm_sli.intake_review:
-  class: Drupal\farm_sli\Plugin\Menu\LocalAction\ReviewIntakeAction
-  title: Review intake
-  route_name: farm_sli.intake_review
-  appears_on:
-   - entity.log.canonical
