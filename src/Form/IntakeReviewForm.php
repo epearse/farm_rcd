@@ -143,7 +143,7 @@ class IntakeReviewForm extends FormBase {
       '#description' => $this->t('Describe why this intake is being abandoned.'),
       '#states' => [
         'required' => [
-          ':input[name="decision"]' => ['value' => 'continue'],
+          ':input[name="decision"]' => ['value' => 'abandon'],
         ],
         'visible' => [
           ':input[name="decision"]' => ['value' => 'abandon'],
