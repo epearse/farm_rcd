@@ -236,6 +236,11 @@ class IntakeReviewForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
+    // If the intake is being abandoned, we can skip the rest of validation.
+    if ($form_state->getValue('decision') == 'abandon') {
+      return;
+    }
+
     // Load form state storage.
     $storage = $form_state->getStorage();
 
@@ -311,6 +316,12 @@ class IntakeReviewForm extends FormBase {
 
     // Save the log.
     $log->save();
+
+    // If the intake is being abandoned, redirect to the dashboard and stop here.
+    if ($form_state->getValue('decision') == 'abandon') {
+      $form_state->setRedirect('farm.dashboard');
+      return;
+    }
 
     // Load generated organization and plan from form state storage, if
     // available.
