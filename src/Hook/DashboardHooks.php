@@ -10,6 +10,21 @@ use Drupal\Core\Hook\Attribute\Hook;
 class DashboardHooks {
 
   /**
+   * Implements hook_farm_dashboard_panes().
+   */
+  #[Hook('farm_dashboard_panes')]
+  public function FarmDashboardPanes(): array {
+    return [
+
+      // Add pending intakes block to the dashboard.
+      'pending_intakes' => [
+        'view' => 'farm_sli_intakes',
+        'view_display_id' => 'block',
+      ],
+    ];
+  }
+
+  /**
    * Implements hook_farm_dashboard_panes_alter().
    */
   #[Hook('farm_dashboard_panes_alter')]
