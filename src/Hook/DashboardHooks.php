@@ -16,6 +16,12 @@ class DashboardHooks {
   public function FarmDashboardPanes(): array {
     return [
 
+      // Add a farm organization search block to the dashboard.
+      'farm_search' => [
+        'view' => 'farm_sli_farm_organizations',
+        'view_display_id' => 'block',
+      ],
+
       // Add pending intakes block to the dashboard.
       'pending_intakes' => [
         'view' => 'farm_sli_intakes',
