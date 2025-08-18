@@ -136,6 +136,21 @@ class IntakeReviewForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Reason.
+    $form['reason'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Reason'),
+      '#description' => $this->t('Describe why this intake is being abandoned.'),
+      '#states' => [
+        'required' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+        ],
+        'visible' => [
+          ':input[name="decision"]' => ['value' => 'abandon'],
+        ],
+      ],
+    ];
+
     // Load the farm/ranch name from the intake, if available.
     $farm_name = '';
     if (!$log->get('intake_farm_name')->isEmpty()) {
@@ -315,8 +330,19 @@ class IntakeReviewForm extends FormBase {
     $state_item->applyTransition($transition);
 
     // Set a revision message.
+    // Include the decision reason, if available.
     $log->setNewRevision(TRUE);
-    $log->setRevisionLogMessage($this->t('Intake reviewed by @current_user, assigned to @owner, marked as @status.', ['@current_user' => $this->currentUser()->getDisplayName(), '@owner' => $owner->getDisplayName(), '@status' => $target_status]));
+    $revision_message = 'Intake reviewed by @current_user, assigned to @owner, marked as @status.';
+    $revision_message_args = [
+      '@current_user' => $this->currentUser()->getDisplayName(),
+      '@owner' => $owner->getDisplayName(),
+      '@status' => $target_status,
+    ];
+    if (!empty($form_state->getValue('reason'))) {
+      $revision_message .= ' Reason: @reason';
+      $revision_message_args['@reason'] = $form_state->getValue('reason');
+    }
+    $log->setRevisionLogMessage($this->t($revision_message, $revision_message_args));
 
     // Save the log.
     $log->save();
