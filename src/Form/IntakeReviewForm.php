@@ -17,9 +17,7 @@ use Drupal\plan\Entity\PlanInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form that renders quick forms.
- *
- * @ingroup farm
+ * Form for reviewing an intake.
  */
 class IntakeReviewForm extends FormBase {
 
