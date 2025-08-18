@@ -241,6 +241,10 @@ class IntakeReviewForm extends FormBase {
       return;
     }
 
+    // Load the intake log.
+    /** @var \Drupal\log\Entity\LogInterface $log */
+    $log = $form_state->getValue('intake');
+
     // Load form state storage.
     $storage = $form_state->getStorage();
 
@@ -274,7 +278,7 @@ class IntakeReviewForm extends FormBase {
     // Generate and validate a resource conservation plan, if necessary, and
     // store it in form state storage.
     if (!empty($form_state->getValue('create_plan'))) {
-      $plan = $this->generatePlan($organization);
+      $plan = $this->generatePlan($organization, $log);
       $violations = $plan->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
@@ -369,15 +373,18 @@ class IntakeReviewForm extends FormBase {
    *
    * @param \Drupal\organization\Entity\OrganizationInterface $farm
    *   The farm organization entity.
+   * @param \Drupal\log\Entity\LogInterface $intake
+   *   The intake log entity.
    *
    * @return \Drupal\plan\Entity\PlanInterface|null
    *   Returns an unsaved farm organization entity, or null if something goes wrong.
    */
-  protected function generatePlan(OrganizationInterface $farm): ?PlanInterface {
+  protected function generatePlan(OrganizationInterface $farm, LogInterface $intake): ?PlanInterface {
     return Plan::create([
       'type' => 'sli_rcp',
       'name' => $farm->label() . ' RCP',
       'farm' => $farm,
+      'intake' => $intake,
     ]);
   }
 

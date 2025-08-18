@@ -35,6 +35,17 @@ class SliRcp extends FarmPlanType {
         'required' => TRUE,
       ],
 
+      // Intake log.
+      'intake' => [
+        'type' => 'entity_reference',
+        'label' => $this->t('Intake log'),
+        'description' => $this->t('Links the plan to an SLI intake log.'),
+        'target_type' => 'log',
+        'target_bundle' => 'sli_intake',
+        'cardinality' => 1,
+        'required' => TRUE,
+      ],
+
     ];
     foreach ($field_info as $name => $info) {
       $fields[$name] = \Drupal::service('farm_field.factory')->bundleFieldDefinition($info);
