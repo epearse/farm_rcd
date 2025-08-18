@@ -2,6 +2,8 @@
 
 namespace Drupal\farm_sli\Hook;
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
@@ -30,12 +32,10 @@ class ThemeHooks {
    * Implements hook_ENTITY_TYPE_view().
    */
   #[Hook('log_view')]
-  public function logView(array &$build): void {
+  public function logView(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
 
     // Only modify intake logs in full view mode.
-    /** @var \Drupal\log\Entity\LogInterface $log */
-    $log = $build['#log'];
-    if (!($log->bundle() == 'sli_intake' && $build['#view_mode'] == 'full')) {
+    if (!($entity->bundle() == 'sli_intake' && $view_mode == 'full')) {
       return;
     }
 
@@ -43,13 +43,13 @@ class ThemeHooks {
     $build['review_intake'] = [
       '#type' => 'link',
       '#title' => $this->t('Review Intake'),
-      '#url' => Url::fromRoute('farm_sli.intake_review', ['log' => $log->id()]),
+      '#url' => Url::fromRoute('farm_sli.intake_review', ['log' => $entity->id()]),
       '#attributes' => [
         'class' => ['button', 'use-ajax'],
         'data-dialog-type' => 'dialog',
         'data-dialog-renderer' => 'off_canvas',
       ],
-      '#access' => IntakeReviewForm::access(\Drupal::currentUser(), $log),
+      '#access' => IntakeReviewForm::access(\Drupal::currentUser(), $entity),
     ];
   }
 
