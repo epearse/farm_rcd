@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\farm_sli\Hook;
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
@@ -57,7 +59,7 @@ class ThemeHooks {
    * Implements hook_entity_extra_field_info().
    */
   #[Hook('entity_extra_field_info')]
-  public function EntityExtraFieldInfo(): array {
+  public function entityExtraFieldInfo(): array {
 
     // Expose the review_intake field on intake logs.
     return [
@@ -79,7 +81,7 @@ class ThemeHooks {
    * Implements hook_farm_ui_theme_region_items().
    */
   #[Hook('farm_ui_theme_region_items')]
-  public function FarmUiThemeRegionItems(string $entity_type): array {
+  public function farmUiThemeRegionItems(string $entity_type): array {
 
     // Place the "Review Intake" button in the second region.
     if ($entity_type == 'log') {

@@ -24,8 +24,6 @@ use Psr\Container\ContainerInterface;
 #[QuickForm(
   id: 'intake',
   label: new TranslatableMarkup('Intake Form'),
-  description: new TranslatableMarkup(''),
-  helpText: new TranslatableMarkup(''),
 )]
 class Intake extends QuickFormBase {
 
@@ -154,7 +152,7 @@ class Intake extends QuickFormBase {
 
     // This is a multistep form. We track which step we are on via a step
     // property in $form_state. Each step has a corresponding form method that
-    // we use to build it
+    // we use to build it.
     $step = 'intro';
     if ($form_state->has('step') && array_key_exists($form_state->get('step'), $this->steps())) {
       $step = $form_state->get('step');
@@ -806,7 +804,7 @@ class Intake extends QuickFormBase {
     $step = $form_state->get('step');
     $steps = array_keys($this->steps());
     $position = array_search($step, $steps);
-    $previous_step = ($position > 0) ? $steps[$position - 1] : null;
+    $previous_step = ($position > 0) ? $steps[$position - 1] : NULL;
     $form_state->set('step', $previous_step);
 
     // Rebuild the form.
@@ -834,7 +832,7 @@ class Intake extends QuickFormBase {
     $step = $form_state->get('step');
     $steps = array_keys($this->steps());
     $position = array_search($step, $steps);
-    $next_step = ($position < count($steps) - 1) ? $steps[$position + 1] : null;
+    $next_step = ($position < count($steps) - 1) ? $steps[$position + 1] : NULL;
     $form_state->set('step', $next_step);
 
     // Rebuild the form.
@@ -879,7 +877,8 @@ class Intake extends QuickFormBase {
     $storage = $form_state->getStorage();
     $storage['log']->save();
 
-    // Remember that the form was submitted, so we can display a message to the user.
+    // Remember that the form was submitted, so we can display a message to
+    // the user.
     $form_state->set('submitted', TRUE);
     $form_state->setRebuild(TRUE);
   }
@@ -891,7 +890,8 @@ class Intake extends QuickFormBase {
    *   Saved values for this step.
    *
    * @return \Drupal\log\Entity\LogInterface|null
-   *   Returns an unsaved sli_intake log entity, or null if something goes wrong.
+   *   Returns an unsaved sli_intake log entity, or null if something goes
+   *   wrong.
    */
   protected function generateIntakeLog(array $saved_values): ?LogInterface {
 

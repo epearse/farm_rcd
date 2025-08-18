@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\farm_sli\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
@@ -17,7 +19,7 @@ class HelpHooks {
    * Implements hook_help().
    */
   #[Hook('help')]
-  public function help(string $route_name, RouteMatchInterface $route_match): string|\Stringable|array|null  {
+  public function help(string $route_name, RouteMatchInterface $route_match): string|\Stringable|array|null {
 
     // Intake review form.
     if ($route_name == 'farm_sli.intake_review') {

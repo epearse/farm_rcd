@@ -179,7 +179,7 @@ class IntakeReviewForm extends FormBase {
       $form['existing_farm']['#default_value'] = reset($farms);
     }
 
-    // Checkbox to create a new farm organization
+    // Checkbox to create a new farm organization.
     $form['new_farm'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Create a new farm/ranch'),
@@ -330,22 +330,20 @@ class IntakeReviewForm extends FormBase {
     // Set a revision message.
     // Include the decision reason, if available.
     $log->setNewRevision(TRUE);
-    $revision_message = 'Intake reviewed by @current_user, assigned to @owner, marked as @status.';
-    $revision_message_args = [
+    $revision_message = $this->t('Intake reviewed by @current_user, assigned to @owner, marked as @status.', [
       '@current_user' => $this->currentUser()->getDisplayName(),
       '@owner' => $owner->getDisplayName(),
       '@status' => $target_status,
-    ];
+    ]);
     if (!empty($form_state->getValue('reason'))) {
-      $revision_message .= ' Reason: @reason';
-      $revision_message_args['@reason'] = $form_state->getValue('reason');
+      $revision_message .= ' ' . $this->t('Reason: @reason', ['@reason', $form_state->getValue('reason')]);
     }
-    $log->setRevisionLogMessage($this->t($revision_message, $revision_message_args));
+    $log->setRevisionLogMessage($revision_message);
 
     // Save the log.
     $log->save();
 
-    // If the intake is being abandoned, redirect to the dashboard and stop here.
+    // If the intake is being abandoned, redirect to the dashboard and bail.
     if ($form_state->getValue('decision') == 'abandon') {
       $form_state->setRedirect('farm.dashboard');
       return;
@@ -383,7 +381,8 @@ class IntakeReviewForm extends FormBase {
    *   The farm organization name.
    *
    * @return \Drupal\organization\Entity\OrganizationInterface|null
-   *   Returns an unsaved farm organization entity, or null if something goes wrong.
+   *   Returns an unsaved farm organization entity, or null if something goes
+   *   wrong.
    */
   protected function generateOrganization(string $name): ?OrganizationInterface {
     return Organization::create([
@@ -401,7 +400,8 @@ class IntakeReviewForm extends FormBase {
    *   The intake log entity.
    *
    * @return \Drupal\plan\Entity\PlanInterface|null
-   *   Returns an unsaved farm organization entity, or null if something goes wrong.
+   *   Returns an unsaved farm organization entity, or null if something goes
+   *   wrong.
    */
   protected function generatePlan(OrganizationInterface $farm, LogInterface $intake): ?PlanInterface {
     return Plan::create([
