@@ -647,6 +647,13 @@ class Intake extends QuickFormBase {
       ],
     ];
 
+    // Other land use.
+    $form['land_use']['crop_type'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Crop type'),
+      '#default_value' => $saved_values['land_use']['crop_type'] ?? '',
+    ];
+
     return $form;
   }
 
@@ -928,6 +935,7 @@ class Intake extends QuickFormBase {
       'intake_property_use_natural_ac' => $saved_values['property']['land_use']['natural_acreage'],
       'intake_property_use_other' => $saved_values['property']['land_use']['other'],
       'intake_property_use_other_ac' => $saved_values['property']['land_use']['other_acreage'],
+      'intake_property_use_crop_type' => $saved_values['property']['land_use']['crop_type'],
       'intake_goals' => $intake_goals,
       'intake_goals_other' => $saved_values['goals']['goals']['other'],
       'intake_goals_comments' => $saved_values['goals']['goals']['comments'],

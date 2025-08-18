@@ -27,14 +27,14 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 25
+    weight: 26
     region: content
   intake_goals_comments:
     type: basic_string
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 27
+    weight: 28
     region: content
   intake_goals_other:
     type: string
@@ -42,21 +42,21 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 26
+    weight: 27
     region: content
   intake_interests:
     type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 28
+    weight: 29
     region: content
   intake_interests_comments:
     type: basic_string
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 29
+    weight: 30
     region: content
   intake_property_acreage:
     type: number_decimal
@@ -107,6 +107,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 17
+    region: content
+  intake_property_use_crop_type:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 25
     region: content
   intake_property_use_grazing_ac:
     type: number_decimal
@@ -198,7 +206,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 30
+    weight: 31
     region: content
   intake_stakeholder_city:
     type: string
