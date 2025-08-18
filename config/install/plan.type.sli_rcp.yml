@@ -4,7 +4,7 @@ dependencies:
   enforced:
     module:
       - farm_sli
-id: rcp
+id: sli_rcp
 label: Resource conservation
 description: ''
 workflow: plan_default

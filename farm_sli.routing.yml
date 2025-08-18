@@ -1,0 +1,12 @@
+farm_sli.intake_review:
+  path: '/log/{log}/review'
+  defaults:
+    _form: 'Drupal\farm_sli\Form\IntakeReviewForm'
+    _title: Review intake
+  requirements:
+    _custom_access: '\Drupal\farm_sli\Form\IntakeReviewForm::access'
+    log: \d+
+  options:
+    parameters:
+      log:
+        type: entity:log

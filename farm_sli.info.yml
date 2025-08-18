@@ -4,10 +4,12 @@ type: module
 package: farmOS Contrib
 core_version_requirement: ^11
 dependencies:
+  - drupal:help
   - farm_comment_plan
   - farm_entity
   - farm_farm
   - farm_land
   - farm_log
+  - farm_manager
   - farm_quick
   - plan

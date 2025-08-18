@@ -303,6 +303,7 @@ hidden:
   owner: true
   quantity: true
   quick: true
+  review_intake: true
   status: true
   timestamp: true
   type: true

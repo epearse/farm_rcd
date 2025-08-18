@@ -878,7 +878,7 @@ class Intake extends QuickFormBase {
   }
 
   /**
-   * Generate a sli_intake log entity from $form_state.
+   * Generate a sli_intake log entity from saved values.
    *
    * @param array $saved_values
    *   Saved values for this step.

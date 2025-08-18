@@ -9,13 +9,13 @@ use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
 
 /**
- * Provides the resource conservation profile plan type.
+ * Provides the SLI resource conservation plan type.
  */
 #[PlanType(
-  id: 'rcp',
-  label: new TranslatableMarkup('Resource conservation profile')),
-]
-class Rcp extends FarmPlanType {
+  id: 'sli_rcp',
+  label: new TranslatableMarkup('Resource conservation'),
+)]
+class SliRcp extends FarmPlanType {
 
   /**
    * {@inheritdoc}
@@ -28,9 +28,20 @@ class Rcp extends FarmPlanType {
       'farm' => [
         'type' => 'entity_reference',
         'label' => $this->t('Farm'),
-        'description' => $this->t('Associates the resource conservation profile with a farm organization.'),
+        'description' => $this->t('Associates the resource conservation plan with a farm organization.'),
         'target_type' => 'organization',
         'target_bundle' => 'farm',
+        'cardinality' => 1,
+        'required' => TRUE,
+      ],
+
+      // Intake log.
+      'intake' => [
+        'type' => 'entity_reference',
+        'label' => $this->t('Intake log'),
+        'description' => $this->t('Links the plan to an SLI intake log.'),
+        'target_type' => 'log',
+        'target_bundle' => 'sli_intake',
         'cardinality' => 1,
         'required' => TRUE,
       ],
