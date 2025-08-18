@@ -7,6 +7,9 @@ dependencies:
     - log
     - state_machine
     - user
+  enforced:
+    module:
+      - farm_sli
 id: farm_sli_intakes
 label: 'SLI Intakes'
 module: views

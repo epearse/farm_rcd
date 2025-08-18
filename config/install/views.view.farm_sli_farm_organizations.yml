@@ -6,6 +6,9 @@ dependencies:
   module:
     - organization
     - user
+  enforced:
+    module:
+      - farm_sli
 id: farm_sli_farm_organizations
 label: 'SLI Farm Organiations'
 module: views
