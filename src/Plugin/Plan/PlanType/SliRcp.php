@@ -38,7 +38,7 @@ class SliRcp extends FarmPlanType {
       // Intake log.
       'intake' => [
         'type' => 'entity_reference',
-        'label' => $this->t('Intake log'),
+        'label' => $this->t('Intake'),
         'description' => $this->t('Links the plan to an SLI intake log.'),
         'target_type' => 'log',
         'target_bundle' => 'sli_intake',
