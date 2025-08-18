@@ -45,7 +45,9 @@ class ThemeHooks {
       '#title' => $this->t('Review Intake'),
       '#url' => Url::fromRoute('farm_sli.intake_review', ['log' => $log->id()]),
       '#attributes' => [
-        'class' => ['button'],
+        'class' => ['button', 'use-ajax'],
+        'data-dialog-type' => 'dialog',
+        'data-dialog-renderer' => 'off_canvas',
       ],
       '#access' => IntakeReviewForm::access(\Drupal::currentUser(), $log),
     ];
