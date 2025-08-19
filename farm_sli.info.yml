@@ -11,4 +11,5 @@ dependencies:
   - farm_log
   - farm_manager
   - farm_quick
+  - farm_ui_dashboard
   - plan
