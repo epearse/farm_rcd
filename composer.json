@@ -11,6 +11,6 @@
     }
   ],
   "require": {
-    "farmos/farmos": "^4 || dev-4.x-organization"
+    "farmos/farmos": "^4"
   }
 }

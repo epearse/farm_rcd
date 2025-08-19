@@ -30,10 +30,6 @@ jobs:
         # containers to be online so waiting for that lets us know it is safe to
         # start the tests.
         run: until [ -f ./www/www-container-fs-ready ]; do sleep 0.1; done
-      - name: Use 4.x-organization branch of mstenta/farmOS fork.
-        run: |
-          docker compose exec -u www-data -T www composer config repositories.farmos git https://github.com/mstenta/farmOS
-          docker compose exec -u www-data -T www composer require farmos/farmos:dev-4.x-organization --no-install
       - name: Install the module via Composer
         run: |
           sudo mv ${MODULE_NAME} www/${MODULE_NAME}
