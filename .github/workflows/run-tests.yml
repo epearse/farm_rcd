@@ -48,6 +48,8 @@ jobs:
           docker compose exec -u www-data -T www phpstan analyze /opt/drupal/web/modules/${MODULE_NAME}
       - name: Run Rector
         run: docker compose exec -u www-data -T www rector process --dry-run /opt/drupal/web/modules/${MODULE_NAME}
+      - name: Run PHPUnit tests
+        run: docker compose exec -u www-data -T www phpunit /opt/drupal/web/modules/${MODULE_NAME}
       - name: Test installing farmOS and the module
         run: |
           docker compose exec -u www-data -T www drush site-install --db-url=pgsql://farm:farm@db/farm farm farm.modules='base'
