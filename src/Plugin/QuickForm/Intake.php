@@ -326,7 +326,7 @@ class Intake extends QuickFormBase {
       '#type' => 'select',
       '#title' => $this->t('Stakeholder type'),
       '#options' => SliAllowedValues::stakeholderTypes(),
-      '#default_value' => $saved_values['address']['type'] ?? '',
+      '#default_value' => $saved_values['address']['type'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -353,7 +353,7 @@ class Intake extends QuickFormBase {
     $form['stakeholder']['lease_expiration'] = [
       '#type' => 'date',
       '#title' => $this->t('If you lease the land, when does the lease expire?'),
-      '#default_value' => $saved_values['stakeholder']['lease_expiration'] ?? '',
+      '#default_value' => $saved_values['stakeholder']['lease_expiration'] ?? NULL,
       '#states' => [
         'required' => [
           ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
@@ -385,7 +385,7 @@ class Intake extends QuickFormBase {
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('Read more about the Social disadvantage community. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
       '#options' => SliAllowedValues::stakeholderGroups(),
-      '#default_value' => $saved_values['stakeholder']['group'] ?? '',
+      '#default_value' => $saved_values['stakeholder']['group'] ?? [],
     ];
 
     // Share with other RCDs.
@@ -397,7 +397,7 @@ class Intake extends QuickFormBase {
         'yes' => $this->t('Yes'),
         'no' => $this->t('No'),
       ],
-      '#default_value' => $saved_values['stakeholder']['share_rcds'] ?? '',
+      '#default_value' => $saved_values['stakeholder']['share_rcds'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -448,7 +448,7 @@ class Intake extends QuickFormBase {
         'yes' => $this->t('Yes'),
         'no' => $this->t('No'),
       ],
-      '#default_value' => $saved_values['info']['has_address'] ?? '',
+      '#default_value' => $saved_values['info']['has_address'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -524,7 +524,7 @@ class Intake extends QuickFormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Select at least one'),
       '#options' => SliAllowedValues::landUses(),
-      '#default_value' => $saved_values['land_use']['land_use'] ?? '',
+      '#default_value' => $saved_values['land_use']['land_use'] ?? [],
       '#required' => TRUE,
     ];
 
@@ -678,7 +678,7 @@ class Intake extends QuickFormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
       '#options' => SliAllowedValues::goals(),
-      '#default_value' => $saved_values['goals']['goals'] ?? '',
+      '#default_value' => $saved_values['goals']['goals'] ?? [],
       '#required' => TRUE,
     ];
 
@@ -729,26 +729,8 @@ class Intake extends QuickFormBase {
     $form['interests']['resource_interests'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => [
-        'rangeland_erosion' => $this->t('Manage rangeland to protect soil from erosion and increase production'),
-        'cropland_erosion' => $this->t('Manage cropland, pastureland, or forestland to protect soil from erosion and increase production'),
-        'roads' => $this->t('Manage ranch roads to reduce movement of sediment into streams and other water bodies'),
-        'bank_erosion' => $this->t('Reduce erosion of streambanks and gullies'),
-        'cover' => $this->t('Manage to increase tree cover and/or ground cover in riparian areas or along streams'),
-        'livestock_concentration' => $this->t('Reduce concentration of livestock in or near streams, wetlands, or other water bodies'),
-        'runoff' => $this->t('Manage to reduce entry of sediment, nutrients, and pathogens to streams or wetlands'),
-        'wildfire' => $this->t('Reduce wildfire hazard'),
-        'plants' => $this->t('Maintain or enhance oak woodland, native grass, or other plant communities'),
-        'wildlife' => $this->t('Maintain or enhance wildlife or fisheries habitat or other aquatic resources'),
-        'weeds' => $this->t('Reduce/manage invasive weeds'),
-        'predators' => $this->t('Reduce/manage predator impacts on the ranching operation'),
-        'water_regulations' => $this->t('Meet water quality regulations'),
-        'water_capacity' => $this->t('Improve water holding capacity of your soil, increase forage production'),
-        'alt_water' => $this->t('Utilize alternative water storage, water conservation strategies'),
-        'climate_resilience' => $this->t('Increase farm resilience to drought, flood and other climate impacts'),
-        'carbon_farming' => $this->t('Be part of the climate change solution through carbon farming'),
-      ],
-      '#default_value' => $saved_values['interests']['resource_interests'] ?? '',
+      '#options' => SliAllowedValues::interests(),
+      '#default_value' => $saved_values['interests']['resource_interests'] ?? [],
       '#required' => TRUE,
     ];
 
