@@ -482,9 +482,7 @@ display:
     position: 1
     display_options:
       display_description: ''
-      display_extenders:
-        collapsible_filter:
-          collapsible: false
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
