@@ -4,37 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\farm_sli\Functional;
 
-use Drupal\Tests\farm_test\Functional\FarmBrowserTestBase;
-
 /**
  * Tests the SLI dashboard functionality.
  */
-class DashboardTest extends FarmBrowserTestBase {
-
-  /**
-   * Test user.
-   *
-   * @var \Drupal\user\Entity\User|bool
-   */
-  protected $user;
-
-  /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'farm_sli',
-  ];
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function setUp(): void {
-    parent::setUp();
-
-    // Create and login a user with necessary permissions.
-    $this->user = $this->createUser(['access farm dashboard']);
-    $this->drupalLogin($this->user);
-  }
+class DashboardTest extends SliTestBase {
 
   /**
    * Test SLI dashboard panes.
