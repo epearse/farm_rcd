@@ -314,9 +314,9 @@ class IntakeReviewForm extends FormBase {
     $log = $form_state->getValue('intake');
 
     // Assign log ownership.
-    /** @var \Drupal\user\UserInterface $owner */
+    /** @var \Drupal\user\UserInterface|null $owner */
     $owner = $this->entityTypeManager->getStorage('user')->load($form_state->getValue('owner'));
-    if (!empty($owner)) {
+    if (!is_null($owner)) {
       $log->set('owner', $owner);
     }
 
@@ -352,26 +352,28 @@ class IntakeReviewForm extends FormBase {
     // Load generated organization and plan from form state storage, if
     // available.
     $storage = $form_state->getStorage();
-    /** @var \Drupal\organization\Entity\OrganizationInterface $organization */
+    /** @var \Drupal\organization\Entity\OrganizationInterface|null $organization */
     $organization = !empty($storage['organization']) ? $storage['organization'] : NULL;
-    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    /** @var \Drupal\plan\Entity\PlanInterface|null $plan */
     $plan = !empty($storage['plan']) ? $storage['plan'] : NULL;
 
     // Save new farm organization, if necessary, and display a message to the
     // user.
-    if (!empty($form_state->getValue('new_farm')) && !empty($organization)) {
+    if (!empty($form_state->getValue('new_farm')) && !is_null($organization)) {
       $organization->save();
       $this->messenger()->addStatus($this->t('Farm created: <a href=":uri">%name</a>', [':uri' => $organization->toUrl()->toString(), '%name' => $organization->label()]));
     }
 
     // Save the plan, if necessary, and display a message to the user.
-    if (!empty($form_state->getValue('create_plan')) && !empty($plan)) {
+    if (!empty($form_state->getValue('create_plan')) && !is_null($plan)) {
       $plan->save();
       $this->messenger()->addStatus($this->t('Plan created: <a href=":uri">%name</a>', [':uri' => $plan->toUrl()->toString(), '%name' => $plan->label()]));
     }
 
-    // Redirect to the plan.
-    $form_state->setRedirect('entity.plan.canonical', ['plan' => $plan->id()]);
+    // Redirect to the plan, if available.
+    if (!is_null($plan)) {
+      $form_state->setRedirect('entity.plan.canonical', ['plan' => $plan->id()]);
+    }
   }
 
   /**
