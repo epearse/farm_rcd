@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\farm_sli\Hook;
 
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\farm_sli\Form\IntakeReviewForm;
@@ -14,9 +17,14 @@ use Drupal\farm_sli\Form\IntakeReviewForm;
 /**
  * Theme hook implementations for farm_sli.
  */
-class ThemeHooks {
+class ThemeHooks implements ContainerInjectionInterface {
 
+  use AutowireTrait;
   use StringTranslationTrait;
+
+  public function __construct(
+    protected AccountInterface $currentUser,
+  ) {}
 
   /**
    * Implements hook_preprocess_page().
@@ -25,7 +33,7 @@ class ThemeHooks {
   public function preprocessPage(&$variables): void {
 
     // Disable the breadcrumb region for anonymous users.
-    if (\Drupal::currentUser()->isAnonymous()) {
+    if ($this->currentUser->isAnonymous()) {
       unset($variables['page']['breadcrumb']);
     }
   }
@@ -35,6 +43,7 @@ class ThemeHooks {
    */
   #[Hook('log_view')]
   public function logView(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
+    /** @var \Drupal\log\Entity\LogInterface $entity */
 
     // Only modify intake logs in full view mode.
     if (!($entity->bundle() == 'sli_intake' && $view_mode == 'full')) {
@@ -51,7 +60,7 @@ class ThemeHooks {
         'data-dialog-type' => 'dialog',
         'data-dialog-renderer' => 'off_canvas',
       ],
-      '#access' => IntakeReviewForm::access(\Drupal::currentUser(), $entity),
+      '#access' => IntakeReviewForm::access($this->currentUser, $entity),
     ];
   }
 
