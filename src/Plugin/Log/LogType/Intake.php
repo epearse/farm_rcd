@@ -60,22 +60,6 @@ class Intake extends FarmLogType {
         'label' => $this->t('Stakeholder type'),
         'allowed_values' => SliAllowedValues::stakeholderTypes(),
       ],
-      'intake_stakeholder_own_or_lease' => [
-        'type' => 'list_string',
-        'label' => $this->t('Own or lease'),
-        'allowed_values' => [
-          'own' => $this->t('Own'),
-          'lease' => $this->t('Lease'),
-        ],
-      ],
-      'intake_stakeholder_lease_exp' => [
-        'type' => 'timestamp',
-        'label' => $this->t('Lease expiration'),
-      ],
-      'intake_property_owner' => [
-        'type' => 'string',
-        'label' => $this->t('Property owner'),
-      ],
       'intake_stakeholder_group' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder group'),
@@ -87,6 +71,22 @@ class Intake extends FarmLogType {
       'intake_farm_name' => [
         'type' => 'string',
         'label' => $this->t('Farm or ranch name'),
+      ],
+      'intake_property_own_or_lease' => [
+        'type' => 'list_string',
+        'label' => $this->t('Own or lease'),
+        'allowed_values' => [
+          'own' => $this->t('Own'),
+          'lease' => $this->t('Lease'),
+        ],
+      ],
+      'intake_property_owner' => [
+        'type' => 'string',
+        'label' => $this->t('Property owner'),
+      ],
+      'intake_property_lease_exp' => [
+        'type' => 'timestamp',
+        'label' => $this->t('Lease expiration'),
       ],
       'intake_property_acreage' => [
         'type' => 'decimal',

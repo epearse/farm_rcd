@@ -31,7 +31,6 @@ class IntakeFormTest extends SliTestBase {
         'stakeholder[address][state]' => 'AL',
         'stakeholder[address][zip]' => '123456',
         'stakeholder[address][type]' => 'landowner',
-        'stakeholder[stakeholder][own_or_lease]' => 'own',
         'stakeholder[stakeholder][group][beginning]' => TRUE,
         'stakeholder[stakeholder][group][female]' => TRUE,
         'stakeholder[stakeholder][group][veteran]' => TRUE,
@@ -46,6 +45,9 @@ class IntakeFormTest extends SliTestBase {
       ],
       2 => [
         'property[info][farm_name]' => 'Sunflower Farm',
+        'property[info][own_or_lease]' => 'own',
+        'property[info][owner]' => 'My sister',
+        'property[info][lease_expiration]' => NULL,
         'property[info][acreage]' => 100,
         'property[info][has_address]' => 'yes',
         'property[info][street]' => '124 Fake Street',
@@ -326,11 +328,11 @@ class IntakeFormTest extends SliTestBase {
       'intake_stakeholder_state' => $field_data[1]['stakeholder[address][state]'],
       'intake_stakeholder_zip' => $field_data[1]['stakeholder[address][zip]'],
       'intake_stakeholder_type' => $field_data[1]['stakeholder[address][type]'],
-      'intake_stakeholder_own_or_lease' => $field_data[1]['stakeholder[stakeholder][own_or_lease]'],
-      'intake_stakeholder_lease_exp' => NULL,
-      'intake_property_owner' => '',
       'intake_stakeholder_group' => array_keys(SliAllowedValues::stakeholderGroups()),
       'intake_farm_name' => $field_data[2]['property[info][farm_name]'],
+      'intake_property_own_or_lease' => $field_data[2]['property[info][own_or_lease]'],
+      'intake_property_owner' => 'My sister',
+      'intake_property_lease_exp' => NULL,
       'intake_property_acreage' => $field_data[2]['property[info][acreage]'],
       'intake_property_street' => $field_data[2]['property[info][street]'],
       'intake_property_city' => $field_data[2]['property[info][city]'],
@@ -373,10 +375,9 @@ class IntakeFormTest extends SliTestBase {
 
     // Test fields that were not covered by the first submission.
     $field_data = $this->fieldData();
-    $field_data[1]['stakeholder[stakeholder][own_or_lease]'] = 'lease';
-    $field_data[1]['stakeholder[stakeholder][lease_expiration]'] = '08/19/2025';
-    $field_data[1]['stakeholder[stakeholder][property_owner]'] = 'My sister';
     $field_data[1]['stakeholder[stakeholder][share_rcds]'] = 'no';
+    $field_data[2]['property[info][own_or_lease]'] = 'lease';
+    $field_data[2]['property[info][lease_expiration]'] = '08/19/2025';
     $field_data[2]['property[info][has_address]'] = 'no';
     $field_data[2]['property[info][parcel_gps]'] = '1234567890';
     $this->drupalGet('/intake');
@@ -392,10 +393,9 @@ class IntakeFormTest extends SliTestBase {
     $this->assertCount(2, $logs);
     /** @var \Drupal\log\Entity\LogInterface $log */
     $log = end($logs);
-    $this->assertEquals('lease', $log->get('intake_stakeholder_own_or_lease')->value);
-    $this->assertEquals(1755525600, $log->get('intake_stakeholder_lease_exp')->value);
-    $this->assertEquals('My sister', $log->get('intake_property_owner')->value);
     $this->assertEquals(FALSE, $log->get('intake_rcd_sharing_allowed')->value);
+    $this->assertEquals('lease', $log->get('intake_property_own_or_lease')->value);
+    $this->assertEquals(1755525600, $log->get('intake_property_lease_exp')->value);
     $this->assertEquals('1234567890', $log->get('intake_property_parcel_gps')->value);
   }
 

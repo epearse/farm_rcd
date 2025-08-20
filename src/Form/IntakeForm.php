@@ -307,48 +307,6 @@ class IntakeForm extends FormBase {
       '#open' => TRUE,
     ];
 
-    // Own or lease the land?
-    $form['stakeholder']['own_or_lease'] = [
-      '#type' => 'radios',
-      '#title' => $this->t('Do you own the land or lease the land?'),
-      '#options' => [
-        'own' => $this->t('Own'),
-        'lease' => $this->t('Lease'),
-      ],
-      '#default_value' => $saved_values['stakeholder']['own_or_lease'] ?? '',
-      '#required' => TRUE,
-    ];
-
-    // Lease expiration.
-    $form['stakeholder']['lease_expiration'] = [
-      '#type' => 'date',
-      '#title' => $this->t('If you lease the land, when does the lease expire?'),
-      '#default_value' => $saved_values['stakeholder']['lease_expiration'] ?? NULL,
-      '#states' => [
-        'required' => [
-          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
-        ],
-        'visible' => [
-          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
-        ],
-      ],
-    ];
-
-    // Property owner.
-    $form['stakeholder']['property_owner'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Who is the property owner?'),
-      '#default_value' => $saved_values['stakeholder']['property_owner'] ?? '',
-      '#states' => [
-        'required' => [
-          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
-        ],
-        'visible' => [
-          ':input[name="stakeholder[stakeholder][own_or_lease]"]' => ['value' => 'lease'],
-        ],
-      ],
-    ];
-
     // Stakeholder group.
     $form['stakeholder']['group'] = [
       '#type' => 'checkboxes',
@@ -397,6 +355,41 @@ class IntakeForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Farm or Ranch name'),
       '#default_value' => $saved_values['info']['farm_name'] ?? '',
+    ];
+
+    // Own or lease the land?
+    $form['info']['own_or_lease'] = [
+      '#type' => 'radios',
+      '#title' => $this->t('Is the land owned or leased?'),
+      '#options' => [
+        'own' => $this->t('Own'),
+        'lease' => $this->t('Lease'),
+      ],
+      '#default_value' => $saved_values['info']['own_or_lease'] ?? '',
+      '#required' => TRUE,
+    ];
+
+    // Property owner.
+    $form['info']['owner'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Who is the property owner?'),
+      '#default_value' => $saved_values['info']['owner'] ?? '',
+      '#required' => TRUE,
+    ];
+
+    // Lease expiration.
+    $form['info']['lease_expiration'] = [
+      '#type' => 'date',
+      '#title' => $this->t('When does the lease expire?'),
+      '#default_value' => $saved_values['info']['lease_expiration'] ?? NULL,
+      '#states' => [
+        'required' => [
+          ':input[name="property[info][own_or_lease]"]' => ['value' => 'lease'],
+        ],
+        'visible' => [
+          ':input[name="property[info][own_or_lease]"]' => ['value' => 'lease'],
+        ],
+      ],
     ];
 
     // Approximate total acreage.
@@ -864,7 +857,7 @@ class IntakeForm extends FormBase {
   protected function generateIntakeLog(array $saved_values): ?LogInterface {
 
     // Convert date to timestamp.
-    $intake_stakeholder_lease_exp = $saved_values['stakeholder']['stakeholder']['lease_expiration'] ? strtotime($saved_values['stakeholder']['stakeholder']['lease_expiration']) : NULL;
+    $intake_property_lease_exp = $saved_values['property']['info']['lease_expiration'] ? strtotime($saved_values['property']['info']['lease_expiration']) : NULL;
 
     // Process checkboxes.
     $intake_stakeholder_group = isset($saved_values['stakeholder']['stakeholder']['group']) ? array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])) : NULL;
@@ -886,11 +879,11 @@ class IntakeForm extends FormBase {
       'intake_stakeholder_state' => $saved_values['stakeholder']['address']['state'],
       'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
       'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
-      'intake_stakeholder_own_or_lease' => $saved_values['stakeholder']['stakeholder']['own_or_lease'],
-      'intake_stakeholder_lease_exp' => $intake_stakeholder_lease_exp,
-      'intake_property_owner' => $saved_values['stakeholder']['stakeholder']['property_owner'],
       'intake_stakeholder_group' => $intake_stakeholder_group,
       'intake_farm_name' => $saved_values['property']['info']['farm_name'],
+      'intake_property_own_or_lease' => $saved_values['property']['info']['own_or_lease'],
+      'intake_property_owner' => $saved_values['property']['info']['owner'],
+      'intake_property_lease_exp' => $intake_property_lease_exp,
       'intake_property_acreage' => $saved_values['property']['info']['acreage'],
       'intake_property_street' => $saved_values['property']['info']['street'],
       'intake_property_city' => $saved_values['property']['info']['city'],
