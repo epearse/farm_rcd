@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\farm_sli\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -14,38 +15,17 @@ use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\Plan;
 use Drupal\plan\Entity\PlanInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form for reviewing an intake.
  */
 class IntakeReviewForm extends FormBase {
 
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
+  use AutowireTrait;
 
-  /**
-   * Class constructor.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The quick form instance manager.
-   */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->entityTypeManager = $entity_type_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager'),
-    );
-  }
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+  ) {}
 
   /**
    * {@inheritdoc}
