@@ -46,6 +46,11 @@ class Intake extends FarmLogType {
         'type' => 'string',
         'label' => $this->t('Stakeholder city'),
       ],
+      'intake_stakeholder_state' => [
+        'type' => 'list_string',
+        'label' => $this->t('Stakeholder state'),
+        'allowed_values' => SliAllowedValues::states(),
+      ],
       'intake_stakeholder_zip' => [
         'type' => 'string',
         'label' => $this->t('Stakeholder zip'),
@@ -95,6 +100,11 @@ class Intake extends FarmLogType {
       'intake_property_city' => [
         'type' => 'string',
         'label' => $this->t('Property city'),
+      ],
+      'intake_property_state' => [
+        'type' => 'list_string',
+        'label' => $this->t('Property state'),
+        'allowed_values' => SliAllowedValues::states(),
       ],
       'intake_property_zip' => [
         'type' => 'string',

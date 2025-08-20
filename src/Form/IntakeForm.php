@@ -274,6 +274,15 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Stakeholder mailing address: state.
+    $form['address']['state'] = [
+      '#type' => 'select',
+      '#title' => $this->t('State'),
+      '#options' => SliAllowedValues::states(),
+      '#default_value' => $saved_values['address']['state'] ?? '',
+      '#required' => TRUE,
+    ];
+
     // Stakeholder mailing address: postal code.
     $form['address']['zip'] = [
       '#type' => 'textfield',
@@ -433,6 +442,22 @@ class IntakeForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('City'),
       '#default_value' => $saved_values['info']['city'] ?? '',
+      '#states' => [
+        'required' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
+        ],
+        'visible' => [
+          ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
+        ],
+      ],
+    ];
+
+    // Property address: state.
+    $form['info']['state'] = [
+      '#type' => 'select',
+      '#title' => $this->t('State'),
+      '#options' => SliAllowedValues::states(),
+      '#default_value' => $saved_values['info']['state'] ?? '',
       '#states' => [
         'required' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
@@ -858,6 +883,7 @@ class IntakeForm extends FormBase {
       'intake_stakeholder_phone' => $saved_values['stakeholder']['personal']['phone'],
       'intake_stakeholder_street' => $saved_values['stakeholder']['address']['street'],
       'intake_stakeholder_city' => $saved_values['stakeholder']['address']['city'],
+      'intake_stakeholder_state' => $saved_values['stakeholder']['address']['state'],
       'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
       'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
       'intake_stakeholder_own_or_lease' => $saved_values['stakeholder']['stakeholder']['own_or_lease'],
@@ -868,6 +894,7 @@ class IntakeForm extends FormBase {
       'intake_property_acreage' => $saved_values['property']['info']['acreage'],
       'intake_property_street' => $saved_values['property']['info']['street'],
       'intake_property_city' => $saved_values['property']['info']['city'],
+      'intake_property_state' => $saved_values['property']['info']['state'],
       'intake_property_zip' => $saved_values['property']['info']['zip'],
       'intake_property_parcel_gps' => $saved_values['property']['info']['parcel_gps'],
       'intake_property_use' => $intake_property_use,
