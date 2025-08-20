@@ -14,11 +14,6 @@ class DashboardTest extends SliTestBase {
    */
   public function testSliDashboard() {
 
-    // Create and login a user with access to the dashboard.
-    // @todo Remove this when https://github.com/farmOS/farmOS/pull/922 merges.
-    $this->user = $this->createUser(['access farm dashboard', 'view any farm organization', 'view any sli_intake log']);
-    $this->drupalLogin($this->user);
-
     // Confirm that dashboard loads.
     $this->drupalGet('/dashboard');
     $this->assertSession()->statusCodeEquals(200);

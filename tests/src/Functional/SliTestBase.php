@@ -34,6 +34,7 @@ class SliTestBase extends FarmBrowserTestBase {
     // Create and login a user with the Manager role.
     $this->user = $this->createUser();
     $this->user->addRole('farm_manager');
+    $this->user->save();
     $this->drupalLogin($this->user);
   }
 
