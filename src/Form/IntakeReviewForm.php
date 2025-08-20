@@ -136,7 +136,7 @@ class IntakeReviewForm extends FormBase {
 
     // Reason.
     $form['reason'] = [
-      '#type' => 'textarea',
+      '#type' => 'textfield',
       '#title' => $this->t('Reason'),
       '#description' => $this->t('Describe why this intake is being abandoned.'),
       '#states' => [
@@ -198,9 +198,11 @@ class IntakeReviewForm extends FormBase {
       '#default_value' => $farm_name,
       '#states' => [
         'required' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
           ':input[name="new_farm"]' => ['checked' => TRUE],
         ],
         'visible' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
           ':input[name="new_farm"]' => ['checked' => TRUE],
         ],
       ],
@@ -336,7 +338,7 @@ class IntakeReviewForm extends FormBase {
       '@status' => $target_status,
     ]);
     if (!empty($form_state->getValue('reason'))) {
-      $revision_message .= ' ' . $this->t('Reason: @reason', ['@reason', $form_state->getValue('reason')]);
+      $revision_message .= ' ' . $this->t('Reason: @reason', ['@reason' => $form_state->getValue('reason')]);
     }
     $log->setRevisionLogMessage($revision_message);
 
