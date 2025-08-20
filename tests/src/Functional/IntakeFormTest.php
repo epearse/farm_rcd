@@ -67,7 +67,7 @@ class IntakeFormTest extends SliTestBase {
         'property[land_use][natural_acreage]' => 50,
         'property[land_use][other]' => 'Alpacas',
         'property[land_use][other_acreage]' => 60,
-        'property[land_use][crop_type]' => 'Bananas',
+        'property[land_use][crop_types]' => 'Bananas',
       ],
       3 => [
         'goals[goals][goals][succession]' => TRUE,
@@ -347,7 +347,7 @@ class IntakeFormTest extends SliTestBase {
       'intake_property_use_natural_ac' => $field_data[2]['property[land_use][natural_acreage]'],
       'intake_property_use_other' => $field_data[2]['property[land_use][other]'],
       'intake_property_use_other_ac' => $field_data[2]['property[land_use][other_acreage]'],
-      'intake_property_use_crop_type' => $field_data[2]['property[land_use][crop_type]'],
+      'intake_property_use_crop_types' => $field_data[2]['property[land_use][crop_types]'],
       'intake_goals' => array_keys(SliAllowedValues::goals()),
       'intake_goals_other' => $field_data[3]['goals[goals][other]'],
       'intake_goals_comments' => $field_data[3]['goals[goals][comments]'],

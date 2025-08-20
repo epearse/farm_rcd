@@ -154,9 +154,9 @@ class Intake extends FarmLogType {
         'label' => $this->t('Other land use acreage'),
         'min' => 0,
       ],
-      'intake_property_use_crop_type' => [
+      'intake_property_use_crop_types' => [
         'type' => 'string',
-        'label' => $this->t('Crop type'),
+        'label' => $this->t('Crop types'),
       ],
 
       // Goals.

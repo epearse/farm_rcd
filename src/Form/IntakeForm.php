@@ -624,11 +624,27 @@ class IntakeForm extends FormBase {
       ],
     ];
 
-    // Other land use.
-    $form['land_use']['crop_type'] = [
+    // Crop types (relevant for vineyards, orchards, and row crops).
+    $form['land_use']['crop_types'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Crop type'),
-      '#default_value' => $saved_values['land_use']['crop_type'] ?? '',
+      '#title' => $this->t('Crop types'),
+      '#default_value' => $saved_values['land_use']['crop_types'] ?? '',
+      '#states' => [
+        'visible' => [
+          [':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE]],
+        ],
+        'required' => [
+          [':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE]],
+          'or',
+          [':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE]],
+        ],
+      ],
     ];
 
     return $form;
@@ -898,7 +914,7 @@ class IntakeForm extends FormBase {
       'intake_property_use_natural_ac' => $saved_values['property']['land_use']['natural_acreage'],
       'intake_property_use_other' => $saved_values['property']['land_use']['other'],
       'intake_property_use_other_ac' => $saved_values['property']['land_use']['other_acreage'],
-      'intake_property_use_crop_type' => $saved_values['property']['land_use']['crop_type'],
+      'intake_property_use_crop_types' => $saved_values['property']['land_use']['crop_types'],
       'intake_goals' => $intake_goals,
       'intake_goals_other' => $saved_values['goals']['goals']['other'],
       'intake_goals_comments' => $saved_values['goals']['goals']['comments'],
