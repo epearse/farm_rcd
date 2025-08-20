@@ -1,3 +1,11 @@
+farm_sli.intake:
+  path: '/intake'
+  defaults:
+    _form: 'Drupal\farm_sli\Form\IntakeForm'
+    _title: Intake form
+  requirements:
+    _custom_access: '\Drupal\farm_sli\Form\IntakeForm::access'
+
 farm_sli.intake_review:
   path: '/log/{log}/review'
   defaults:

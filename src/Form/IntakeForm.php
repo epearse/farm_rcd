@@ -2,74 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Plugin\QuickForm;
+namespace Drupal\farm_sli\Form;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Flood\FloodInterface;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\farm_quick\Attribute\QuickForm;
-use Drupal\farm_quick\Plugin\QuickForm\QuickFormBase;
 use Drupal\farm_sli\SliAllowedValues;
 use Drupal\log\Entity\Log;
 use Drupal\log\Entity\LogInterface;
-use Psr\Container\ContainerInterface;
 
 /**
- * SLI Intake quick form.
+ * Intake form.
  */
-#[QuickForm(
-  id: 'intake',
-  label: new TranslatableMarkup('Intake Form'),
-)]
-class Intake extends QuickFormBase {
+class IntakeForm extends FormBase {
 
-  /**
-   * The flood service.
-   *
-   * @var \Drupal\Core\Flood\FloodInterface
-   */
-  protected $flood;
+  use AutowireTrait;
 
-  /**
-   * Constructs a QuickFormBase object.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
-   *   Current user object.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
-   * @param \Drupal\Core\Flood\FloodInterface $flood
-   *   The flood service.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, MessengerInterface $messenger, FloodInterface $flood) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $entity_type_manager, $current_user, $messenger);
-    $this->flood = $flood;
-  }
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected AccountInterface $currentUser,
+    protected FloodInterface $flood,
+  ) {}
 
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('entity_type.manager'),
-      $container->get('current_user'),
-      $container->get('messenger'),
-      $container->get('flood'),
-    );
+  public function getFormId() {
+    return 'farm_sli_intake_form';
   }
 
   /**
@@ -139,14 +102,12 @@ class Intake extends QuickFormBase {
         '#tag' => 'div',
         '#value' => $this->t('You have already submitted the form. Please try again later or contact your RCD directly.'),
       ];
-      $form['actions']['submit']['#access'] = FALSE;
       return $form;
     }
 
     // If the form has been submitted, only display a message to the user.
     if ($form_state->has('submitted') && $form_state->get('submitted')) {
       $form['#markup'] = $this->t('Thank you for your interest. A staff member will review your information and follow up with you shortly.');
-      $form['actions']['submit']['#access'] = FALSE;
       return $form;
     }
 
@@ -168,7 +129,7 @@ class Intake extends QuickFormBase {
       ];
 
       // Fix issue with progress library not being added in some contexts (eg:
-      // the intake quick form for anonymous users).
+      // the intake form for anonymous users).
       // @see https://www.drupal.org/project/drupal/issues/3540259
       $form['progress']['#attached']['library'][] = 'core/drupal.progress';
     }

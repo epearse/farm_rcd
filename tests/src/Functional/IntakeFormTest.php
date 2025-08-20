@@ -7,9 +7,9 @@ namespace Drupal\Tests\farm_sli\Functional;
 use Drupal\farm_sli\SliAllowedValues;
 
 /**
- * Tests the intake quick form functionality.
+ * Tests the intake form functionality.
  */
-class QuickIntakeTest extends SliTestBase {
+class IntakeFormTest extends SliTestBase {
 
   /**
    * Define form fields and example data.
@@ -107,15 +107,15 @@ class QuickIntakeTest extends SliTestBase {
   }
 
   /**
-   * Test intake quick form.
+   * Test intake form.
    */
-  public function testIntakeQuickForm() {
+  public function testIntakeForm() {
 
     // Log out the user.
     $this->drupalLogout();
 
     // Confirm that the form is available to anonymous users.
-    $this->drupalGet('/quick/intake');
+    $this->drupalGet('/intake');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Intake Form');
 
@@ -123,7 +123,7 @@ class QuickIntakeTest extends SliTestBase {
     $this->drupalLogin($this->user);
 
     // Confirm that the form is available to the authenticated user.
-    $this->drupalGet('/quick/intake');
+    $this->drupalGet('/intake');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Intake Form');
 
@@ -375,7 +375,7 @@ class QuickIntakeTest extends SliTestBase {
     $field_data[1]['edit-stakeholder-stakeholder-share-rcds-yes'] = 'no';
     $field_data[2]['edit-property-info-has-address-yes'] = 'no';
     $field_data[2]['edit-property-info-parcel-gps'] = '1234567890';
-    $this->drupalGet('/quick/intake');
+    $this->drupalGet('/intake');
     $this->getSession()->getPage()->pressButton('Next');
     foreach ([1, 2, 3, 4] as $step) {
       foreach ($field_data[$step] as $id => $value) {
