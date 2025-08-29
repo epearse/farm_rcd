@@ -34,6 +34,15 @@ class SliRcp extends FarmPlanType {
         'required' => TRUE,
       ],
 
+      // Property land asset.
+      'property' => [
+        'type' => 'entity_reference',
+        'label' => $this->t('Property'),
+        'description' => $this->t('Associates the resource conservation plan with a property land asset.'),
+        'target_type' => 'asset',
+        'target_bundle' => 'land',
+      ],
+
       // Intake log.
       'intake' => [
         'type' => 'entity_reference',
