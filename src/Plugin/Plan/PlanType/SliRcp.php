@@ -13,7 +13,7 @@ use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
  */
 #[PlanType(
   id: 'sli_rcp',
-  label: new TranslatableMarkup('Resource conservation'),
+  label: new TranslatableMarkup('Resource conservation plan'),
 )]
 class SliRcp extends FarmPlanType {
 
