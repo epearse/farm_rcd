@@ -31,7 +31,6 @@ class SliRcp extends FarmPlanType {
         'description' => $this->t('Associates the resource conservation plan with a farm organization.'),
         'target_type' => 'organization',
         'target_bundle' => 'farm',
-        'cardinality' => 1,
         'required' => TRUE,
       ],
 
@@ -42,7 +41,6 @@ class SliRcp extends FarmPlanType {
         'description' => $this->t('Links the plan to an SLI intake log.'),
         'target_type' => 'log',
         'target_bundle' => 'sli_intake',
-        'cardinality' => 1,
         'required' => TRUE,
       ],
 
