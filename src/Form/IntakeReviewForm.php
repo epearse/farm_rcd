@@ -79,7 +79,7 @@ class IntakeReviewForm extends FormBase {
 
     // Build a list of active managers.
     $users = $this->entityTypeManager->getStorage('user')->loadByProperties([
-      'roles' => 'farm_manager',
+      'roles' => 'sli_staff',
       'status' => TRUE,
     ]);
     $owner_options = array_combine(

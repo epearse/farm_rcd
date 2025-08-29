@@ -34,9 +34,9 @@ class SliTestBase extends FarmBrowserTestBase {
   protected function setUp(): void {
     parent::setUp();
 
-    // Create and login a user with the Manager role.
+    // Create and login a user with the Staff role.
     $this->user = $this->createUser();
-    $this->user->addRole('farm_manager');
+    $this->user->addRole('sli_staff');
     $this->user->save();
     $this->drupalLogin($this->user);
   }
