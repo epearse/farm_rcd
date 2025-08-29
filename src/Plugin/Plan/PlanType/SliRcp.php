@@ -41,9 +41,7 @@ class SliRcp extends FarmPlanType {
         'description' => $this->t('Links the plan to an SLI intake log.'),
         'target_type' => 'log',
         'target_bundle' => 'sli_intake',
-        'required' => TRUE,
       ],
-
     ];
     foreach ($field_info as $name => $info) {
       $fields[$name] = $this->farmFieldFactory->bundleFieldDefinition($info);
