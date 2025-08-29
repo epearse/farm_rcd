@@ -153,23 +153,26 @@ class IntakeReviewForm extends FormBase {
       ],
     ];
 
-    // If an existing farm organization exists, pre-populate the autocomplete.
-    $farms = $this->entityTypeManager->getStorage('organization')->loadByProperties(['name' => $farm_name]);
-    if (!empty($farms)) {
-      $form['existing_farm']['#default_value'] = reset($farms);
-    }
-
     // Checkbox to create a new farm organization.
     $form['new_farm'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Create a new farm/ranch'),
       '#description' => $this->t('If an existing farm/ranch does not exist, create a new one.'),
+      '#default_value' => TRUE,
       '#states' => [
         'visible' => [
           ':input[name="decision"]' => ['value' => 'continue'],
         ],
       ],
     ];
+
+    // If an existing farm organization exists, pre-populate the autocomplete
+    // and uncheck the new checkbox.
+    $farms = $this->entityTypeManager->getStorage('organization')->loadByProperties(['name' => $farm_name]);
+    if (!empty($farms)) {
+      $form['existing_farm']['#default_value'] = reset($farms);
+      $form['new_farm']['#default_value'] = FALSE;
+    }
 
     // New farm organization name.
     $form['farm_name'] = [
