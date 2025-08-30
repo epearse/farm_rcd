@@ -65,6 +65,21 @@ class ThemeHooks implements ContainerInjectionInterface {
   /**
    * Implements hook_ENTITY_TYPE_view().
    */
+  #[Hook('plan_view')]
+  public function planView(array &$build, EntityInterface $plan, EntityViewDisplayInterface $display, $view_mode): void {
+
+    // Only modify RCP plans in full view mode.
+    if (!($plan->bundle() == 'sli_rcp' && $view_mode == 'full')) {
+      return;
+    }
+
+    // Add planning workflow forms.
+    $build['sli_property'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PropertyForm', $plan);
+  }
+
+  /**
+   * Implements hook_ENTITY_TYPE_view().
+   */
   #[Hook('log_view')]
   public function logView(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
     /** @var \Drupal\log\Entity\LogInterface $entity */
@@ -112,6 +127,15 @@ class ThemeHooks implements ContainerInjectionInterface {
   #[Hook('farm_ui_theme_region_items')]
   public function farmUiThemeRegionItems(string $entity_type): array {
 
+    // Place the planning workflow forms in the bottom region.
+    if ($entity_type == 'plan') {
+      return [
+        'bottom' => [
+          'sli_property',
+        ],
+      ];
+    }
+
     // Place the intake review form in the top region.
     if ($entity_type == 'log') {
       return [
@@ -120,6 +144,7 @@ class ThemeHooks implements ContainerInjectionInterface {
         ],
       ];
     }
+
     return [];
   }
 
