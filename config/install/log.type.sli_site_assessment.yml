@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - farm_log
+  enforced:
+    module:
+      - farm_sli
+id: sli_site_assessment
+label: Site assessment
+description: ''
+name_pattern: 'Site assessment [log:id]'
+workflow: farm_log_workflow
+new_revision: true
