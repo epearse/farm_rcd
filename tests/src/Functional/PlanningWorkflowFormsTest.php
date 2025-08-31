@@ -19,6 +19,13 @@ class PlanningWorkflowFormsTest extends SliTestBase {
   protected EntityStorageInterface $assetStorage;
 
   /**
+   * File storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected EntityStorageInterface $fileStorage;
+
+  /**
    * Log storage.
    *
    * @var \Drupal\Core\Entity\EntityStorageInterface
@@ -47,6 +54,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
 
     // Load entity type storages.
     $this->assetStorage = \Drupal::entityTypeManager()->getStorage('asset');
+    $this->fileStorage = \Drupal::entityTypeManager()->getStorage('file');
     $this->logStorage = \Drupal::entityTypeManager()->getStorage('log');
     $this->organizationStorage = \Drupal::entityTypeManager()->getStorage('organization');
     $this->planStorage = \Drupal::entityTypeManager()->getStorage('plan');
@@ -60,6 +68,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->doTestEcositesForm();
     $this->doTestSiteAssessmentsForm();
     $this->doTestPracticesForm();
+    $this->doTestDocumentForm();
   }
 
   /**
@@ -627,6 +636,123 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->assertEquals('cover_crop', $practice_plan->get('sli_practice')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
+  }
+
+  /**
+   * Test document form.
+   */
+  public function doTestDocumentForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create a property land asset associated with the farm.
+    /** @var \Drupal\asset\Entity\AssetInterface $property */
+    $property = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_property',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+    ]);
+    $property->save();
+
+    // Create a resource conservation plan associated with the farm, property,
+    // and intake.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'sli_rcp',
+      'name' => 'Test RCP',
+      'farm' => [$farm],
+      'property' => [$property],
+    ]);
+    $plan->save();
+
+    // Create a land asset to represent an ecosite.
+    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
+    $ecosite = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_row_crop',
+      'name' => $this->randomMachineName(),
+      'parent' => [$property],
+      'farm' => [$farm],
+    ]);
+    $ecosite->save();
+
+    // Create a practice implementation plan and link it to the resource
+    // conservation plan.
+    $practice_plan = $this->planStorage->create([
+      'type' => 'sli_practice_implementation',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+      'land' => [$ecosite],
+      'sli_practice' => 'other',
+    ]);
+    $practice_plan->save();
+    $plan->set('practice_implementation_plan', [$practice_plan]);
+    $plan->save();
+
+    // Go to the plan entity view display and confirm that the document form is
+    // present.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Prepare Document');
+    $this->assertSession()->responseContains('Generate document from template');
+    $this->assertSession()->responseContains('Save documents');
+
+    // Confirm that no files exist.
+    $files = $this->fileStorage->loadMultiple();
+    $this->assertEmpty($files);
+
+    // Click the "Generate" button and confirm that a file was created.
+    $this->getSession()->getpage()->pressButton('Generate document from template');
+    $this->assertSession()->pageTextContains('Document created:');
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = $this->fileStorage->loadMultiple();
+    $this->assertCount(1, $files);
+    $file = reset($files);
+    $this->assertEquals('private://docs/test-rcp.docx', $file->getFileUri());
+
+    // Confirm that submitting without a file shows a warning message.
+    $this->getSession()->getpage()->pressButton('Save documents');
+    $this->assertSession()->pageTextContains('No document uploaded.');
+
+    // Get the real path to the file.
+    $real_path = \Drupal::service('stream_wrapper_manager')->getViaUri($file->getFileUri())->realpath();
+
+    // Upload the file back to the document form.
+    $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
+    $this->getSession()->getpage()->pressButton('Save documents');
+    $this->assertSession()->pageTextContains('Document uploaded.');
+
+    // Confirm that the file was saved and attached to plan.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = $plan->get('file')->referencedEntities();
+    $this->assertCount(1, $files);
+    /** @var \Drupal\file\FileInterface $file */
+    $file = reset($files);
+    $this->assertEquals('private://rcp/' . date('Y-m-d') . '/test-rcp.docx', $file->getFileUri());
+    $this->assertEquals(1, $file->get('status')->value);
+
+    // Reload the plan and confirm that the file is displayed on the page.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains($file->getFilename());
+
+    // Mark the plan as done.
+    $plan->set('status', 'done');
+    $plan->save();
+
+    // Confirm that files can not be uploaded.
+    $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
+    $this->getSession()->getpage()->pressButton('Save documents');
+    $this->assertSession()->pageTextContains('Documents can only be uploaded to plans that are in the planning stage. This plan has been marked as done.');
   }
 
 }

@@ -1,0 +1,163 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\farm_sli\Form;
+
+use Drupal\Core\DependencyInjection\AutowireTrait;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileExists;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\farm_sli\DocumentGeneratorInterface;
+use Drupal\file\FileInterface;
+use Drupal\plan\Entity\PlanInterface;
+
+/**
+ * Document form.
+ */
+class DocumentForm extends PlanningWorkflowFormBase {
+
+  use AutowireTrait;
+
+  public function __construct(
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected DocumentGeneratorInterface $documentGenerator,
+    protected FileSystemInterface $fileSystem,
+    protected FileUrlGeneratorInterface $fileUrlGenerator,
+  ) {
+    parent::__construct($this->entityTypeManager);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId() {
+    return 'farm_sli_document_form';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, ?PlanInterface $plan = NULL) {
+    $form = parent::buildForm($form, $form_state, $plan);
+
+    $form['document'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Prepare Document'),
+      '#description' => $this->t('Use this form to generate and upload documents for this plan. This will take all of the information in the associated records above and use it to generate a draft document from a template. This document can then be downloaded, modified, and re-uploaded for storage purposes.'),
+    ];
+
+    // Open if there are conservation practice plans associated with the plan,
+    // but no files are attached.
+    $form['document']['#open'] = !empty($this->practicePlans) && $this->plan->get('file')->isEmpty();
+
+    // Upload finished document.
+    $form['document']['upload'] = [
+      '#type' => 'file',
+      '#title' => $this->t('Upload document'),
+      '#description' => $this->t('Use this to upload the finished document.'),
+      '#upload_validators' => [
+        'FileExtension' => [
+          'extensions' => 'docx odt pdf',
+        ],
+      ],
+    ];
+
+    // Submit buttons.
+    $form['document']['actions'] = [
+      '#type' => 'actions',
+      '#weight' => 1000,
+    ];
+    $form['document']['actions']['generate'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Generate document from template'),
+      '#submit' => [[$this, 'submitGenerate']],
+    ];
+    $form['document']['actions']['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Save documents'),
+    ];
+
+    return $form;
+  }
+
+  /**
+   * Submit function for generating a document from template.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitGenerate(array &$form, FormStateInterface $form_state) {
+    try {
+
+      // Generate a filename.
+      $filename = strtolower(trim(preg_replace('#\W+#', '-', $this->plan->label()), '-')) . '.docx';
+
+      // Generate the report.
+      $file = $this->documentGenerator->generate($this->plan, $filename);
+
+      // Show a link to the file.
+      $url = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
+      $this->messenger()->addMessage($this->t('Document created: <a href=":url">%filename</a>', [
+        ':url' => $url,
+        '%filename' => $file->label(),
+      ]));
+    }
+    catch (\Exception $e) {
+      $this->messenger()->addWarning($this->t('Document generation failed. @error', ['@error' => $e->getMessage()]));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+
+    // Only allow uploading documents if the plan status is planning.
+    $status = $this->plan->get('status')->value;
+    if (!empty($form_state->getValue(['document', 'upload'])) && $status != 'planning') {
+      $form_state->setError($form['document']['upload'], $this->t('Documents can only be uploaded to plans that are in the planning stage. This plan has been marked as @status.', ['@status' => $status]));
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+
+    // Process uploaded file.
+    if (!empty($form_state->getValue(['document', 'upload']))) {
+
+      // Prepare the private://rcp/[date] directory.
+      $directory = 'private://rcp/' . date('Y-m-d');
+      $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY);
+
+      // Save the uploaded file.
+      $validators = ['FileExtension' => ['extensions' => 'docx odt pdf']];
+      $file = file_save_upload('document', $validators, $directory, 0, FileExists::Rename);
+
+      // Show an error if upload failed.
+      if (!($file instanceof FileInterface)) {
+        $this->messenger()->addError('The file could not be uploaded.');
+        return;
+      }
+
+      // Attach the file to the plan.
+      $this->plan->get('file')->appendItem($file);
+      $this->plan->save();
+
+      // Show a message.
+      $this->messenger()->addMessage($this->t('Document uploaded.'));
+    }
+
+    // Otherwise, show a warning.
+    else {
+      $this->messenger()->addWarning($this->t('No document uploaded.'));
+    }
+  }
+
+}
