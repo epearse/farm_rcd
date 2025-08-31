@@ -12,6 +12,7 @@
   ],
   "require": {
     "drupal/tagify": "^1.2",
-    "farmos/farmos": "^4"
+    "farmos/farmos": "^4",
+    "ext-mbstring": "*"
   }
 }

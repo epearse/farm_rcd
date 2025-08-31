@@ -77,6 +77,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     $build['sli_property'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PropertyForm', $plan);
     $build['sli_ecosites'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\EcositesForm', $plan);
     $build['sli_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\SiteAssessmentsForm', $plan);
+    $build['sli_practices'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PracticesForm', $plan);
   }
 
   /**
@@ -136,6 +137,7 @@ class ThemeHooks implements ContainerInjectionInterface {
           'sli_property',
           'sli_ecosites',
           'sli_site_assessments',
+          'sli_practices',
         ],
       ];
     }

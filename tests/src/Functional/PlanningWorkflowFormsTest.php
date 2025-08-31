@@ -59,6 +59,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->doTestPropertyForm();
     $this->doTestEcositesForm();
     $this->doTestSiteAssessmentsForm();
+    $this->doTestPracticesForm();
   }
 
   /**
@@ -509,6 +510,123 @@ class PlanningWorkflowFormsTest extends SliTestBase {
       $this->assertEquals($resource . ' goals!', $log->get('sli_' . $resource . '_goals')->value);
       $this->assertEquals($resource . ' strategy!', $log->get('sli_' . $resource . '_strategy')->value);
     }
+  }
+
+  /**
+   * Test practices form.
+   */
+  public function doTestPracticesForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create a property land asset associated with the farm.
+    /** @var \Drupal\asset\Entity\AssetInterface $property */
+    $property = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_property',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+    ]);
+    $property->save();
+
+    // Create a resource conservation plan associated with the farm and
+    // property.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'sli_rcp',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+      'property' => [$property],
+    ]);
+    $plan->save();
+
+    // Go to the plan entity view display and confirm that the practices form
+    // is present but not accessible yet.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Conservation Practices');
+    $this->assertSession()->pageTextContains('Ecological site descriptions must be created before conservations practices can be added.');
+    $this->assertSession()->pageTextNotContains('+ Add practice');
+    $this->assertSession()->responseNotContains('Save conservation practices');
+
+    // Create a land asset to represent an ecosite.
+    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
+    $ecosite = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_row_crop',
+      'name' => $this->randomMachineName(),
+      'parent' => [$property],
+      'farm' => [$farm],
+    ]);
+    $ecosite->save();
+
+    // Reload the form and confirm that the site assessments form is
+    // accessible.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextNotContains('Ecological site descriptions must be created before conservations practices can be added.');
+    $this->assertSession()->pageTextContains('+ Add practice');
+    $this->assertSession()->responseContains('Save conservation practices');
+
+    // Fill in the form and submit it.
+    $this->getSession()->getPage()->fillField('practices[add][ecosite]', $ecosite->id());
+    $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
+    $this->getSession()->getPage()->fillField('practices[add][notes]', 'Plant lots of sunflowers.');
+    $this->getSession()->getPage()->fillField('practices[add][status]', 'implementing');
+    $this->getSession()->getPage()->pressButton('Save conservation practices');
+
+    // Confirm that a message was shown to the user.
+    $this->assertSession()->pageTextContains('Practice implementation plans saved.');
+
+    // Confirm that a practice implementation plan was created with all
+    // expected details filled in, linked to the resource conservation plan.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    /** @var \Drupal\plan\Entity\PlanInterface[] $practice_plans */
+    $practice_plans = $plan->get('practice_implementation_plan')->referencedEntities();
+    $this->assertCount(1, $practice_plans);
+    $practice_plan = reset($practice_plans);
+    $this->assertEquals('sli_practice_implementation', $practice_plan->bundle());
+    $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
+    $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($ecosite->label() . ': Other', $practice_plan->label());
+    $this->assertEquals('other', $practice_plan->get('sli_practice')->value);
+    $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
+    $this->assertEquals('implementing', $practice_plan->get('status')->value);
+
+    // Confirm that the saved practice plan was added to the form, and fields
+    // are pre-filled.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $ecosite->label() . ': Other');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][ecosite][' . $ecosite->id() . ']', $ecosite->id());
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'other');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'implementing');
+
+    // Edit the practice plan's fields and submit the form.
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][practice]', 'cover_crop');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of tillage radish.');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'review');
+    $this->getSession()->getPage()->pressButton('Save conservation practices');
+    $this->assertSession()->pageTextContains('Practice implementation plans saved.');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $ecosite->label() . ': Cover Crop');
+
+    // Confirm that the new values were saved to the practice plan.
+    /** @var \Drupal\plan\Entity\PlanInterface $practice_plan */
+    $practice_plan = $this->planStorage->load($practice_plan->id());
+    $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
+    $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($ecosite->label() . ': Cover Crop', $practice_plan->label());
+    $this->assertEquals('cover_crop', $practice_plan->get('sli_practice')->value);
+    $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
+    $this->assertEquals('review', $practice_plan->get('status')->value);
   }
 
 }

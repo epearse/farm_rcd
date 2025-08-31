@@ -62,6 +62,13 @@ abstract class PlanningWorkflowFormBase extends FormBase {
    */
   protected array $siteAssessmentLogs = [];
 
+  /**
+   * Practice implementation plans associated with the RCP.
+   *
+   * @var \Drupal\plan\Entity\PlanInterface[]
+   */
+  protected array $practicePlans = [];
+
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
   ) {}
@@ -128,6 +135,15 @@ abstract class PlanningWorkflowFormBase extends FormBase {
         ->condition('location', $land_asset_ids, 'IN')
         ->execute();
       $this->siteAssessmentLogs = $log_storage->loadMultiple($site_assessment_ids);
+    }
+
+    // If there are practice implementation plans associated with the plan,
+    // load them. Ensure that they are indexed by plan ID, because
+    // EntityReferenceFieldItemListInterface::referencedEntities() does not.
+    if (!$plan->get('practice_implementation_plan')->isEmpty()) {
+      foreach ($plan->get('practice_implementation_plan')->referencedEntities() as $plan) {
+        $this->practicePlans[$plan->id()] = $plan;
+      }
     }
   }
 
