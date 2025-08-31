@@ -75,6 +75,7 @@ class ThemeHooks implements ContainerInjectionInterface {
 
     // Add planning workflow forms.
     $build['sli_property'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PropertyForm', $plan);
+    $build['sli_ecosites'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\EcositesForm', $plan);
   }
 
   /**
@@ -132,6 +133,7 @@ class ThemeHooks implements ContainerInjectionInterface {
       return [
         'bottom' => [
           'sli_property',
+          'sli_ecosites',
         ],
       ];
     }

@@ -57,6 +57,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
    */
   public function testPlanningWorkflowForms() {
     $this->doTestPropertyForm();
+    $this->doTestEcositesForm();
   }
 
   /**
@@ -241,6 +242,109 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $apns = $property->get('sli_apn')->getValue();
     $this->assertCount(1, $apns);
     $this->assertEquals('ABC123', $apns[0]['value']);
+  }
+
+  /**
+   * Test ecosites form.
+   */
+  public function doTestEcositesForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create a resource conservation plan associated with the farm.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'sli_rcp',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+    ]);
+    $plan->save();
+
+    // Go to the plan entity view display and confirm that the ecosite form is
+    // present, but not accessible yet.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Ecological Site Descriptions');
+    $this->assertSession()->pageTextContains('A property description must be created before ecological site descriptions can be added.');
+    $this->assertSession()->pageTextNotContains('+ Add ecosite');
+    $this->assertSession()->responseNotContains('Save land assets');
+
+    // Create a property land asset associated with the farm and plan.
+    /** @var \Drupal\asset\Entity\AssetInterface $property */
+    $property = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_property',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+    ]);
+    $property->save();
+    $plan->set('property', [$property]);
+    $plan->save();
+
+    // Reload the form and confirm that the ecosite form is accessible.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextNotContains('A property description must be created before ecological site descriptions can be added.');
+    $this->assertSession()->pageTextContains('+ Add ecosite');
+    $this->assertSession()->responseContains('Save land assets');
+
+    // Fill in the form and submit it.
+    $this->getSession()->getPage()->fillField('ecosites[add][type]', 'sli_row_crops');
+    $this->getSession()->getPage()->fillField('ecosites[add][label]', 'Corn field');
+    $this->getSession()->getPage()->fillField('ecosites[add][description]', 'See corn, say corn!');
+    $this->getSession()->getPage()->fillField('ecosites[add][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
+    $this->getSession()->getPage()->pressButton('Save land assets');
+
+    // Confirm that a message was shown to the user.
+    $this->assertSession()->pageTextContains('Land assets saved.');
+
+    // Confirm that a land asset was created as a child of the property with
+    // all expected details filled in.
+    /** @var \Drupal\asset\Entity\AssetInterface[] $land_assets */
+    $land_assets = $this->assetStorage->loadByProperties([
+      'type' => 'land',
+      'parent' => $property->id(),
+      'farm' => $farm->id(),
+    ]);
+    $this->assertCount(1, $land_assets);
+    $land_asset = reset($land_assets);
+    $this->assertEquals('sli_row_crops', $land_asset->get('land_type')->value);
+    $this->assertEquals('Corn field', $land_asset->label());
+    $this->assertEquals('See corn, say corn!', $land_asset->get('notes')->value);
+    $this->assertEquals('POINT(-155.60893291251693 19.431635160410153)', $land_asset->get('intrinsic_geometry')->value);
+
+    // Confirm that the saved asset was added to the form, and fields are
+    // pre-filled.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Land asset: Corn field');
+    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][type]', 'sli_row_crops');
+    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][label]', 'Corn field');
+    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][description]', 'See corn, say corn!');
+    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
+
+    // Edit the asset's fields and submit the form.
+    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][type]', 'sli_orchard');
+    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][label]', 'Apple orchard');
+    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][description]', 'History haunts him who does not honour it.');
+    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][boundary][value]', '');
+    $this->getSession()->getPage()->pressButton('Save land assets');
+    $this->assertSession()->pageTextContains('Land assets saved.');
+    $this->assertSession()->pageTextContains('Land asset: Apple orchard');
+
+    // Confirm that the new values were saved to the asset.
+    /** @var \Drupal\asset\Entity\AssetInterface $land_asset */
+    $land_asset = $this->assetStorage->load($land_asset->id());
+    $this->assertEquals('sli_orchard', $land_asset->get('land_type')->value);
+    $this->assertEquals('Apple orchard', $land_asset->label());
+    $this->assertEquals('History haunts him who does not honour it.', $land_asset->get('notes')->value);
+    $this->assertEquals('', $land_asset->get('intrinsic_geometry')->value);
   }
 
 }

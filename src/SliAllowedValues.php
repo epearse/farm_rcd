@@ -63,6 +63,25 @@ class SliAllowedValues {
   }
 
   /**
+   * Land types.
+   *
+   * @return array
+   *   Returns an array of allowed value options.
+   */
+  public static function landTypes() {
+    return [
+      'sli_row_crops' => t('Row crops'),
+      'sli_orchard' => t('Orchard'),
+      'sli_vineyard' => t('Vineyard'),
+      'sli_grazing' => t('Grazing'),
+      'sli_pastureland' => t('Pastureland'),
+      'sli_natural_area' => t('Natural area'),
+      'sli_riparian_area' => t('Riparian area'),
+      'other' => t('Other'),
+    ];
+  }
+
+  /**
    * Goals.
    *
    * @return array

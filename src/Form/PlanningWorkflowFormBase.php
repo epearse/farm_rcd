@@ -48,6 +48,13 @@ abstract class PlanningWorkflowFormBase extends FormBase {
    */
   protected ?AssetInterface $property = NULL;
 
+  /**
+   * Land assets that are children of the property.
+   *
+   * @var \Drupal\asset\Entity\AssetInterface[]
+   */
+  protected array $landAssets = [];
+
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
   ) {}
@@ -88,6 +95,14 @@ abstract class PlanningWorkflowFormBase extends FormBase {
     // If the plan has a property associated with it, load the asset.
     if (!$plan->get('property')->isEmpty()) {
       $this->property = $plan->get('property')->referencedEntities()[0];
+    }
+
+    // If a property exists, load any land assets that are children of it.
+    if (!is_null($this->property)) {
+      $this->landAssets = $this->entityTypeManager->getStorage('asset')->loadByProperties([
+        'type' => 'land',
+        'parent' => $this->property->id(),
+      ]);
     }
   }
 
