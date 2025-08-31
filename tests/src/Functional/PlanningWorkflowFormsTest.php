@@ -58,6 +58,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
   public function testPlanningWorkflowForms() {
     $this->doTestPropertyForm();
     $this->doTestEcositesForm();
+    $this->doTestSiteAssessmentsForm();
   }
 
   /**
@@ -345,6 +346,169 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->assertEquals('Apple orchard', $land_asset->label());
     $this->assertEquals('History haunts him who does not honour it.', $land_asset->get('notes')->value);
     $this->assertEquals('', $land_asset->get('intrinsic_geometry')->value);
+  }
+
+  /**
+   * Test site assessments form.
+   */
+  public function doTestSiteAssessmentsForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create a property land asset associated with the farm.
+    /** @var \Drupal\asset\Entity\AssetInterface $property */
+    $property = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_property',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+    ]);
+    $property->save();
+
+    // Create a resource conservation plan associated with the farm and
+    // property.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'sli_rcp',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+      'property' => [$property],
+    ]);
+    $plan->save();
+
+    // Go to the plan entity view display and confirm that the site assessments
+    // form present but is not accessible yet.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Site Assessments');
+    $this->assertSession()->pageTextContains('Ecological site descriptions must be created before site assessments can be made. ');
+    $this->assertSession()->pageTextNotContains('+ Add site assessment');
+    $this->assertSession()->responseNotContains('Save site assessments');
+
+    // Create a land asset to represent an ecosite.
+    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
+    $ecosite = $this->assetStorage->create([
+      'type' => 'land',
+      'land_type' => 'sli_row_crop',
+      'name' => $this->randomMachineName(),
+      'parent' => [$property],
+      'farm' => [$farm],
+    ]);
+    $ecosite->save();
+
+    // Reload the form and confirm that the site assessments form is
+    // accessible.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextNotContains('Ecological site descriptions must be created before site assessments can be made.');
+    $this->assertSession()->pageTextContains('+ Add site assessment');
+    $this->assertSession()->responseContains('Save site assessments');
+
+    // Fill in the form and submit it.
+    $this->getSession()->getPage()->fillField('assessments[add][ecosite]', $ecosite->id());
+    $this->getSession()->getPage()->fillField('assessments[add][land_use_history]', 'land use history');
+    $this->getSession()->getPage()->fillField('assessments[add][infrastructure]', 'existing infrastructure');
+    $this->getSession()->getPage()->fillField('assessments[add][priority_concerns]', 'priority environmental concerns');
+    // @todo Test taxonomy terms (Tagify requires JavaScript).
+    $this->getSession()->getPage()->fillField('assessments[add][notes]', 'The site has been assessed.');
+    $resources = [
+      'soil',
+      'water',
+      'plant',
+      'aquatic',
+      'livestock',
+      'wildlife',
+      'infrastructure',
+    ];
+    foreach ($resources as $resource) {
+      $this->getSession()->getPage()->fillField('assessments[add][resources][' . $resource . '][rating]', '5');
+      $this->getSession()->getPage()->fillField('assessments[add][resources][' . $resource . '][baseline]', $resource . ' baseline');
+      $this->getSession()->getPage()->fillField('assessments[add][resources][' . $resource . '][goals]', $resource . ' goals');
+      $this->getSession()->getPage()->fillField('assessments[add][resources][' . $resource . '][strategy]', $resource . ' strategy');
+    }
+    $this->getSession()->getPage()->pressButton('Save site assessments');
+
+    // Confirm that a message was shown to the user.
+    $this->assertSession()->pageTextContains('Site assessment logs saved.');
+
+    // Confirm that a site assessment log was created with all expected details
+    // filled in.
+    /** @var \Drupal\log\Entity\LogInterface[] $logs */
+    $logs = $this->logStorage->loadByProperties(['type' => 'sli_site_assessment']);
+    $this->assertCount(1, $logs);
+    $log = reset($logs);
+    $this->assertEquals($ecosite->id(), $log->get('location')->referencedEntities()[0]->id());
+    $this->assertEquals(date('m/d/Y') . ' ' . $ecosite->label(), $log->label());
+    $this->assertEquals('done', $log->get('status')->value);
+    $this->assertEquals('land use history', $log->get('sli_land_use_history')->value);
+    $this->assertEquals('existing infrastructure', $log->get('sli_infrastructure')->value);
+    $this->assertEquals('priority environmental concerns', $log->get('sli_priority_concerns')->value);
+    // @todo Test taxonomy terms (Tagify requires JavaScript).
+    $this->assertEquals('The site has been assessed.', $log->get('notes')->value);
+    foreach ($resources as $resource) {
+      $this->assertEquals(5, $log->get('sli_' . $resource . '_rating')->value);
+      $this->assertEquals($resource . ' baseline', $log->get('sli_' . $resource . '_baseline')->value);
+      $this->assertEquals($resource . ' goals', $log->get('sli_' . $resource . '_goals')->value);
+      $this->assertEquals($resource . ' strategy', $log->get('sli_' . $resource . '_strategy')->value);
+    }
+
+    // Confirm that the saved log was added to the form, and fields are
+    // pre-filled.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y') . ' ' . $ecosite->label());
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][ecosite][' . $ecosite->id() . ']', $ecosite->id());
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][date]', date('Y-m-d'));
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][land_use_history]', 'land use history');
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][infrastructure]', 'existing infrastructure');
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][priority_concerns]', 'priority environmental concerns');
+    // @todo Test taxonomy terms (Tagify requires JavaScript).
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][notes]', 'The site has been assessed.');
+    foreach ($resources as $resource) {
+      $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][resources][' . $resource . '][rating]', '5');
+      $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][resources][' . $resource . '][baseline]', $resource . ' baseline');
+      $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][resources][' . $resource . '][goals]', $resource . ' goals');
+      $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][resources][' . $resource . '][strategy]', $resource . ' strategy');
+    }
+
+    // Edit the log's fields and submit the form.
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][date]', date('Y-m-d', strtotime('tomorrow')));
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][land_use_history]', 'land use history!');
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][infrastructure]', 'existing infrastructure!');
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][priority_concerns]', 'priority environmental concerns!');
+    // @todo Test taxonomy terms (Tagify requires JavaScript).
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][notes]', 'The site has been assessed!');
+    foreach ($resources as $resource) {
+      $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][resources][' . $resource . '][rating]', '1');
+      $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][resources][' . $resource . '][baseline]', $resource . ' baseline!');
+      $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][resources][' . $resource . '][goals]', $resource . ' goals!');
+      $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][resources][' . $resource . '][strategy]', $resource . ' strategy!');
+    }
+    $this->getSession()->getPage()->pressButton('Save site assessments');
+    $this->assertSession()->pageTextContains('Site assessment logs saved.');
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('tomorrow')) . ' ' . $ecosite->label());
+
+    // Confirm that the new values were saved to the asset.
+    /** @var \Drupal\log\Entity\LogInterface $log */
+    $log = $this->logStorage->load($log->id());
+    $this->assertEquals(strtotime(date('m/d/Y', strtotime('tomorrow'))), $log->get('timestamp')->value);
+    $this->assertEquals('land use history!', $log->get('sli_land_use_history')->value);
+    $this->assertEquals('existing infrastructure!', $log->get('sli_infrastructure')->value);
+    $this->assertEquals('priority environmental concerns!', $log->get('sli_priority_concerns')->value);
+    // @todo Test taxonomy terms (Tagify requires JavaScript).
+    $this->assertEquals('The site has been assessed!', $log->get('notes')->value);
+    foreach ($resources as $resource) {
+      $this->assertEquals(1, $log->get('sli_' . $resource . '_rating')->value);
+      $this->assertEquals($resource . ' baseline!', $log->get('sli_' . $resource . '_baseline')->value);
+      $this->assertEquals($resource . ' goals!', $log->get('sli_' . $resource . '_goals')->value);
+      $this->assertEquals($resource . ' strategy!', $log->get('sli_' . $resource . '_strategy')->value);
+    }
   }
 
 }

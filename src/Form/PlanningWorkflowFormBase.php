@@ -55,6 +55,13 @@ abstract class PlanningWorkflowFormBase extends FormBase {
    */
   protected array $landAssets = [];
 
+  /**
+   * Site assessment logs associated with the land assets.
+   *
+   * @var \Drupal\log\Entity\LogInterface[]
+   */
+  protected array $siteAssessmentLogs = [];
+
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
   ) {}
@@ -103,6 +110,24 @@ abstract class PlanningWorkflowFormBase extends FormBase {
         'type' => 'land',
         'parent' => $this->property->id(),
       ]);
+    }
+
+    // If there are land assets, load any site assessment logs associated with
+    // them.
+    if (!empty($this->landAssets)) {
+      $land_asset_ids = array_map(function ($asset) {
+        return $asset->id();
+      }, $this->landAssets);
+      $log_storage = $this->entityTypeManager->getStorage('log');
+      // @see https://github.com/mglaman/phpstan-drupal/issues/825
+      // @phpstan-ignore method.alreadyNarrowedType
+      $site_assessment_ids = $log_storage
+        ->getQuery()
+        ->accessCheck(TRUE)
+        ->condition('type', 'sli_site_assessment')
+        ->condition('location', $land_asset_ids, 'IN')
+        ->execute();
+      $this->siteAssessmentLogs = $log_storage->loadMultiple($site_assessment_ids);
     }
   }
 

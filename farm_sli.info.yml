@@ -12,3 +12,4 @@ dependencies:
   - farm_manager
   - farm_ui_dashboard
   - plan
+  - tagify:tagify
