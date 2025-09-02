@@ -18,9 +18,10 @@ class DashboardTest extends SliTestBase {
     $this->drupalGet('/dashboard');
     $this->assertSession()->statusCodeEquals(200);
 
-    // Confirm that the Upcoming/Late Tasks blocks were removed.
+    // Confirm that the Upcoming/Late Tasks/Metrics blocks were removed.
     $this->assertSession()->pageTextNotContains('Upcoming tasks');
     $this->assertSession()->pageTextNotContains('Late tasks');
+    $this->assertSession()->pageTextNotContains('Metrics');
 
     // Confirm that the "Farms/Ranches" block was added.
     $this->assertSession()->pageTextContains('Farms/Ranches');

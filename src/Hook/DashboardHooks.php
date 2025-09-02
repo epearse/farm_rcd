@@ -42,6 +42,7 @@ class DashboardHooks {
     $remove_panes = [
       'upcoming_tasks',
       'late_tasks',
+      'metrics',
     ];
     foreach ($remove_panes as $pane) {
       if (!empty($panes[$pane])) {
