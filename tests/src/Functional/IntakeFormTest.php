@@ -24,24 +24,24 @@ class IntakeFormTest extends SliTestBase {
     $field_data = [
       1 => [
         'stakeholder[personal][name]' => 'Jane Doe',
+        'stakeholder[personal][type]' => 'landowner',
         'stakeholder[personal][email]' => 'jane@example.com',
         'stakeholder[personal][phone]' => '555-5555',
-        'stakeholder[address][street]' => '123 Fake Street',
-        'stakeholder[address][city]' => 'Fakeville',
-        'stakeholder[address][state]' => 'AL',
-        'stakeholder[address][zip]' => '123456',
-        'stakeholder[address][type]' => 'landowner',
-        'stakeholder[stakeholder][group][beginning]' => TRUE,
-        'stakeholder[stakeholder][group][female]' => TRUE,
-        'stakeholder[stakeholder][group][veteran]' => TRUE,
-        'stakeholder[stakeholder][group][black]' => TRUE,
-        'stakeholder[stakeholder][group][native]' => TRUE,
-        'stakeholder[stakeholder][group][hispanic]' => TRUE,
-        'stakeholder[stakeholder][group][asian]' => TRUE,
-        'stakeholder[stakeholder][group][pacific]' => TRUE,
-        'stakeholder[stakeholder][group][na]' => TRUE,
-        'stakeholder[stakeholder][group][optout]' => TRUE,
-        'stakeholder[stakeholder][share_rcds]' => 'yes',
+        'stakeholder[personal][address][street]' => '123 Fake Street',
+        'stakeholder[personal][address][city]' => 'Fakeville',
+        'stakeholder[personal][address][state]' => 'AL',
+        'stakeholder[personal][address][zip]' => '123456',
+        'stakeholder[personal][group][beginning]' => TRUE,
+        'stakeholder[personal][group][female]' => TRUE,
+        'stakeholder[personal][group][veteran]' => TRUE,
+        'stakeholder[personal][group][black]' => TRUE,
+        'stakeholder[personal][group][native]' => TRUE,
+        'stakeholder[personal][group][hispanic]' => TRUE,
+        'stakeholder[personal][group][asian]' => TRUE,
+        'stakeholder[personal][group][pacific]' => TRUE,
+        'stakeholder[personal][group][na]' => TRUE,
+        'stakeholder[personal][group][optout]' => TRUE,
+        'stakeholder[personal][share_rcds]' => 'yes',
       ],
       2 => [
         'property[info][farm_name]' => 'Sunflower Farm',
@@ -132,7 +132,7 @@ class IntakeFormTest extends SliTestBase {
     $this->assertSession()->pageTextContains('Intake Form');
 
     // Confirm that intro text is present.
-    $this->assertSession()->pageTextContains('Please complete this form to express interest in adopting sustainable practices on your land.');
+    $this->assertSession()->pageTextContains('Please complete this form to express interest in working with your local Resource Conservation District.');
 
     // Confirm that the Next button is present, but not the Back button.
     $this->assertSession()->responseContains('value="Next"');
@@ -159,7 +159,7 @@ class IntakeFormTest extends SliTestBase {
     $this->getSession()->getPage()->pressButton('Back');
 
     // Confirm that intro text is present.
-    $this->assertSession()->pageTextContains('Please complete this form to express interest in adopting sustainable practices on your land.');
+    $this->assertSession()->pageTextContains('Please complete this form to express interest in working with your local Resource Conservation District.');
 
     // Press the Next button.
     $this->getSession()->getPage()->pressButton('Next');
@@ -321,13 +321,13 @@ class IntakeFormTest extends SliTestBase {
     $field_data = $this->fieldData();
     $expected = [
       'intake_stakeholder_name' => $field_data[1]['stakeholder[personal][name]'],
+      'intake_stakeholder_type' => $field_data[1]['stakeholder[personal][type]'],
       'intake_stakeholder_email' => $field_data[1]['stakeholder[personal][email]'],
       'intake_stakeholder_phone' => $field_data[1]['stakeholder[personal][phone]'],
-      'intake_stakeholder_street' => $field_data[1]['stakeholder[address][street]'],
-      'intake_stakeholder_city' => $field_data[1]['stakeholder[address][city]'],
-      'intake_stakeholder_state' => $field_data[1]['stakeholder[address][state]'],
-      'intake_stakeholder_zip' => $field_data[1]['stakeholder[address][zip]'],
-      'intake_stakeholder_type' => $field_data[1]['stakeholder[address][type]'],
+      'intake_stakeholder_street' => $field_data[1]['stakeholder[personal][address][street]'],
+      'intake_stakeholder_city' => $field_data[1]['stakeholder[personal][address][city]'],
+      'intake_stakeholder_state' => $field_data[1]['stakeholder[personal][address][state]'],
+      'intake_stakeholder_zip' => $field_data[1]['stakeholder[personal][address][zip]'],
       'intake_stakeholder_group' => array_keys(SliAllowedValues::stakeholderGroups()),
       'intake_farm_name' => $field_data[2]['property[info][farm_name]'],
       'intake_property_own_or_lease' => $field_data[2]['property[info][own_or_lease]'],
@@ -375,7 +375,7 @@ class IntakeFormTest extends SliTestBase {
 
     // Test fields that were not covered by the first submission.
     $field_data = $this->fieldData();
-    $field_data[1]['stakeholder[stakeholder][share_rcds]'] = 'no';
+    $field_data[1]['stakeholder[personal][share_rcds]'] = 'no';
     $field_data[2]['property[info][own_or_lease]'] = 'lease';
     $field_data[2]['property[info][lease_expiration]'] = '08/19/2025';
     $field_data[2]['property[info][has_address]'] = 'no';

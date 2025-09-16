@@ -194,11 +194,11 @@ class IntakeForm extends FormBase {
     // Introductory text.
     $form['text1'] = [
       '#type' => 'item',
-      '#markup' => $this->t('Please complete this form to express interest in adopting sustainable practices on your land.'),
+      '#markup' => $this->t('Please complete this form to express interest in working with your local Resource Conservation District.'),
     ];
     $form['text2'] = [
       '#type' => 'item',
-      '#markup' => $this->t('An RCD staff member will contact you to discuss the practices that best align to your goals for your land. Sustainable practices identified may help with water management / retention, soil quality, erosion reduction, increased profits, and reduced climate impacts.'),
+      '#markup' => $this->t('An RCD staff member will contact you to discuss the practices that best align to your goals for your land. Conservation practices identified may help with water management / retention, soil quality, erosion reduction, cost savings, and reduced climate impacts.'),
     ];
     $form['text3'] = [
       '#type' => 'item',
@@ -235,6 +235,15 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Stakeholder type.
+    $form['personal']['type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Stakeholder type'),
+      '#options' => SliAllowedValues::stakeholderTypes(),
+      '#default_value' => $saved_values['personal']['type'] ?? NULL,
+      '#required' => TRUE,
+    ];
+
     // Stakeholder email.
     $form['personal']['email'] = [
       '#type' => 'email',
@@ -243,7 +252,7 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // Stakeholder name.
+    // Stakeholder phone.
     $form['personal']['phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Phone'),
@@ -252,72 +261,55 @@ class IntakeForm extends FormBase {
     ];
 
     // Stakeholder mailing address section.
-    $form['address'] = [
-      '#type' => 'details',
+    $form['personal']['address'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Stakeholder mailing address'),
-      '#open' => TRUE,
     ];
 
     // Stakeholder mailing address: street.
-    $form['address']['street'] = [
+    $form['personal']['address']['street'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Street'),
-      '#default_value' => $saved_values['address']['street'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['street'] ?? '',
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: city.
-    $form['address']['city'] = [
+    $form['personal']['address']['city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('City'),
-      '#default_value' => $saved_values['address']['city'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['city'] ?? '',
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: state.
-    $form['address']['state'] = [
+    $form['personal']['address']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
       '#options' => SliAllowedValues::states(),
-      '#default_value' => $saved_values['address']['state'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['state'] ?? NULL,
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: postal code.
-    $form['address']['zip'] = [
+    $form['personal']['address']['zip'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Postal code'),
-      '#default_value' => $saved_values['address']['zip'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['zip'] ?? '',
       '#required' => TRUE,
-    ];
-
-    // Stakeholder type.
-    $form['address']['type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Stakeholder type'),
-      '#options' => SliAllowedValues::stakeholderTypes(),
-      '#default_value' => $saved_values['address']['type'] ?? NULL,
-      '#required' => TRUE,
-    ];
-
-    // Stakeholder section.
-    $form['stakeholder'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Stakeholder'),
-      '#open' => TRUE,
     ];
 
     // Stakeholder group.
-    $form['stakeholder']['group'] = [
+    $form['personal']['group'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
-      '#description' => $this->t('Read more about the Social disadvantage community. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
+      '#description' => $this->t('To read more about these categories, <a href=":url" target="_blank">click here</a>.', [':url' => 'https://www.cdfa.ca.gov/farmequity/']),
       '#options' => SliAllowedValues::stakeholderGroups(),
-      '#default_value' => $saved_values['stakeholder']['group'] ?? [],
+      '#default_value' => $saved_values['personal']['group'] ?? [],
     ];
 
     // Share with other RCDs.
-    $form['stakeholder']['share_rcds'] = [
+    $form['personal']['share_rcds'] = [
       '#type' => 'radios',
       '#title' => $this->t('Would you like to share the application information with other RCDs?'),
       '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your Sustainable land initiatives in order to collaborate and share best practices.'),
@@ -325,7 +317,7 @@ class IntakeForm extends FormBase {
         'yes' => $this->t('Yes'),
         'no' => $this->t('No'),
       ],
-      '#default_value' => $saved_values['stakeholder']['share_rcds'] ?? NULL,
+      '#default_value' => $saved_values['personal']['share_rcds'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -450,7 +442,7 @@ class IntakeForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('State'),
       '#options' => SliAllowedValues::states(),
-      '#default_value' => $saved_values['info']['state'] ?? '',
+      '#default_value' => $saved_values['info']['state'] ?? NULL,
       '#states' => [
         'required' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
@@ -876,25 +868,25 @@ class IntakeForm extends FormBase {
     $intake_property_lease_exp = $saved_values['property']['info']['lease_expiration'] ? strtotime($saved_values['property']['info']['lease_expiration']) : NULL;
 
     // Process checkboxes.
-    $intake_stakeholder_group = isset($saved_values['stakeholder']['stakeholder']['group']) ? array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])) : NULL;
+    $intake_stakeholder_group = isset($saved_values['stakeholder']['personal']['group']) ? array_keys(array_filter($saved_values['stakeholder']['personal']['group'])) : NULL;
     $intake_property_use = isset($saved_values['property']['land_use']['land_use']) ? array_keys(array_filter($saved_values['property']['land_use']['land_use'])) : NULL;
     $intake_goals = isset($saved_values['goals']['goals']['goals']) ? array_keys(array_filter($saved_values['goals']['goals']['goals'])) : NULL;
     $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
 
     // Process booleans.
-    $intake_rcd_sharing_allowed = $saved_values['stakeholder']['stakeholder']['share_rcds'] === 'yes';
+    $intake_rcd_sharing_allowed = $saved_values['stakeholder']['personal']['share_rcds'] === 'yes';
 
     // Create and return the log.
     return Log::create([
       'type' => 'sli_intake',
       'intake_stakeholder_name' => $saved_values['stakeholder']['personal']['name'],
+      'intake_stakeholder_type' => $saved_values['stakeholder']['personal']['type'],
       'intake_stakeholder_email' => $saved_values['stakeholder']['personal']['email'],
       'intake_stakeholder_phone' => $saved_values['stakeholder']['personal']['phone'],
-      'intake_stakeholder_street' => $saved_values['stakeholder']['address']['street'],
-      'intake_stakeholder_city' => $saved_values['stakeholder']['address']['city'],
-      'intake_stakeholder_state' => $saved_values['stakeholder']['address']['state'],
-      'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
-      'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
+      'intake_stakeholder_street' => $saved_values['stakeholder']['personal']['address']['street'],
+      'intake_stakeholder_city' => $saved_values['stakeholder']['personal']['address']['city'],
+      'intake_stakeholder_state' => $saved_values['stakeholder']['personal']['address']['state'],
+      'intake_stakeholder_zip' => $saved_values['stakeholder']['personal']['address']['zip'],
       'intake_stakeholder_group' => $intake_stakeholder_group,
       'intake_farm_name' => $saved_values['property']['info']['farm_name'],
       'intake_property_own_or_lease' => $saved_values['property']['info']['own_or_lease'],
