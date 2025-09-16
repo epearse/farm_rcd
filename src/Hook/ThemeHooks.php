@@ -27,6 +27,29 @@ class ThemeHooks implements ContainerInjectionInterface {
   ) {}
 
   /**
+   * Implements hook_menu_local_actions_alter().
+   */
+  #[Hook('menu_local_actions_alter')]
+  public function menuLocalActionsAlter(array &$local_actions): void {
+
+    // Remove actions from dashboard.
+    $actions = [
+      'farm.actions:farm.add.asset',
+      'farm.actions:farm.add.log',
+      'farm.actions:farm.add.organization',
+      'farm.actions:farm.add.plan',
+    ];
+    foreach ($actions as $action) {
+      if (isset($local_actions[$action])) {
+        $key = array_search('farm.dashboard', $local_actions[$action]['appears_on']);
+        if ($key !== FALSE) {
+          unset($local_actions[$action]['appears_on'][$key]);
+        }
+      }
+    }
+  }
+
+  /**
    * Implements hook_preprocess_page().
    */
   #[Hook('preprocess_page')]

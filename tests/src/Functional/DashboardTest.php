@@ -24,6 +24,12 @@ class DashboardTest extends SliTestBase {
     $this->assertSession()->pageTextNotContains('Late tasks');
     $this->assertSession()->pageTextNotContains('Metrics');
 
+    // Confirm that the "Add Asset/Log/Organization/Plan" buttons were removed.
+    $this->assertSession()->pageTextNotContains('Add Asset');
+    $this->assertSession()->pageTextNotContains('Add Log');
+    $this->assertSession()->pageTextNotContains('Add Organization');
+    $this->assertSession()->pageTextNotContains('Add Plan');
+
     // Confirm that the "Properties" block was added.
     $this->assertSession()->pageTextContains('Properties');
     $this->assertSession()->pageTextContains('Search for property by name.');
