@@ -342,10 +342,10 @@ class IntakeForm extends FormBase {
       '#open' => TRUE,
     ];
 
-    // Farm or ranch name.
+    // Property name.
     $form['info']['farm_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Farm or Ranch name'),
+      '#title' => $this->t('Property name'),
       '#default_value' => $saved_values['info']['farm_name'] ?? '',
     ];
 

@@ -23,7 +23,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Farms/Ranches
+      title: Properties
       fields:
         name:
           id: name
@@ -105,7 +105,7 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
-          text_input_required: 'Search for farms/ranches by name.'
+          text_input_required: 'Search for property by name.'
           text_input_required_format: default
       access:
         type: perm
@@ -124,7 +124,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No farms/ranches found.'
+          content: 'No properties found.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -195,7 +195,7 @@ display:
       use_ajax: true
       use_more: true
       use_more_always: true
-      use_more_text: 'View all farms/ranches'
+      use_more_text: 'View all properties'
       link_display: custom_url
       link_url: 'organizations/farm'
       header: {  }
@@ -221,7 +221,7 @@ display:
       tags: {  }
   block:
     id: block
-    display_title: 'Farm/ranch search (block)'
+    display_title: 'Property search (block)'
     display_plugin: block
     position: 1
     display_options:

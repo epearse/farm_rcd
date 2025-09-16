@@ -70,7 +70,7 @@ class Intake extends FarmLogType {
       // Property information.
       'intake_farm_name' => [
         'type' => 'string',
-        'label' => $this->t('Farm or ranch name'),
+        'label' => $this->t('Property name'),
       ],
       'intake_property_own_or_lease' => [
         'type' => 'list_string',

@@ -23,10 +23,10 @@ class DashboardTest extends SliTestBase {
     $this->assertSession()->pageTextNotContains('Late tasks');
     $this->assertSession()->pageTextNotContains('Metrics');
 
-    // Confirm that the "Farms/Ranches" block was added.
-    $this->assertSession()->pageTextContains('Farms/Ranches');
-    $this->assertSession()->pageTextContains('Search for farms/ranches by name.');
-    $this->assertSession()->pageTextContains('View all farms/ranches');
+    // Confirm that the "Properties" block was added.
+    $this->assertSession()->pageTextContains('Properties');
+    $this->assertSession()->pageTextContains('Search for property by name.');
+    $this->assertSession()->pageTextContains('View all properties');
 
     // Confirm that the "Pending intakes" block was added.
     $this->assertSession()->pageTextContains('Pending intakes');
