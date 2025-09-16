@@ -19,6 +19,7 @@ class DashboardTest extends SliTestBase {
     $this->assertSession()->statusCodeEquals(200);
 
     // Confirm that the Upcoming/Late Tasks/Metrics blocks were removed.
+    $this->assertSession()->responseNotContains('farm-map-dashboard');
     $this->assertSession()->pageTextNotContains('Upcoming tasks');
     $this->assertSession()->pageTextNotContains('Late tasks');
     $this->assertSession()->pageTextNotContains('Metrics');

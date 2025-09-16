@@ -40,6 +40,7 @@ class DashboardHooks {
 
     // Remove dashboard panes.
     $remove_panes = [
+      'dashboard_map',
       'upcoming_tasks',
       'late_tasks',
       'metrics',
