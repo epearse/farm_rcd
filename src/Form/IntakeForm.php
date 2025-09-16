@@ -252,7 +252,7 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // Stakeholder name.
+    // Stakeholder phone.
     $form['personal']['phone'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Phone'),
@@ -261,42 +261,41 @@ class IntakeForm extends FormBase {
     ];
 
     // Stakeholder mailing address section.
-    $form['address'] = [
-      '#type' => 'details',
+    $form['personal']['address'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Stakeholder mailing address'),
-      '#open' => TRUE,
     ];
 
     // Stakeholder mailing address: street.
-    $form['address']['street'] = [
+    $form['personal']['address']['street'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Street'),
-      '#default_value' => $saved_values['address']['street'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['street'] ?? '',
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: city.
-    $form['address']['city'] = [
+    $form['personal']['address']['city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('City'),
-      '#default_value' => $saved_values['address']['city'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['city'] ?? '',
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: state.
-    $form['address']['state'] = [
+    $form['personal']['address']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
       '#options' => SliAllowedValues::states(),
-      '#default_value' => $saved_values['address']['state'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['state'] ?? NULL,
       '#required' => TRUE,
     ];
 
     // Stakeholder mailing address: postal code.
-    $form['address']['zip'] = [
+    $form['personal']['address']['zip'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Postal code'),
-      '#default_value' => $saved_values['address']['zip'] ?? '',
+      '#default_value' => $saved_values['personal']['address']['zip'] ?? '',
       '#required' => TRUE,
     ];
 
@@ -450,7 +449,7 @@ class IntakeForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('State'),
       '#options' => SliAllowedValues::states(),
-      '#default_value' => $saved_values['info']['state'] ?? '',
+      '#default_value' => $saved_values['info']['state'] ?? NULL,
       '#states' => [
         'required' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'yes'],
@@ -891,10 +890,10 @@ class IntakeForm extends FormBase {
       'intake_stakeholder_type' => $saved_values['stakeholder']['personal']['type'],
       'intake_stakeholder_email' => $saved_values['stakeholder']['personal']['email'],
       'intake_stakeholder_phone' => $saved_values['stakeholder']['personal']['phone'],
-      'intake_stakeholder_street' => $saved_values['stakeholder']['address']['street'],
-      'intake_stakeholder_city' => $saved_values['stakeholder']['address']['city'],
-      'intake_stakeholder_state' => $saved_values['stakeholder']['address']['state'],
-      'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
+      'intake_stakeholder_street' => $saved_values['stakeholder']['personal']['address']['street'],
+      'intake_stakeholder_city' => $saved_values['stakeholder']['personal']['address']['city'],
+      'intake_stakeholder_state' => $saved_values['stakeholder']['personal']['address']['state'],
+      'intake_stakeholder_zip' => $saved_values['stakeholder']['personal']['address']['zip'],
       'intake_stakeholder_group' => $intake_stakeholder_group,
       'intake_farm_name' => $saved_values['property']['info']['farm_name'],
       'intake_property_own_or_lease' => $saved_values['property']['info']['own_or_lease'],
