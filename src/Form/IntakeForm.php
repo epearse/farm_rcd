@@ -235,6 +235,15 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
+    // Stakeholder type.
+    $form['personal']['type'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Stakeholder type'),
+      '#options' => SliAllowedValues::stakeholderTypes(),
+      '#default_value' => $saved_values['personal']['type'] ?? NULL,
+      '#required' => TRUE,
+    ];
+
     // Stakeholder email.
     $form['personal']['email'] = [
       '#type' => 'email',
@@ -288,15 +297,6 @@ class IntakeForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Postal code'),
       '#default_value' => $saved_values['address']['zip'] ?? '',
-      '#required' => TRUE,
-    ];
-
-    // Stakeholder type.
-    $form['address']['type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Stakeholder type'),
-      '#options' => SliAllowedValues::stakeholderTypes(),
-      '#default_value' => $saved_values['address']['type'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -888,13 +888,13 @@ class IntakeForm extends FormBase {
     return Log::create([
       'type' => 'sli_intake',
       'intake_stakeholder_name' => $saved_values['stakeholder']['personal']['name'],
+      'intake_stakeholder_type' => $saved_values['stakeholder']['personal']['type'],
       'intake_stakeholder_email' => $saved_values['stakeholder']['personal']['email'],
       'intake_stakeholder_phone' => $saved_values['stakeholder']['personal']['phone'],
       'intake_stakeholder_street' => $saved_values['stakeholder']['address']['street'],
       'intake_stakeholder_city' => $saved_values['stakeholder']['address']['city'],
       'intake_stakeholder_state' => $saved_values['stakeholder']['address']['state'],
       'intake_stakeholder_zip' => $saved_values['stakeholder']['address']['zip'],
-      'intake_stakeholder_type' => $saved_values['stakeholder']['address']['type'],
       'intake_stakeholder_group' => $intake_stakeholder_group,
       'intake_farm_name' => $saved_values['property']['info']['farm_name'],
       'intake_property_own_or_lease' => $saved_values['property']['info']['own_or_lease'],
