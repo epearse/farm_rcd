@@ -41,7 +41,7 @@ class IntakeFormTest extends SliTestBase {
         'stakeholder[personal][group][pacific]' => TRUE,
         'stakeholder[personal][group][na]' => TRUE,
         'stakeholder[personal][group][optout]' => TRUE,
-        'stakeholder[stakeholder][share_rcds]' => 'yes',
+        'stakeholder[personal][share_rcds]' => 'yes',
       ],
       2 => [
         'property[info][farm_name]' => 'Sunflower Farm',
@@ -375,7 +375,7 @@ class IntakeFormTest extends SliTestBase {
 
     // Test fields that were not covered by the first submission.
     $field_data = $this->fieldData();
-    $field_data[1]['stakeholder[stakeholder][share_rcds]'] = 'no';
+    $field_data[1]['stakeholder[personal][share_rcds]'] = 'no';
     $field_data[2]['property[info][own_or_lease]'] = 'lease';
     $field_data[2]['property[info][lease_expiration]'] = '08/19/2025';
     $field_data[2]['property[info][has_address]'] = 'no';

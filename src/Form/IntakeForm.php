@@ -309,7 +309,7 @@ class IntakeForm extends FormBase {
     ];
 
     // Share with other RCDs.
-    $form['stakeholder']['share_rcds'] = [
+    $form['personal']['share_rcds'] = [
       '#type' => 'radios',
       '#title' => $this->t('Would you like to share the application information with other RCDs?'),
       '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your Sustainable land initiatives in order to collaborate and share best practices.'),
@@ -317,7 +317,7 @@ class IntakeForm extends FormBase {
         'yes' => $this->t('Yes'),
         'no' => $this->t('No'),
       ],
-      '#default_value' => $saved_values['stakeholder']['share_rcds'] ?? NULL,
+      '#default_value' => $saved_values['personal']['share_rcds'] ?? NULL,
       '#required' => TRUE,
     ];
 
@@ -874,7 +874,7 @@ class IntakeForm extends FormBase {
     $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
 
     // Process booleans.
-    $intake_rcd_sharing_allowed = $saved_values['stakeholder']['stakeholder']['share_rcds'] === 'yes';
+    $intake_rcd_sharing_allowed = $saved_values['stakeholder']['personal']['share_rcds'] === 'yes';
 
     // Create and return the log.
     return Log::create([
