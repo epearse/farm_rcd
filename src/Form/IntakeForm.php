@@ -623,15 +623,11 @@ class IntakeForm extends FormBase {
       '#default_value' => $saved_values['land_use']['crop_types'] ?? '',
       '#states' => [
         'visible' => [
-          [':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE]],
-          'or',
           [':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE]],
           'or',
           [':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE]],
         ],
         'required' => [
-          [':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE]],
-          'or',
           [':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE]],
           'or',
           [':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE]],
