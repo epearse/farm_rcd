@@ -23,6 +23,9 @@ class SliTestBase extends FarmBrowserTestBase {
    */
   protected static $modules = [
     'farm_sli',
+
+    // Add farm_ui to test that our alterations work.
+    'farm_ui',
   ];
 
   /**

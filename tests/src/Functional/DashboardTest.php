@@ -30,6 +30,9 @@ class DashboardTest extends SliTestBase {
     $this->assertSession()->pageTextNotContains('Add Organization');
     $this->assertSession()->pageTextNotContains('Add Plan');
 
+    // Confirm that the "Add Intake" button was added.
+    $this->assertSession()->pageTextContains('Add Intake');
+
     // Confirm that the "Properties" block was added.
     $this->assertSession()->pageTextContains('Properties');
     $this->assertSession()->pageTextContains('Search for property by name.');

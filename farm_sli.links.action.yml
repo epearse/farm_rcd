@@ -1,0 +1,5 @@
+farm_sli.intake:
+  route_name: farm_sli.intake
+  title: Add Intake
+  appears_on:
+    - farm.dashboard
