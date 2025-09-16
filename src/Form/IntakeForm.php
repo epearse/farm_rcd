@@ -303,7 +303,7 @@ class IntakeForm extends FormBase {
     $form['personal']['group'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
-      '#description' => $this->t('To read more about these categories, <a href=":url" target="_blank">click here</a>.', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
+      '#description' => $this->t('To read more about these categories, <a href=":url" target="_blank">click here</a>.', [':url' => 'https://www.cdfa.ca.gov/farmequity/']),
       '#options' => SliAllowedValues::stakeholderGroups(),
       '#default_value' => $saved_values['personal']['group'] ?? [],
     ];
