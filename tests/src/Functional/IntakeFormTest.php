@@ -132,7 +132,7 @@ class IntakeFormTest extends SliTestBase {
     $this->assertSession()->pageTextContains('Intake Form');
 
     // Confirm that intro text is present.
-    $this->assertSession()->pageTextContains('Please complete this form to express interest in adopting sustainable practices on your land.');
+    $this->assertSession()->pageTextContains('Please complete this form to express interest in working with your local Resource Conservation District.');
 
     // Confirm that the Next button is present, but not the Back button.
     $this->assertSession()->responseContains('value="Next"');
@@ -159,7 +159,7 @@ class IntakeFormTest extends SliTestBase {
     $this->getSession()->getPage()->pressButton('Back');
 
     // Confirm that intro text is present.
-    $this->assertSession()->pageTextContains('Please complete this form to express interest in adopting sustainable practices on your land.');
+    $this->assertSession()->pageTextContains('Please complete this form to express interest in working with your local Resource Conservation District.');
 
     // Press the Next button.
     $this->getSession()->getPage()->pressButton('Next');

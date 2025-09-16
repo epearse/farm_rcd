@@ -194,11 +194,11 @@ class IntakeForm extends FormBase {
     // Introductory text.
     $form['text1'] = [
       '#type' => 'item',
-      '#markup' => $this->t('Please complete this form to express interest in adopting sustainable practices on your land.'),
+      '#markup' => $this->t('Please complete this form to express interest in working with your local Resource Conservation District.'),
     ];
     $form['text2'] = [
       '#type' => 'item',
-      '#markup' => $this->t('An RCD staff member will contact you to discuss the practices that best align to your goals for your land. Sustainable practices identified may help with water management / retention, soil quality, erosion reduction, increased profits, and reduced climate impacts.'),
+      '#markup' => $this->t('An RCD staff member will contact you to discuss the practices that best align to your goals for your land. Conservation practices identified may help with water management / retention, soil quality, erosion reduction, cost savings, and reduced climate impacts.'),
     ];
     $form['text3'] = [
       '#type' => 'item',
