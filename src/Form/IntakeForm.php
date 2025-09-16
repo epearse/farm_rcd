@@ -299,20 +299,13 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // Stakeholder section.
-    $form['stakeholder'] = [
-      '#type' => 'details',
-      '#title' => $this->t('Stakeholder'),
-      '#open' => TRUE,
-    ];
-
     // Stakeholder group.
-    $form['stakeholder']['group'] = [
+    $form['personal']['group'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('Read more about the Social disadvantage community. <a href=":url" target="_blank">Click here</a>', [':url' => 'https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/people/outreach/slbfr/?cid=nrcsdev11_001040']),
       '#options' => SliAllowedValues::stakeholderGroups(),
-      '#default_value' => $saved_values['stakeholder']['group'] ?? [],
+      '#default_value' => $saved_values['personal']['group'] ?? [],
     ];
 
     // Share with other RCDs.
@@ -875,7 +868,7 @@ class IntakeForm extends FormBase {
     $intake_property_lease_exp = $saved_values['property']['info']['lease_expiration'] ? strtotime($saved_values['property']['info']['lease_expiration']) : NULL;
 
     // Process checkboxes.
-    $intake_stakeholder_group = isset($saved_values['stakeholder']['stakeholder']['group']) ? array_keys(array_filter($saved_values['stakeholder']['stakeholder']['group'])) : NULL;
+    $intake_stakeholder_group = isset($saved_values['stakeholder']['personal']['group']) ? array_keys(array_filter($saved_values['stakeholder']['personal']['group'])) : NULL;
     $intake_property_use = isset($saved_values['property']['land_use']['land_use']) ? array_keys(array_filter($saved_values['property']['land_use']['land_use'])) : NULL;
     $intake_goals = isset($saved_values['goals']['goals']['goals']) ? array_keys(array_filter($saved_values['goals']['goals']['goals'])) : NULL;
     $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
