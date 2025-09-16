@@ -23,15 +23,10 @@ class IntakeReviewFormTest extends SliTestBase {
     ]);
     $log->save();
 
-    // Confirm that the "Review Intake" button is visible on the Log.
+    // Confirm that the intake review form is visible on the Log.
     $this->drupalGet('/log/' . $log->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Review Intake');
-
-    // Load the intake review form.
-    $this->drupalGet('/log/' . $log->id() . '/review');
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Review intake');
 
     // Confirm that the owner field was autofilled.
     $this->assertEquals($this->user->id(), $this->getSession()->getPage()->findField('owner')->getValue());
@@ -80,18 +75,18 @@ class IntakeReviewFormTest extends SliTestBase {
     $this->assertEquals($farm->id(), $plan->get('farm')->target_id);
     $this->assertEquals($log->id(), $plan->get('intake')->target_id);
 
-    // Confirm that access is denied to the intake review form now that the log
-    // is done.
-    $this->drupalGet('/log/' . $log->id() . '/review');
-    $this->assertSession()->statusCodeEquals(403);
+    // Confirm that the intake review form no longer shows on the log now that
+    // it has a status of done.
+    $this->drupalGet('/log/' . $log->id());
+    $this->assertSession()->pageTextNotContains('Review intake');
 
     // Reset log status to pending.
     $log->set('status', 'pending');
     $log->save();
 
     // Confirm that we can access the intake review form again.
-    $this->drupalGet('/log/' . $log->id() . '/review');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->drupalGet('/log/' . $log->id());
+    $this->assertSession()->pageTextContains('Review intake');
 
     // This time, continue with an existing farm organization.
     $this->getSession()->getPage()->fillField('decision', 'continue');
@@ -123,8 +118,8 @@ class IntakeReviewFormTest extends SliTestBase {
 
     // This time, abandon the intake and confirm it ends up with expected
     // values.
-    $this->drupalGet('/log/' . $log->id() . '/review');
-    $this->assertSession()->statusCodeEquals(200);
+    $this->drupalGet('/log/' . $log->id());
+    $this->assertSession()->pageTextContains('Review intake');
     $this->getSession()->getPage()->fillField('decision', 'abandon');
     $this->getSession()->getPage()->fillField('reason', 'Spam');
     $this->getSession()->getPage()->pressButton('Submit');
@@ -138,10 +133,10 @@ class IntakeReviewFormTest extends SliTestBase {
     $plans = $plan_storage->loadMultiple();
     $this->assertCount(2, $plans);
 
-    // Confirm that access is denied to the intake review form now that the log
-    // is abandoned.
-    $this->drupalGet('/log/' . $log->id() . '/review');
-    $this->assertSession()->statusCodeEquals(403);
+    // Confirm that the intake review form no longer shows on the log now that
+    // it has a status of abandoned.
+    $this->drupalGet('/log/' . $log->id());
+    $this->assertSession()->pageTextNotContains('Review intake');
   }
 
 }

@@ -8,10 +8,10 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\Core\Url;
 use Drupal\farm_sli\Form\IntakeReviewForm;
 
 /**
@@ -24,6 +24,7 @@ class ThemeHooks implements ContainerInjectionInterface {
 
   public function __construct(
     protected AccountInterface $currentUser,
+    protected FormBuilderInterface $formBuilder,
   ) {}
 
   /**
@@ -73,17 +74,13 @@ class ThemeHooks implements ContainerInjectionInterface {
       return;
     }
 
-    // Add a button for reviewing the intake.
+    // Add intake review form.
     $build['review_intake'] = [
-      '#type' => 'link',
-      '#title' => $this->t('Review Intake'),
-      '#url' => Url::fromRoute('farm_sli.intake_review', ['log' => $entity->id()]),
-      '#attributes' => [
-        'class' => ['button', 'use-ajax'],
-        'data-dialog-type' => 'dialog',
-        'data-dialog-renderer' => 'off_canvas',
-      ],
+      '#type' => 'details',
+      '#title' => $this->t('Review intake'),
+      '#open' => TRUE,
       '#access' => IntakeReviewForm::access($this->currentUser, $entity),
+      'form' => $this->formBuilder->getForm('Drupal\farm_sli\Form\IntakeReviewForm', $entity),
     ];
   }
 
@@ -93,14 +90,14 @@ class ThemeHooks implements ContainerInjectionInterface {
   #[Hook('entity_extra_field_info')]
   public function entityExtraFieldInfo(): array {
 
-    // Expose the review_intake field on intake logs.
+    // Expose the intake review form on intake logs.
     return [
       'log' => [
         'sli_intake' => [
           'display' => [
             'review_intake' => [
-              'label' => $this->t('Review intake button'),
-              'description' => $this->t('Button for reviewing an intake log.'),
+              'label' => $this->t('Intake review form'),
+              'description' => $this->t('Form for reviewing an intake log.'),
               'weight' => -100,
             ],
           ],
@@ -115,10 +112,10 @@ class ThemeHooks implements ContainerInjectionInterface {
   #[Hook('farm_ui_theme_region_items')]
   public function farmUiThemeRegionItems(string $entity_type): array {
 
-    // Place the "Review Intake" button in the second region.
+    // Place the intake review form in the top region.
     if ($entity_type == 'log') {
       return [
-        'second' => [
+        'top' => [
           'review_intake',
         ],
       ];
