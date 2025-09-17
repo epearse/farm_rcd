@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\farm_sli\Plugin\Plan\PlanType;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\entity\BundleFieldDefinition;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
 
@@ -51,10 +52,35 @@ class Rcp extends FarmPlanType {
         'target_type' => 'log',
         'target_bundle' => 'sli_intake',
       ],
+
     ];
     foreach ($field_info as $name => $info) {
       $fields[$name] = $this->farmFieldFactory->bundleFieldDefinition($info);
     }
+
+    // Add a hidden field for linking practice implementation plans.
+    // This is done without farm_field.factory because it does not support
+    // plan entity reference fields.
+    $field = BundleFieldDefinition::create('entity_reference');
+    $field->setLabel('Practice implementation plans');
+    $field->setDescription('Links this plan to one or more practice implementation plans.');
+    $field->setSetting('target_type', 'plan');
+    $field->setSetting('handler', 'default:plan');
+    $field->setSetting('handler_settings', [
+      'target_bundles' => [
+        'sli_practice_implementation' => 'sli_practice_implementation',
+      ],
+      'sort' => [
+        'field' => '_none',
+      ],
+      'auto_create' => FALSE,
+      'auto_create_bundle' => '',
+    ]);
+    $field->setCardinality(-1);
+    $field->setDisplayOptions('form', ['region' => 'hidden']);
+    $field->setDisplayOptions('view', ['region' => 'hidden']);
+    $fields['practice_implementation_plan'] = $field;
+
     return $fields;
   }
 
