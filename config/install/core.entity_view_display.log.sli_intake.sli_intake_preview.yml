@@ -37,19 +37,27 @@ content:
     third_party_settings: {  }
     weight: 29
     region: content
-  intake_interests:
+  intake_concerns:
     type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
     weight: 31
     region: content
+  intake_concerns_other:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 32
+    region: content
   intake_comments:
     type: basic_string
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 32
+    weight: 33
     region: content
   intake_property_acreage:
     type: number_decimal

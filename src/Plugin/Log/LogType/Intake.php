@@ -171,12 +171,16 @@ class Intake extends FarmLogType {
         'label' => $this->t('Other goals'),
       ],
 
-      // Interests.
-      'intake_interests' => [
+      // Concerns.
+      'intake_concerns' => [
         'type' => 'list_string',
-        'label' => $this->t('Interests'),
-        'allowed_values' => SliAllowedValues::interests(),
+        'label' => $this->t('Concerns'),
+        'allowed_values' => SliAllowedValues::concerns(),
         'multiple' => TRUE,
+      ],
+      'intake_concerns_other' => [
+        'type' => 'string',
+        'label' => $this->t('Other concerns'),
       ],
 
       // Additional comments.

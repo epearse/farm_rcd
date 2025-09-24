@@ -646,7 +646,8 @@ class IntakeForm extends FormBase {
     // Goals wrapper.
     $form['goals'] = [
       '#type' => 'details',
-      '#title' => $this->t('What are your goals?'),
+      '#title' => $this->t('Goals'),
+      '#description' => $this->t('What are your goals for working with our Resource Conservation District?'),
       '#open' => TRUE,
     ];
 
@@ -659,7 +660,7 @@ class IntakeForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    // Other land use.
+    // Other goals.
     $form['goals']['other'] = [
       '#type' => 'textfield',
       '#title' => $this->t('If other, please elaborate'),
@@ -675,19 +676,35 @@ class IntakeForm extends FormBase {
     ];
 
     // Interests wrapper.
-    $form['interests'] = [
+    $form['concerns'] = [
       '#type' => 'details',
-      '#title' => $this->t('What are your resource interests?'),
+      '#title' => $this->t('Resource Concerns'),
+      '#description' => $this->t('Do you need help addressing natural resource concerns related to any of the following areas on your property?'),
       '#open' => TRUE,
     ];
 
-    // Stakeholder goals checklist.
-    $form['interests']['resource_interests'] = [
+    // Stakeholder concerns checklist.
+    $form['concerns']['concerns'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => SliAllowedValues::interests(),
-      '#default_value' => $saved_values['interests']['resource_interests'] ?? [],
+      '#options' => SliAllowedValues::concerns(),
+      '#default_value' => $saved_values['concerns']['concerns'] ?? [],
       '#required' => TRUE,
+    ];
+
+    // Other concerns.
+    $form['concerns']['other'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('If other, please elaborate'),
+      '#default_value' => $saved_values['concerns']['other'] ?? '',
+      '#states' => [
+        'required' => [
+          ':input[name="interests[concerns][concerns][other]"]' => ['checked' => TRUE],
+        ],
+        'visible' => [
+          ':input[name="interests[concerns][concerns][other]"]' => ['checked' => TRUE],
+        ],
+      ],
     ];
 
     // Additional comments.
@@ -840,7 +857,7 @@ class IntakeForm extends FormBase {
     $intake_stakeholder_group = isset($saved_values['stakeholder']['personal']['group']) ? array_keys(array_filter($saved_values['stakeholder']['personal']['group'])) : NULL;
     $intake_property_use = isset($saved_values['property']['land_use']['land_use']) ? array_keys(array_filter($saved_values['property']['land_use']['land_use'])) : NULL;
     $intake_goals = isset($saved_values['interests']['goals']['goals']) ? array_keys(array_filter($saved_values['interests']['goals']['goals'])) : NULL;
-    $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
+    $intake_concerns = isset($saved_values['interests']['concerns']['concerns']) ? array_keys(array_filter($saved_values['interests']['concerns']['concerns'])) : NULL;
 
     // Process booleans.
     $intake_rcd_sharing_allowed = $saved_values['stakeholder']['personal']['share_rcds'] === 'yes';
@@ -878,7 +895,8 @@ class IntakeForm extends FormBase {
       'intake_property_use_crop_types' => $saved_values['property']['land_use']['crop_types'],
       'intake_goals' => $intake_goals,
       'intake_goals_other' => $saved_values['interests']['goals']['other'],
-      'intake_interests' => $intake_interests,
+      'intake_concerns' => $intake_concerns,
+      'intake_concerns_other' => $saved_values['interests']['concerns']['other'],
       'intake_comments' => $saved_values['interests']['comments'],
       'intake_rcd_sharing_allowed' => $intake_rcd_sharing_allowed,
       'status' => 'pending',
