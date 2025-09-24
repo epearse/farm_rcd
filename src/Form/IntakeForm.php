@@ -57,27 +57,21 @@ class IntakeForm extends FormBase {
       ],
       'stakeholder' => [
         'label' => $this->t('Stakeholder information'),
-        'message' => $this->t('Step @num of @total', ['@num' => 1, '@total' => 4]),
+        'message' => $this->t('Step @num of @total', ['@num' => 1, '@total' => 3]),
         'callback' => 'buildStakeholderForm',
         'progress' => 25,
       ],
       'property' => [
         'label' => $this->t('Property description'),
-        'message' => $this->t('Step @num of @total', ['@num' => 2, '@total' => 4]),
+        'message' => $this->t('Step @num of @total', ['@num' => 2, '@total' => 3]),
         'callback' => 'buildPropertyForm',
         'progress' => 50,
       ],
-      'goals' => [
-        'label' => $this->t('Stakeholder goals'),
-        'message' => $this->t('Step @num of @total', ['@num' => 3, '@total' => 4]),
-        'callback' => 'buildGoalsForm',
-        'progress' => 75,
-      ],
       'interests' => [
-        'label' => $this->t('Resource interests'),
-        'message' => $this->t('Step @num of @total', ['@num' => 4, '@total' => 4]),
+        'label' => $this->t('Stakeholder interests'),
+        'message' => $this->t('Step @num of @total', ['@num' => 3, '@total' => 3]),
         'callback' => 'buildInterestsForm',
-        'progress' => 100,
+        'progress' => 75,
       ],
       'review' => [
         'label' => $this->t('Review'),
@@ -639,7 +633,7 @@ class IntakeForm extends FormBase {
   }
 
   /**
-   * Build the goals page of the intake form.
+   * Build the interests page of the intake form.
    *
    * @param array $saved_values
    *   Saved values for this step.
@@ -647,7 +641,7 @@ class IntakeForm extends FormBase {
    * @return array
    *   The render array defining the elements of the form.
    */
-  public function buildGoalsForm(array $saved_values) {
+  public function buildInterestsForm(array $saved_values) {
 
     // Goals wrapper.
     $form['goals'] = [
@@ -672,34 +666,13 @@ class IntakeForm extends FormBase {
       '#default_value' => $saved_values['goals']['other'] ?? '',
       '#states' => [
         'required' => [
-          ':input[name="goals[goals][goals][other]"]' => ['checked' => TRUE],
+          ':input[name="interests[goals][goals][other]"]' => ['checked' => TRUE],
         ],
         'visible' => [
-          ':input[name="goals[goals][goals][other]"]' => ['checked' => TRUE],
+          ':input[name="interests[goals][goals][other]"]' => ['checked' => TRUE],
         ],
       ],
     ];
-
-    // Additional comments.
-    $form['goals']['comments'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Additional comments'),
-      '#default_value' => $saved_values['goals']['comments'] ?? '',
-    ];
-
-    return $form;
-  }
-
-  /**
-   * Build the interests page of the intake form.
-   *
-   * @param array $saved_values
-   *   Saved values for this step.
-   *
-   * @return array
-   *   The render array defining the elements of the form.
-   */
-  public function buildInterestsForm(array $saved_values) {
 
     // Interests wrapper.
     $form['interests'] = [
@@ -718,10 +691,10 @@ class IntakeForm extends FormBase {
     ];
 
     // Additional comments.
-    $form['interests']['comments'] = [
+    $form['comments'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Additional comments'),
-      '#default_value' => $saved_values['interests']['comments'] ?? '',
+      '#default_value' => $saved_values['comments'] ?? '',
     ];
 
     return $form;
@@ -866,7 +839,7 @@ class IntakeForm extends FormBase {
     // Process checkboxes.
     $intake_stakeholder_group = isset($saved_values['stakeholder']['personal']['group']) ? array_keys(array_filter($saved_values['stakeholder']['personal']['group'])) : NULL;
     $intake_property_use = isset($saved_values['property']['land_use']['land_use']) ? array_keys(array_filter($saved_values['property']['land_use']['land_use'])) : NULL;
-    $intake_goals = isset($saved_values['goals']['goals']['goals']) ? array_keys(array_filter($saved_values['goals']['goals']['goals'])) : NULL;
+    $intake_goals = isset($saved_values['interests']['goals']['goals']) ? array_keys(array_filter($saved_values['interests']['goals']['goals'])) : NULL;
     $intake_interests = isset($saved_values['interests']['interests']['resource_interests']) ? array_keys(array_filter($saved_values['interests']['interests']['resource_interests'])) : NULL;
 
     // Process booleans.
@@ -904,10 +877,9 @@ class IntakeForm extends FormBase {
       'intake_property_use_other_ac' => $saved_values['property']['land_use']['other_acreage'],
       'intake_property_use_crop_types' => $saved_values['property']['land_use']['crop_types'],
       'intake_goals' => $intake_goals,
-      'intake_goals_other' => $saved_values['goals']['goals']['other'],
-      'intake_goals_comments' => $saved_values['goals']['goals']['comments'],
+      'intake_goals_other' => $saved_values['interests']['goals']['other'],
       'intake_interests' => $intake_interests,
-      'intake_interests_comments' => $saved_values['interests']['interests']['comments'],
+      'intake_comments' => $saved_values['interests']['comments'],
       'intake_rcd_sharing_allowed' => $intake_rcd_sharing_allowed,
       'status' => 'pending',
     ]);

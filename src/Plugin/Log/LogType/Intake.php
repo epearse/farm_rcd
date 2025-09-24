@@ -170,10 +170,6 @@ class Intake extends FarmLogType {
         'type' => 'string',
         'label' => $this->t('Other goals'),
       ],
-      'intake_goals_comments' => [
-        'type' => 'string_long',
-        'label' => $this->t('Additional goal comments'),
-      ],
 
       // Interests.
       'intake_interests' => [
@@ -182,9 +178,11 @@ class Intake extends FarmLogType {
         'allowed_values' => SliAllowedValues::interests(),
         'multiple' => TRUE,
       ],
-      'intake_interests_comments' => [
+
+      // Additional comments.
+      'intake_comments' => [
         'type' => 'string_long',
-        'label' => $this->t('Additional interests comments'),
+        'label' => $this->t('Additional comments'),
       ],
 
       // Allow sharing with other RCDs.

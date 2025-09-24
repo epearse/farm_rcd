@@ -29,13 +29,6 @@ content:
     third_party_settings: {  }
     weight: 28
     region: content
-  intake_goals_comments:
-    type: basic_string
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 30
-    region: content
   intake_goals_other:
     type: string
     label: inline
@@ -51,7 +44,7 @@ content:
     third_party_settings: {  }
     weight: 31
     region: content
-  intake_interests_comments:
+  intake_comments:
     type: basic_string
     label: inline
     settings: {  }

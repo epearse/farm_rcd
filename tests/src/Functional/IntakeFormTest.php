@@ -70,20 +70,17 @@ class IntakeFormTest extends SliTestBase {
         'property[land_use][crop_types]' => 'Bananas',
       ],
       3 => [
-        'goals[goals][goals][succession]' => TRUE,
-        'goals[goals][goals][reduce_debt]' => TRUE,
-        'goals[goals][goals][expand_enterprises]' => TRUE,
-        'goals[goals][goals][new_enterprises]' => TRUE,
-        'goals[goals][goals][profitability]' => TRUE,
-        'goals[goals][goals][reduce_costs]' => TRUE,
-        'goals[goals][goals][property]' => TRUE,
-        'goals[goals][goals][brand]' => TRUE,
-        'goals[goals][goals][sustainability]' => TRUE,
-        'goals[goals][goals][other]' => TRUE,
-        'goals[goals][other]' => 'I have big plans!',
-        'goals[goals][comments]' => 'I need help prioritizing my goals.',
-      ],
-      4 => [
+        'interests[goals][goals][succession]' => TRUE,
+        'interests[goals][goals][reduce_debt]' => TRUE,
+        'interests[goals][goals][expand_enterprises]' => TRUE,
+        'interests[goals][goals][new_enterprises]' => TRUE,
+        'interests[goals][goals][profitability]' => TRUE,
+        'interests[goals][goals][reduce_costs]' => TRUE,
+        'interests[goals][goals][property]' => TRUE,
+        'interests[goals][goals][brand]' => TRUE,
+        'interests[goals][goals][sustainability]' => TRUE,
+        'interests[goals][goals][other]' => TRUE,
+        'interests[goals][other]' => 'I have big plans!',
         'interests[interests][resource_interests][rangeland_erosion]' => TRUE,
         'interests[interests][resource_interests][cropland_erosion]' => TRUE,
         'interests[interests][resource_interests][roads]' => TRUE,
@@ -101,7 +98,7 @@ class IntakeFormTest extends SliTestBase {
         'interests[interests][resource_interests][alt_water]' => TRUE,
         'interests[interests][resource_interests][climate_resilience]' => TRUE,
         'interests[interests][resource_interests][carbon_farming]' => TRUE,
-        'interests[interests][comments]' => 'I may have too many interests.',
+        'interests[comments]' => 'I may have too many interests.',
       ],
     ];
     if (!is_null($step)) {
@@ -147,7 +144,7 @@ class IntakeFormTest extends SliTestBase {
 
     // Confirm that the step 1 information is present.
     $this->assertSession()->pageTextContains('Stakeholder information');
-    $this->assertSession()->pageTextContains('Step 1 of 4');
+    $this->assertSession()->pageTextContains('Step 1 of 3');
     $this->assertSession()->pageTextContains('25%');
 
     // Fill in all step 1 fields.
@@ -174,7 +171,7 @@ class IntakeFormTest extends SliTestBase {
 
     // Confirm that the step 2 information is present.
     $this->assertSession()->pageTextContains('Property description');
-    $this->assertSession()->pageTextContains('Step 2 of 4');
+    $this->assertSession()->pageTextContains('Step 2 of 3');
     $this->assertSession()->pageTextContains('50%');
 
     // Fill in all step 2 fields.
@@ -208,8 +205,8 @@ class IntakeFormTest extends SliTestBase {
     $this->getSession()->getPage()->pressButton('Next');
 
     // Confirm that the step 3 information is present.
-    $this->assertSession()->pageTextContains('Stakeholder goals');
-    $this->assertSession()->pageTextContains('Step 3 of 4');
+    $this->assertSession()->pageTextContains('Stakeholder interests');
+    $this->assertSession()->pageTextContains('Step 3 of 3');
     $this->assertSession()->pageTextContains('75%');
 
     // Fill in all step 3 fields.
@@ -242,41 +239,6 @@ class IntakeFormTest extends SliTestBase {
     // Press the Next button.
     $this->getSession()->getPage()->pressButton('Next');
 
-    // Confirm that the step 4 information is present.
-    $this->assertSession()->pageTextContains('Resource interests');
-    $this->assertSession()->pageTextContains('Step 4 of 4');
-    $this->assertSession()->pageTextContains('100%');
-
-    // Fill in all step 4 fields.
-    foreach ($this->fieldData(4) as $id => $value) {
-      $this->getSession()->getPage()->fillField($id, $value);
-    }
-
-    // Press the Back button.
-    $this->getSession()->getPage()->pressButton('Back');
-
-    // Confirm that we're back on step 3.
-    $this->assertSession()->pageTextContains('Step 3');
-
-    // Confirm that all step 3 field values were preserved.
-    foreach ($this->fieldData(3) as $id => $value) {
-      $this->assertEquals($value, $this->getSession()->getPage()->findField($id)->getValue());
-    }
-
-    // Press the Next button.
-    $this->getSession()->getPage()->pressButton('Next');
-
-    // Confirm that we're back on step 4.
-    $this->assertSession()->pageTextContains('Step 4');
-
-    // Confirm that all step 4 field values were preserved.
-    foreach ($this->fieldData(4) as $id => $value) {
-      $this->assertEquals($value, $this->getSession()->getPage()->findField($id)->getValue());
-    }
-
-    // Press the Next button.
-    $this->getSession()->getPage()->pressButton('Next');
-
     // Confirm that the review step information is present.
     $this->assertSession()->pageTextContains('Review');
     $this->assertSession()->pageTextContains('100%');
@@ -288,11 +250,11 @@ class IntakeFormTest extends SliTestBase {
     // Press the Back button.
     $this->getSession()->getPage()->pressButton('Back');
 
-    // Confirm that we're back on step 4.
-    $this->assertSession()->pageTextContains('Step 4');
+    // Confirm that we're back on step 3.
+    $this->assertSession()->pageTextContains('Step 3');
 
-    // Confirm that all step 4 field values were preserved.
-    foreach ($this->fieldData(4) as $id => $value) {
+    // Confirm that all step 3 field values were preserved.
+    foreach ($this->fieldData(3) as $id => $value) {
       $this->assertEquals($value, $this->getSession()->getPage()->findField($id)->getValue());
     }
 
@@ -349,10 +311,9 @@ class IntakeFormTest extends SliTestBase {
       'intake_property_use_other_ac' => $field_data[2]['property[land_use][other_acreage]'],
       'intake_property_use_crop_types' => $field_data[2]['property[land_use][crop_types]'],
       'intake_goals' => array_keys(SliAllowedValues::goals()),
-      'intake_goals_other' => $field_data[3]['goals[goals][other]'],
-      'intake_goals_comments' => $field_data[3]['goals[goals][comments]'],
+      'intake_goals_other' => $field_data[3]['interests[goals][other]'],
       'intake_interests' => array_keys(SliAllowedValues::interests()),
-      'intake_interests_comments' => $field_data[4]['interests[interests][comments]'],
+      'intake_comments' => $field_data[3]['interests[comments]'],
       'intake_rcd_sharing_allowed' => TRUE,
     ];
     foreach ($expected as $field => $value) {
@@ -382,7 +343,7 @@ class IntakeFormTest extends SliTestBase {
     $field_data[2]['property[info][parcel_gps]'] = '1234567890';
     $this->drupalGet('/intake');
     $this->getSession()->getPage()->pressButton('Next');
-    foreach ([1, 2, 3, 4] as $step) {
+    foreach ([1, 2, 3] as $step) {
       foreach ($field_data[$step] as $id => $value) {
         $this->getSession()->getPage()->fillField($id, $value);
       }
