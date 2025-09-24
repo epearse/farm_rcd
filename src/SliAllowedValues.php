@@ -124,7 +124,6 @@ class SliAllowedValues {
       'brush_mgmt' => t('Brush Management'),
       'conservation_cover' => t('Conservation Cover'),
       'constructed_wetland' => t('Constructed Wetland'),
-      'controlled_burn' => t('Controlled burn'),
       'contour_orchard_perennials' => t('Contour Orchard and Perennials'),
       'cover_crop' => t('Cover Crop'),
       'critical_area_planting' => t('Critical Area Planting'),
