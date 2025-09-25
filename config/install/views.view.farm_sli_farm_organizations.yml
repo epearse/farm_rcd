@@ -23,7 +23,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Properties
+      title: Farms
       fields:
         name:
           id: name
@@ -105,7 +105,7 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
-          text_input_required: 'Search for property by name.'
+          text_input_required: 'Search for farm by name.'
           text_input_required_format: default
       access:
         type: perm
@@ -124,7 +124,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No properties found.'
+          content: 'No farms found.'
           tokenize: false
       sorts: {  }
       arguments: {  }
@@ -195,7 +195,7 @@ display:
       use_ajax: true
       use_more: true
       use_more_always: true
-      use_more_text: 'View all properties'
+      use_more_text: 'View all farms'
       link_display: custom_url
       link_url: 'organizations/farm'
       header: {  }
@@ -221,7 +221,7 @@ display:
       tags: {  }
   block:
     id: block
-    display_title: 'Property search (block)'
+    display_title: 'Farm search (block)'
     display_plugin: block
     position: 1
     display_options:

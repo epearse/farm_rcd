@@ -129,7 +129,7 @@ class IntakeReviewForm extends FormBase {
       ],
     ];
 
-    // Load the property name from the intake, if available.
+    // Load the farm name from the intake, if available.
     $farm_name = '';
     if (!$log->get('intake_farm_name')->isEmpty()) {
       $farm_name = $log->get('intake_farm_name')->value;
@@ -138,8 +138,8 @@ class IntakeReviewForm extends FormBase {
     // Autocomplete for selecting an existing farm organization.
     $form['existing_farm'] = [
       '#type' => 'entity_autocomplete',
-      '#title' => $this->t('Assign to existing property'),
-      '#description' => $this->t('Search for an existing property to associate this with.'),
+      '#title' => $this->t('Assign to existing farm'),
+      '#description' => $this->t('Search for an existing farm to associate this with.'),
       '#target_type' => 'organization',
       '#states' => [
         'visible' => [
@@ -156,8 +156,8 @@ class IntakeReviewForm extends FormBase {
     // Checkbox to create a new farm organization.
     $form['new_farm'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Create a new property'),
-      '#description' => $this->t('If an existing property does not exist, create a new one.'),
+      '#title' => $this->t('Create a new farm'),
+      '#description' => $this->t('If an existing farm does not exist, create a new one.'),
       '#default_value' => TRUE,
       '#states' => [
         'visible' => [
@@ -177,7 +177,7 @@ class IntakeReviewForm extends FormBase {
     // New farm organization name.
     $form['farm_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Property name'),
+      '#title' => $this->t('Farm name'),
       '#default_value' => $farm_name,
       '#states' => [
         'required' => [
@@ -267,7 +267,7 @@ class IntakeReviewForm extends FormBase {
 
       // If the farm organization could not be loaded, throw an error.
       if (is_null($organization)) {
-        $form_state->setErrorByName('existing_farm', $this->t('An existing property by that name could not be found. Please select a valid farm/ranch from the dropdown that appears while typing a name, or create a new farm/ranch.'));
+        $form_state->setErrorByName('existing_farm', $this->t('An existing farm by that name could not be found. Please select a valid farm/ranch from the dropdown that appears while typing a name, or create a new farm/ranch.'));
         return;
       }
     }

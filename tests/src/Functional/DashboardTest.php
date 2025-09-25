@@ -33,10 +33,10 @@ class DashboardTest extends SliTestBase {
     // Confirm that the "Add Intake" button was added.
     $this->assertSession()->pageTextContains('Add Intake');
 
-    // Confirm that the "Properties" block was added.
-    $this->assertSession()->pageTextContains('Properties');
-    $this->assertSession()->pageTextContains('Search for property by name.');
-    $this->assertSession()->pageTextContains('View all properties');
+    // Confirm that the "Farms" block was added.
+    $this->assertSession()->pageTextContains('Farms');
+    $this->assertSession()->pageTextContains('Search for farm by name.');
+    $this->assertSession()->pageTextContains('View all farms');
 
     // Confirm that the "Pending intakes" block was added.
     $this->assertSession()->pageTextContains('Pending intakes');
