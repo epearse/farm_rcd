@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\farm_field\FarmFieldFactoryInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * Field hook implementations for farm_sli.
@@ -19,6 +20,7 @@ class FieldHooks {
   use StringTranslationTrait;
 
   public function __construct(
+    #[Autowire(service: 'farm_field.factory')]
     protected FarmFieldFactoryInterface $farmFieldFactory,
   ) {}
 
