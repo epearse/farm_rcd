@@ -22,7 +22,11 @@ class PracticeImplementation extends FarmPlanType {
    * {@inheritdoc}
    */
   public function buildFieldDefinitions() {
-    $fields = [];
+
+    // Inherit the default asset and log reference fields.
+    $fields = parent::buildFieldDefinitions();
+
+    // Add additional fields.
     $field_info = [
 
       // Farm organization entity.
