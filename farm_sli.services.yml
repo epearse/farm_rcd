@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+  sli.document.generator:
+    class: Drupal\farm_sli\DocumentGenerator
+  Drupal\farm_sli\DocumentGeneratorInterface: '@sli.document.generator'
