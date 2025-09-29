@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Drupal\Tests\farm_sli\Functional;
 
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Tests\farm_sli\Traits\PhpWordTestingTrait;
+use Drupal\farm_sli\SliAllowedValues;
+use Drupal\plan\Entity\PlanInterface;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 /**
  * Tests the planning workflow forms.
  */
 class PlanningWorkflowFormsTest extends SliTestBase {
+
+  use PhpWordTestingTrait;
 
   /**
    * Asset storage.
@@ -418,7 +425,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crop',
+      'land_type' => 'sli_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -581,7 +588,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crop',
+      'land_type' => 'sli_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -656,6 +663,21 @@ class PlanningWorkflowFormsTest extends SliTestBase {
    */
   public function doTestDocumentForm() {
 
+    // Create an intake log with minimum data for these tests.
+    /** @var \Drupal\log\Entity\LogInterface $intake */
+    $intake = $this->logStorage->create([
+      'type' => 'sli_intake',
+      'intake_stakeholder_name' => $this->randomMachineName(),
+      'intake_stakeholder_type' => 'landowner',
+      'intake_property_owner' => $this->randomMachineName(),
+      'intake_property_acreage' => 100,
+      'intake_stakeholder_group' => array_keys(SliAllowedValues::stakeholderGroups()),
+      'intake_property_use' => array_keys(SliAllowedValues::landUses()),
+      'intake_goals' => array_keys(SliAllowedValues::goals()),
+      'intake_concerns' => array_keys(SliAllowedValues::concerns()),
+    ]);
+    $intake->save();
+
     // Create a farm organization.
     /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
     $farm = $this->organizationStorage->create([
@@ -671,6 +693,11 @@ class PlanningWorkflowFormsTest extends SliTestBase {
       'land_type' => 'sli_property',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
+      'notes' => $this->randomMachineName(),
+      'sli_apn' => [
+        $this->randomMachineName(),
+        $this->randomMachineName(),
+      ],
     ]);
     $property->save();
 
@@ -682,6 +709,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
       'name' => 'Test RCP',
       'farm' => [$farm],
       'property' => [$property],
+      'intake' => [$intake],
     ]);
     $plan->save();
 
@@ -689,7 +717,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crop',
+      'land_type' => 'sli_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -736,6 +764,10 @@ class PlanningWorkflowFormsTest extends SliTestBase {
 
     // Get the real path to the file.
     $real_path = \Drupal::service('stream_wrapper_manager')->getViaUri($file->getFileUri())->realpath();
+
+    // Load the file with PhpWord and confirm that it contains expected text.
+    $doc = IOFactory::load($real_path);
+    $this->assertDocPopulated($doc, $plan);
 
     // Upload the file back to the document form.
     $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
@@ -881,6 +913,28 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->assertSession()->responseNotContains($abandon_button);
     $this->assertSession()->responseNotContains($done_button);
     $this->assertSession()->responseContains($planning_button);
+  }
+
+  /**
+   * Check that a document contains all expected text.
+   *
+   * @param \PhpOffice\PhpWord\PhpWord $doc
+   *   The document to search.
+   * @param \Drupal\plan\Entity\PlanInterface $plan
+   *   The plan entity.
+   */
+  protected function assertDocPopulated(PhpWord $doc, PlanInterface $plan) {
+
+    // Confirm that there are no placeholders remaining in the document.
+    $this->assertDocNotContainsText($doc, '${');
+
+    // Test that expected strings do exist.
+    $expected_strings = [
+      $plan->get('farm')->referencedEntities()[0]->label(),
+    ];
+    foreach ($expected_strings as $string) {
+      $this->assertDocContainsText($doc, $string);
+    }
   }
 
 }

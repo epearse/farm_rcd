@@ -4,3 +4,7 @@ services:
   sli.document.generator:
     class: Drupal\farm_sli\DocumentGenerator
   Drupal\farm_sli\DocumentGeneratorInterface: '@sli.document.generator'
+  sli.generate_document_event_subscriber:
+    class: Drupal\farm_sli\EventSubscriber\GenerateDocumentEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }
