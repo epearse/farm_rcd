@@ -54,6 +54,16 @@ class DocumentGenerator implements DocumentGeneratorInterface {
       $module_path = $this->moduleHandler->getModule('farm_sli')->getPath();
       $template = new TemplateProcessor($module_path . '/templates/' . $plan->templateFilename());
 
+      // If a logo is available, add it.
+      // Otherwise, remove the placeholder.
+      $logo_path = $this->configFactory->get('farm_sli.settings')->get('logo_path');
+      if (!empty($logo_path)) {
+        $template->setImageValue('logo', $logo_path);
+      }
+      else {
+        $template->setValue('logo', '');
+      }
+
       // Load string replacement values from the plan (filter out non-string
       // values) and replace placeholders in the template.
       $template->setValues(array_filter($plan->valueReplacements(), function ($value) {

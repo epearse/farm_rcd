@@ -1,0 +1,4 @@
+farm_sli.settings:
+  base_route: farm_settings.settings_page
+  route_name: farm_sli.settings
+  title: 'SLI'
