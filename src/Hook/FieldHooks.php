@@ -29,14 +29,30 @@ class FieldHooks {
   public function farmEntityBundleFieldInfo(EntityTypeInterface $entity_type, string $bundle) {
     $fields = [];
 
-    // Add an APN bundle field to land assets.
+    // Add bundle fields to land assets.
     if ($entity_type->id() == 'asset' && $bundle == 'land') {
+
+      // APN.
       $options = [
         'type' => 'string',
         'label' => $this->t('APN'),
         'multiple' => TRUE,
       ];
       $fields['sli_apn'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+
+      // Riparian areas.
+      $options = [
+        'type' => 'string_long',
+        'label' => $this->t('Riparian areas'),
+      ];
+      $fields['sli_riparian_areas'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+
+      // Native wildlife.
+      $options = [
+        'type' => 'string_long',
+        'label' => $this->t('Native wildlife'),
+      ];
+      $fields['sli_native_wildlife'] = $this->farmFieldFactory->bundleFieldDefinition($options);
     }
 
     return $fields;
