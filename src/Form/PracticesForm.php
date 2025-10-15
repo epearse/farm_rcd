@@ -174,6 +174,45 @@ class PracticesForm extends PlanningWorkflowFormBase {
       ],
     ];
 
+    // Acreage/linear feet.
+    // Conditionally show/hide based on the practice type. If "other" is
+    // selected, then show both.
+    $practice_name = !is_null($plan) ? 'practices[' . $plan->id() . '][practice]' : 'practices[add][practice]';
+    $area_practices = array_filter(ConservationPractices::definitions(), function ($practice) {
+      return $practice['unit'] == 'ac';
+    });
+    $linear_practices = array_filter(ConservationPractices::definitions(), function ($practice) {
+      return $practice['unit'] == 'ft';
+    });
+    $form['acreage'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Acreage'),
+      '#min' => 0,
+      '#step' => 0.1,
+      '#default_value' => $plan?->get('rcd_acres')->value,
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $practice_name . '"]' => array_merge(array_map(function ($key, $practice) {
+            return ['value' => $key];
+          }, array_keys($area_practices), $area_practices), [['value' => 'other']]),
+        ],
+      ],
+    ];
+    $form['linear_feet'] = [
+      '#type' => 'number',
+      '#title' => $this->t('Linear feet'),
+      '#min' => 0,
+      '#step' => 0.1,
+      '#default_value' => $plan?->get('rcd_linear_feet')->value,
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $practice_name . '"]' => array_merge(array_map(function ($key, $practice) {
+            return ['value' => $key];
+          }, array_keys($linear_practices), $linear_practices), [['value' => 'other']]),
+        ],
+      ],
+    ];
+
     // Notes.
     $form['notes'] = [
       '#type' => 'textarea',
@@ -364,6 +403,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Fill in the plan details from form values.
     $field_values = [
       'rcd_practice' => $values['practice'],
+      'rcd_acres' => $values['acreage'],
+      'rcd_linear_feet' => $values['linear_feet'],
       'notes' => $values['notes'],
       'status' => $values['status'],
     ];

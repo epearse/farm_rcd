@@ -157,9 +157,17 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
           if (!empty($practice_info['nrcs_code'])) {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';
           }
+          $practice_measurement = '';
+          if (!empty($plan->get('rcd_acres')->value)) {
+            $practice_measurement = ($plan->get('rcd_acres')->value + 0) . ' acres';
+          }
+          elseif (!empty($plan->get('rcd_linear_feet')->value)) {
+            $practice_measurement = ($plan->get('rcd_linear_feet')->value + 0) . ' linear feet';
+          }
           $location_practices[] = [
             new StringPlaceholder('practice_name', $practice_name),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
+            new StringPlaceholder('practice_measurement', $practice_measurement),
             new ListStringPlaceholder('practice_benefits', $practice_info['benefits']),
             new ListStringPlaceholder('practice_resources', $practice_info['resources']),
           ];

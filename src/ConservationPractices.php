@@ -39,6 +39,7 @@ class ConservationPractices {
       'brush_mgmt' => [
         'label' => t('Brush Management'),
         'nrcs_code' => '314',
+        'unit' => 'ac',
         'benefits' => [
           'Create the desired plant community consistent with the ecological site or a desired state within the site description',
           'Restore or release desired vegetative cover to protect soils, control erosion, reduce sediment, improve water quality, or enhance hydrology',
@@ -54,6 +55,7 @@ class ConservationPractices {
       'conservation_cover' => [
         'label' => t('Conservation Cover'),
         'nrcs_code' => '327',
+        'unit' => 'ac',
         'benefits' => [
           'Reduce sheet, rill, and wind erosion',
           'Reduce sediment transport to surface water',
@@ -72,6 +74,7 @@ class ConservationPractices {
       'constructed_wetland' => [
         'label' => t('Constructed Wetland'),
         'nrcs_code' => '656',
+        'unit' => 'ac',
         'benefits' => [
           'Treat wastewater or contaminated runoff from agricultural processing, livestock, or aquaculture facilities',
           'Improve water quality of storm water runoff, tile drainage outflow, or other waterflows.',
@@ -83,6 +86,7 @@ class ConservationPractices {
       'contour_orchard_perennials' => [
         'label' => t('Contour Orchard and Perennials'),
         'nrcs_code' => '331',
+        'unit' => 'ac',
         'benefits' => [
           'Reduce sheet and rill soil erosion',
           'Reduce transport of excessive sediment and other associated contaminants',
@@ -95,6 +99,7 @@ class ConservationPractices {
       'cover_crop' => [
         'label' => t('Cover Crop'),
         'nrcs_code' => '340',
+        'unit' => 'ac',
         'benefits' => [
           'Reduce sheet, rill, and wind erosion',
           'Maintain or increase soil organic matter',
@@ -114,6 +119,7 @@ class ConservationPractices {
       'critical_area_planting' => [
         'label' => t('Critical Area Planting'),
         'nrcs_code' => '342',
+        'unit' => 'ac',
         'benefits' => [
           'Stabilize areas with existing or expected high rates of soil erosion by wind or water',
           'Stabilize stream and channel banks, pond and other shorelines, earthen features of structural conservation practices',
@@ -126,6 +132,7 @@ class ConservationPractices {
       'filter_strip' => [
         'label' => t('Filter Strip'),
         'nrcs_code' => '393',
+        'unit' => 'ac',
         'benefits' => [
           'Reduce suspended solids and associated contaminants in runoff and excessive sediment in surface waters',
           'Reduce dissolved contaminant loadings in runoff',
@@ -138,6 +145,7 @@ class ConservationPractices {
       'forest_stand_mgmt' => [
         'label' => t('Forest Stand Management'),
         'nrcs_code' => '666',
+        'unit' => 'ac',
         'benefits' => [
           'Improve and sustain forest health and productivity',
           'Reduce damage from pests and moisture stress Initiate forest stand regeneration',
@@ -154,6 +162,7 @@ class ConservationPractices {
       'fuel_break' => [
         'label' => t('Fuel Break'),
         'nrcs_code' => '383',
+        'unit' => 'ac',
         'benefits' => [
           'Significantly reduce the spread of wildfire resulting from excessive biomass accumulations',
           'Facilitate the management of plant productivity and health with prescribed fire',
@@ -166,6 +175,7 @@ class ConservationPractices {
       'grassed_waterway' => [
         'label' => t('Grassed Waterway'),
         'nrcs_code' => '412',
+        'unit' => 'ac',
         'benefits' => [
           'Convey runoff from terraces, diversions, or other water concentrations without causing erosion or flooding',
           'Prevent gully formation',
@@ -178,6 +188,7 @@ class ConservationPractices {
       'hedgerow_planting' => [
         'label' => t('Hedgerow Planting'),
         'nrcs_code' => '422',
+        'unit' => 'ft',
         'benefits' => [
           'Provide habitat including food, cover, shelter or habitat connectivity for terrestrial or aquatic wildlife',
           'Provide cover for beneficial invertebrates as a component of pest management',
@@ -192,6 +203,7 @@ class ConservationPractices {
       'irrigation_water_mgmt' => [
         'label' => t('Irrigation Water Management'),
         'nrcs_code' => '449',
+        'unit' => 'ac',
         'benefits' => [
           'Improve irrigation water use efficiency',
           'Minimize irrigation-induced soil erosion',
@@ -207,6 +219,7 @@ class ConservationPractices {
       'keyline_plow' => [
         'label' => t('Keyline Plow'),
         'nrcs_code' => '',
+        'unit' => 'ac',
         'benefits' => [
           'Loosens the sub-soil without inverting the soil',
           'The small ridges created by the plow on the soil surface facilitate the movement of water downwards through the soil profile and direct the movement of water across the land',
@@ -222,6 +235,7 @@ class ConservationPractices {
       'mulching' => [
         'label' => t('Mulching'),
         'nrcs_code' => '484',
+        'unit' => 'ac',
         'benefits' => [
           'Improve the efficiency of moisture management',
           'Reduce irrigation energy used in farming/ranching practices and field operations',
@@ -240,6 +254,7 @@ class ConservationPractices {
       'nutrient_mgmt' => [
         'label' => t('Nutrient Management'),
         'nrcs_code' => '590',
+        'unit' => 'ac',
         'benefits' => [
           'Improve plant health and productivity',
           'Reduce excess nutrients in surface and ground water',
@@ -257,6 +272,7 @@ class ConservationPractices {
       'pasture_hay_planting' => [
         'label' => t('Pasture and Hay Planting'),
         'nrcs_code' => '512',
+        'unit' => 'ac',
         'benefits' => [
           'Improve or maintain livestock nutrition and health',
           'Provide or increase forage supply during periods of low forage production',
@@ -272,6 +288,7 @@ class ConservationPractices {
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
         'nrcs_code' => '338',
+        'unit' => 'ac',
         'benefits' => [
           'Manage undesirable vegetation and reduce plant pressure caused by pests, pathogens, and diseases',
           'Reduce the various risks associated with wildfire',
@@ -287,6 +304,7 @@ class ConservationPractices {
       'prescribed_grazing' => [
         'label' => t('Prescribed Grazing'),
         'nrcs_code' => '528',
+        'unit' => 'ac',
         'benefits' => [
           'Improve or maintain desirable species composition, structure, productivity, health and/or vigor of plants and plant communities',
           'Improve or maintain the quantity, quality, and/or balance of forages to meet the nutritional needs and ensure the health and performance of grazing and browsing animals',
@@ -305,6 +323,7 @@ class ConservationPractices {
       'range_planting' => [
         'label' => t('Range Planting'),
         'nrcs_code' => '550',
+        'unit' => 'ac',
         'benefits' => [
           'Restore a plant community to a state similar to the ecological site description reference state for the site or another desired plant community',
           'Provide or improve forages for livestock',
@@ -321,6 +340,7 @@ class ConservationPractices {
       'residue_tillage_mgmt_no_till' => [
         'label' => t('Residue and Tillage Management, No Till'),
         'nrcs_code' => '345',
+        'unit' => 'ac',
         'benefits' => [
           'Increase soil organic matter and tilth',
           'Increase productivity as the constant supply of organic material left on the soil surface is decomposed by a healthy population of earth worms and other organisms',
@@ -332,6 +352,7 @@ class ConservationPractices {
       'natural_restoration' => [
         'label' => t('Restoration of Rare or Declining Natural Communities'),
         'nrcs_code' => '643',
+        'unit' => 'ac',
         'benefits' => [
           'Restores the physical conditions and/or unique plant community on sites that partially support, or once supported, a rare or declining natural community',
           'Addresses resource concerns of a degraded plant condition and/or inadequate wildlife habitat',
@@ -349,6 +370,7 @@ class ConservationPractices {
       'riparian_forest_buffer' => [
         'label' => t('Riparian Forest Buffer'),
         'nrcs_code' => '391',
+        'unit' => 'ac',
         'benefits' => [
           'Reduce transport of sediment to surface water, and reduce transport of pathogens, chemicals, pesticides, and nutrients to surface and ground water',
           'Improve the quantity and quality of terrestrial and aquatic habitat for wildlife, invertebrate species, fish, and other organisms',
@@ -363,6 +385,7 @@ class ConservationPractices {
       'riparian_herbaceous_planting' => [
         'label' => t('Riparian Herbaceous Planting'),
         'nrcs_code' => '390',
+        'unit' => 'ac',
         'benefits' => [
           'Provide or improve food and cover for fish, wildlife and livestock',
           'Improve and maintain water quality',
@@ -382,6 +405,7 @@ class ConservationPractices {
       'roof_runoff_strucfture' => [
         'label' => t('Roof Runoff Structure'),
         'nrcs_code' => '558',
+        'unit' => '',
         'benefits' => [
           'Protect surface water quality by excluding roof runoff from contaminated areas',
           'Prevent erosion from roof runoff',
@@ -395,6 +419,7 @@ class ConservationPractices {
       'silvopasture' => [
         'label' => t('Silvopasture'),
         'nrcs_code' => '381',
+        'unit' => 'ac',
         'benefits' => [
           'Provide forage, shade, and/or shelter for livestock',
           'Improve the productivity and health of trees/shrubs and forages',
@@ -413,6 +438,7 @@ class ConservationPractices {
       'soil_carbon_amendment' => [
         'label' => t('Soil Carbon Amendment'),
         'nrcs_code' => '336',
+        'unit' => 'ac',
         'benefits' => [
           'Improve or maintain soil organic matter',
           'Sequester carbon and enhance soil carbon (C) stocks',
@@ -426,6 +452,7 @@ class ConservationPractices {
       'stream_habitat_mgmt' => [
         'label' => t('Stream Habitat Improvement and Management'),
         'nrcs_code' => '395',
+        'unit' => 'ac',
         'benefits' => [
           'Improve or manage stream habitat by evaluating and addressing factors that impair stream function and structure',
         ],
@@ -436,6 +463,7 @@ class ConservationPractices {
       'streambank_shoreline_improvement' => [
         'label' => t('Streambank/Shoreline Improvement'),
         'nrcs_code' => '580',
+        'unit' => 'ft',
         'benefits' => [
           'Prevent the loss of land or damage to land uses or facilities adjacent to the banks of streams or constructed channels and shorelines of lakes, reservoirs, or estuaries - this includes the protection of known historical, archaeological, and traditional cultural properties',
           'Maintain the flow capacity of streams or channels',
@@ -449,6 +477,7 @@ class ConservationPractices {
       'structure_water_control' => [
         'label' => t('Structure for Water Control'),
         'nrcs_code' => '587',
+        'unit' => '',
         'benefits' => [
           'Convey water from one elevation to a lower elevation within, to, or from a water conveyance system such as a ditch, channel, canal, or pipeline',
           'Control the elevation of water in drainage or irrigation ditches',
@@ -469,6 +498,7 @@ class ConservationPractices {
       'structure_wildlife' => [
         'label' => t('Structures for Wildlife'),
         'nrcs_code' => '649',
+        'unit' => '',
         'benefits' => [
           'Enhance or sustain non-domesticated wildlife; or modify existing structures that pose a hazard to wildlife',
           'Provide loafing, escape, nesting, rearing, roosting, perching and/or basking habitat - examples are nesting islands, nesting boxes, roosting boxes, rock piles, perching structures and brush piles',
@@ -480,6 +510,7 @@ class ConservationPractices {
       'tree_shrub_establishment' => [
         'label' => t('Tree/Shrub Establishment'),
         'nrcs_code' => '612',
+        'unit' => 'ac',
         'benefits' => [
           'Maintain or improve desirable plant diversity, productivity, and health by establishing woody plants',
           'Improve water quality by reducing excess nutrients and other pollutants in runoff and ground water',
@@ -497,6 +528,7 @@ class ConservationPractices {
       'upland_wildlife_mgmt' => [
         'label' => t('Upland Wildlife Management'),
         'nrcs_code' => '645',
+        'unit' => 'ac',
         'benefits' => [
           'Treating upland wildlife habitat concerns identified during the conservation planning process that enable movement, or provide shelter, cover, food in proper amounts, locations and times to sustain wild animals that inhabit uplands during a portion of their life cycle',
         ],
@@ -507,6 +539,7 @@ class ConservationPractices {
       'water_sediment_control_basin' => [
         'label' => t('Water and Sediment Control Basin'),
         'nrcs_code' => '638',
+        'unit' => '',
         'benefits' => [
           'Reduce gully erosion',
           'Trap sediment',
@@ -519,6 +552,7 @@ class ConservationPractices {
       'wildlife_habitat_planting' => [
         'label' => t('Wildlife Habitat Planting'),
         'nrcs_code' => '420',
+        'unit' => 'ac',
         'benefits' => [
           'Improve degraded wildlife habitat for the target wildlife species or guild',
           'Establish wildlife habitat that resembles the historic, desired, and reference native plant community',
@@ -530,6 +564,7 @@ class ConservationPractices {
       'windbreak_shelterbelt' => [
         'label' => t('Windbreak/Shelterbelt'),
         'nrcs_code' => '380',
+        'unit' => 'ft',
         'benefits' => [
           'Reduce soil erosion from wind',
           'Enhance plant health and productivity by protecting plants from wind-related damage',
@@ -548,6 +583,7 @@ class ConservationPractices {
       'other' => [
         'label' => t('Other'),
         'nrcs_code' => '',
+        'unit' => '',
         'benefits' => [],
         'resources' => [],
       ],

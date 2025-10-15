@@ -64,6 +64,20 @@ class PracticeImplementation extends FarmPlanType {
         'required' => TRUE,
       ],
 
+      // Acreage.
+      'rcd_acres' => [
+        'type' => 'decimal',
+        'label' => $this->t('Acreage'),
+        'description' => $this->t('How many acres will this practice cover?'),
+      ],
+
+      // Linear feet.
+      'rcd_linear_feet' => [
+        'type' => 'decimal',
+        'label' => $this->t('Linear feet'),
+        'description' => $this->t('How many linear feet will this practice cover?'),
+      ],
+
       // Funding source.
       'rcd_funding_source' => [
         'type' => 'string',
@@ -80,6 +94,10 @@ class PracticeImplementation extends FarmPlanType {
     $options = $fields['rcd_practice']->getDisplayOptions('form');
     $options['type'] = 'options_select';
     $fields['rcd_practice']->setDisplayOptions('form', $options);
+
+    // Add practice measurement constraints to rcd_acres and rcd_linear_feet.
+    $fields['rcd_acres']->addConstraint('PracticeMeasurement');
+    $fields['rcd_linear_feet']->addConstraint('PracticeMeasurement');
 
     return $fields;
   }

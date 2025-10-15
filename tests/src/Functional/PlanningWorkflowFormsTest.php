@@ -713,6 +713,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // Fill in the form and submit it.
     $this->getSession()->getPage()->fillField('practices[add][location]', $location->id());
     $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
+    $this->getSession()->getPage()->fillField('practices[add][acreage]', '');
+    $this->getSession()->getPage()->fillField('practices[add][linear_feet]', '100');
     $this->getSession()->getPage()->fillField('practices[add][notes]', 'Plant lots of sunflowers.');
     $this->getSession()->getPage()->fillField('practices[add][status]', 'implementing');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
@@ -734,6 +736,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals($plan->get('owner')->referencedEntities()[0]->id(), $practice_plan->get('owner')->referencedEntities()[0]->id());
     $this->assertEquals($location->label() . ': Other', $practice_plan->label());
     $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
+    $this->assertTrue($practice_plan->get('rcd_acres')->isEmpty());
+    $this->assertEquals(100, $practice_plan->get('rcd_linear_feet')->value);
     $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
     $this->assertEquals('implementing', $practice_plan->get('status')->value);
 
@@ -748,11 +752,15 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][location][' . $location->id() . ']', $location->id());
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'other');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][acreage]', '');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][linear_feet]', '100.00');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'implementing');
 
     // Edit the practice plan's fields and submit the form.
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][practice]', 'cover_crop');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][acreage]', '2.5');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][linear_feet]', '');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of tillage radish.');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'review');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
@@ -767,6 +775,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($location->label() . ': Cover Crop', $practice_plan->label());
     $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
+    $this->assertEquals(2.5, $practice_plan->get('rcd_acres')->value);
+    $this->assertTrue($practice_plan->get('rcd_linear_feet')->isEmpty());
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
 
@@ -896,6 +906,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'land' => [$location],
       'notes' => $this->randomMachineName(),
       'rcd_practice' => 'cover_crop',
+      'rcd_acres' => 10,
     ]);
     $practice_plan->save();
     $plan->set('practice_implementation_plan', [$practice_plan]);
@@ -1113,6 +1124,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'practice_location_overview' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('land')->referencedEntities()[0]->get('notes')->value,
       'practice_name' => 'Cover crop',
       'practice_overview' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('notes')->value,
+      'practice_measurement' => '10 acres',
     ];
 
     // Practice benefits.

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- [Add acreage/linear ft to practice implementation plans #60](https://github.com/farmier/farm_rcd/issues/60)
+
 ### Changed
 
 - [Make property description fields optional #95](https://github.com/farmier/farm_rcd/issues/95)
