@@ -40,10 +40,10 @@ class EcositesForm extends PlanningWorkflowFormBase {
       return $form;
     }
 
-    // Open this section if there is a property land asset, but there are no
-    // land assets associated with the property.
+    // Open if the status is "planning" and there are no land assets associated
+    // with the property.
     else {
-      $form['ecosites']['#open'] = empty($this->landAssets);
+      $form['ecosites']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->landAssets);
     }
 
     // Build vertical tabs for each ecosite form.

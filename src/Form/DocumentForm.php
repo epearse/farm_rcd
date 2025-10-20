@@ -49,9 +49,9 @@ class DocumentForm extends PlanningWorkflowFormBase {
       '#description' => $this->t('Use this form to generate and upload documents for this plan. This will take all of the information in the associated records above and use it to generate a draft document from a template. This document can then be downloaded, modified, and re-uploaded for storage purposes.'),
     ];
 
-    // Open if there are conservation practice plans associated with the plan,
-    // but no files are attached.
-    $form['document']['#open'] = !empty($this->practicePlans) && $this->plan->get('file')->isEmpty();
+    // Open if the status is "planning" and there are conservation practice
+    // plans associated with the plan, but no files are attached.
+    $form['document']['#open'] = $this->plan->get('status')->value == 'planning' && !empty($this->practicePlans) && $this->plan->get('file')->isEmpty();
 
     // Upload finished document.
     $form['document']['upload'] = [

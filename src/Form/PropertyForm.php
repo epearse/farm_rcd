@@ -33,8 +33,9 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#description' => $this->t('The plan must be associated with a land asset that describes the property. This property may be associated with multiple plans, and the description will be shared with all of them.'),
     ];
 
-    // Open if there is no property associated with the plan.
-    $form['property']['#open'] = is_null($this->property);
+    // Open if the status is "planning" and there is no property associated
+    // with the plan.
+    $form['property']['#open'] = $this->plan->get('status')->value == 'planning' && is_null($this->property);
 
     // If plan does not have a property associated with it, but the farm has
     // property land asset(s) already, provide the option to select one.

@@ -31,8 +31,8 @@ class StatusForm extends PlanningWorkflowFormBase {
       '#description' => $this->t('When a final document is uploaded and shared with the stakeholder, this plan can be marked as done. Practice implementation plans will be used to track the progress of each practice that the stakeholder chooses to proceed with. Alternatively, this plan can be abandoned at any time.'),
     ];
 
-    // Open if there are files attached to the plan.
-    $form['status']['#open'] = !$this->plan->get('file')->isEmpty();
+    // Open if the status is "planning" and there are files attached.
+    $form['status']['#open'] = $this->plan->get('status')->value == 'planning' && !$this->plan->get('file')->isEmpty();
 
     // Comments.
     $form['status']['comments'] = [

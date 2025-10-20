@@ -40,10 +40,9 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       return $form;
     }
 
-    // Open this section if there are land assets associated with the property,
-    // but no site assessment logs.
+    // Open if the status is "planning" and there are no site assessment logs.
     else {
-      $form['assessments']['#open'] = empty($this->siteAssessmentLogs);
+      $form['assessments']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->siteAssessmentLogs);
     }
 
     // Build vertical tabs for each site assessment form.

@@ -40,10 +40,10 @@ class PracticesForm extends PlanningWorkflowFormBase {
       return $form;
     }
 
-    // Open this section if there are land assets associated with the property,
-    // but no practice implementation plans associated with the plan.
+    // Open if the status is "planning" and there are no practice
+    // implementation plans associated with the plan.
     else {
-      $form['practices']['#open'] = empty($this->practicePlans);
+      $form['practices']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->practicePlans);
     }
 
     // Build vertical tabs for each practice form.
