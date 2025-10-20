@@ -69,6 +69,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->doTestSiteAssessmentsForm();
     $this->doTestPracticesForm();
     $this->doTestDocumentForm();
+    $this->doTestStatusForm();
   }
 
   /**
@@ -753,6 +754,121 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
     $this->getSession()->getpage()->pressButton('Save documents');
     $this->assertSession()->pageTextContains('Documents can only be uploaded to plans that are in the planning stage. This plan has been marked as done.');
+  }
+
+  /**
+   * Test status form.
+   */
+  public function doTestStatusForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create a resource conservation plan associated with the farm.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'sli_rcp',
+      'name' => 'Test RCP',
+      'farm' => [$farm],
+    ]);
+    $plan->save();
+
+    // Define button text.
+    $done_button = 'Mark plan as done';
+    $abandon_button = 'Abandon plan';
+    $planning_button = 'Revert status to planning';
+
+    // Go to the plan entity view display and confirm that the abandon button
+    // is visible, but done and planning buttons are not.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->responseContains('Planning Status');
+    $this->assertSession()->responseContains('Comments');
+    $this->assertSession()->responseContains($abandon_button);
+    $this->assertSession()->responseNotContains($done_button);
+    $this->assertSession()->responseNotContains($planning_button);
+
+    // Upload an existing file to the document form.
+    /** @var \Drupal\file\FileInterface[] $files */
+    $files = $this->fileStorage->loadMultiple();
+    $this->assertNotEmpty($files);
+    $file = reset($files);
+    $real_path = \Drupal::service('stream_wrapper_manager')->getViaUri($file->getFileUri())->realpath();
+    $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
+    $this->getSession()->getpage()->pressButton('Save documents');
+    $this->assertSession()->pageTextContains('Document uploaded.');
+
+    // Reload the plan and confirm that done and abandon buttons are visible,
+    // but the planning button is not.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->responseContains($abandon_button);
+    $this->assertSession()->responseContains($done_button);
+    $this->assertSession()->responseNotContains($planning_button);
+
+    // Click the done button, confirm that a message was shown to the user, the
+    // plan status was changed, and a revision log message was added.
+    $this->getSession()->getPage()->pressButton($done_button);
+    $this->assertSession()->pageTextContains('Plan status changed to "done".');
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('done', $plan->get('status')->value);
+    $this->assertEquals('Plan status changed to "done".', $plan->getRevisionLogMessage());
+
+    // Reload the plan and confirm that done and abandon buttons are not
+    // visible, but the planning button is.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->responseNotContains($abandon_button);
+    $this->assertSession()->responseNotContains($done_button);
+    $this->assertSession()->responseContains($planning_button);
+
+    // Click the planning button and confirm that validation failed.
+    $this->getSession()->getPage()->pressButton($planning_button);
+    $this->assertSession()->pageTextContains('An explanation for this status change must be provided.');
+
+    // Add a comment, click the planning button, and confirm that a message was
+    // shown to the user, the plan status changed, and a log revision message
+    // was added.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getSession()->getPage()->fillField('status[comments]', 'Lorem ipsum.');
+    $this->getSession()->getPage()->pressButton($planning_button);
+    $this->assertSession()->pageTextContains('Plan status changed to "planning".');
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('planning', $plan->get('status')->value);
+    $this->assertEquals('Plan status changed to "planning". Lorem ipsum.', $plan->getRevisionLogMessage());
+
+    // Click the abandon button and confirm that validation failed.
+    $this->getSession()->getPage()->pressButton($abandon_button);
+    $this->assertSession()->pageTextContains('An explanation for this status change must be provided.');
+
+    // Add a comment, click the abandon button, and confirm that a message was
+    // shown to the user, the plan status changed, and a log revision message
+    // was added.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->getSession()->getPage()->fillField('status[comments]', 'Dolor sit amet.');
+    $this->getSession()->getPage()->pressButton($abandon_button);
+    $this->assertSession()->pageTextContains('Plan status changed to "abandoned".');
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('abandoned', $plan->get('status')->value);
+    $this->assertEquals('Plan status changed to "abandoned". Dolor sit amet.', $plan->getRevisionLogMessage());
+
+    // Reload the plan and confirm that done and abandon buttons are not
+    // visible, but the planning button is.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->responseNotContains($abandon_button);
+    $this->assertSession()->responseNotContains($done_button);
+    $this->assertSession()->responseContains($planning_button);
   }
 
 }
