@@ -102,7 +102,7 @@ display:
           entity_type: log
           entity_field: timestamp
           plugin_id: log_field
-          label: Timestamp
+          label: Date
           exclude: false
           alter:
             alter_text: false
