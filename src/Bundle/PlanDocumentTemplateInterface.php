@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\farm_sli\Bundle;
 
+use Drupal\farm_sli\Placeholder\PlaceholderInterface;
+
 /**
  * Document template methods specific to a plan type.
  */
@@ -18,11 +20,11 @@ interface PlanDocumentTemplateInterface {
   public function templateFilename(): string;
 
   /**
-   * Provide value replacements for PhpWord templates.
+   * Provide placeholders for templates.
    *
-   * @return array
-   *   Returns an array of string replacements keyed by placeholder.
+   * @return PlaceholderInterface[]
+   *   Returns an array of placeholders.
    */
-  public function valueReplacements(): array;
+  public function placeholders(): array;
 
 }

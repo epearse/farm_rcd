@@ -10,8 +10,12 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\farm_sli\Bundle\PlanDocumentTemplateInterface;
+use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
+use Drupal\farm_sli\Placeholder\PlaceholderInterface;
+use Drupal\farm_sli\Placeholder\StringPlaceholder;
 use Drupal\file\FileInterface;
 use Drupal\plan\Entity\PlanInterface;
+use Exception;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\TemplateProcessor;
 
@@ -64,26 +68,8 @@ class DocumentGenerator implements DocumentGeneratorInterface {
         $template->setValue('logo', '');
       }
 
-      // Escape all special characters in the replacement values.
-      $replacement_values = self::escapeSpecialCharacters($plan->valueReplacements());
-
-      // Load string replacement values from the plan (filter out non-string
-      // values) and replace placeholders in the template.
-      $template->setValues(array_filter($replacement_values, function ($value) {
-        return is_string($value);
-      }));
-
-      // Load bulleted list replacement values from the plan (filter out values
-      // that are not arrays of strings) and add bulleted lists in the template.
-      $list_replacements = array_filter($replacement_values, function ($value) {
-        return is_array($value) && array_sum(array_map('is_string', $value)) === count($value);
-      });
-      foreach ($list_replacements as $placeholder => $items) {
-        $template->cloneBlock($placeholder, count($items), TRUE, TRUE);
-        foreach ($items as $delta => $item) {
-          $template->setValue('item#' . ($delta + 1), $item);
-        }
-      }
+      // Perform placeholder replacements in the template.
+      $this->replacePlaceholders($template, $plan->placeholders());
 
       // Save the file.
       $template->saveAs($uri);
@@ -110,24 +96,38 @@ class DocumentGenerator implements DocumentGeneratorInterface {
   }
 
   /**
-   * Recursively escapes all special characters within strings in an array.
+   * Perform placeholder replacements in a template.
    *
-   * @param array $input
-   *   Input array.
+   * @param TemplateProcessor $template
+   *   The template processor.
+   * @param PlaceholderInterface[] $placeholders
+   *   The placeholders.
    *
-   * @return mixed
-   *   Returns the input array with all strings escaped.
+   * @throws Exception
    */
-  public static function escapeSpecialCharacters(array $input) {
-    foreach ($input as $key => $value) {
-      if (is_array($value)) {
-        $input[$key] = self::escapeSpecialCharacters($value);
+  protected function replacePlaceholders(TemplateProcessor $template, array $placeholders) {
+    foreach ($placeholders as $placeholder) {
+
+      // Replace a simple string.
+      if ($placeholder instanceof StringPlaceholder) {
+        $escaped_value = htmlspecialchars($placeholder->replace);
+        $template->setValue($placeholder->search, $escaped_value);
       }
-      elseif (is_string($value)) {
-        $input[$key] = htmlspecialchars($value);
+
+      // Replace a bulleted list of strings.
+      elseif ($placeholder instanceof ListStringPlaceholder) {
+        $template->cloneBlock($placeholder->search, count($placeholder->replace), TRUE, TRUE);
+        foreach ($placeholder->replace as $delta => $item) {
+          $escaped_value = htmlspecialchars($item);
+          $template->setValue('item#' . ($delta + 1), $escaped_value);
+        }
+      }
+
+      // Throw an unsupported type error.
+      else {
+        throw new Exception('Unsupported placeholder type: ' . $placeholder::class);
       }
     }
-    return $input;
   }
 
 }
