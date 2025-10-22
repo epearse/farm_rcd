@@ -80,6 +80,17 @@ class ThemeHooks implements ContainerInjectionInterface {
     $build['sli_practices'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PracticesForm', $plan);
     $build['sli_document'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\DocumentForm', $plan);
     $build['sli_status'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\StatusForm', $plan);
+
+    // Attach behavior for disabling forms when one is updated.
+    $build['#attached']['drupalSettings']['disable_form_ids'] = [
+      'farm-sli-property-form',
+      'farm-sli-ecosites-form',
+      'farm-sli-site-assessment-form',
+      'farm-sli-practice-form',
+      'farm-sli-document-form',
+      'farm-sli-status-form',
+    ];
+    $build['#attached']['library'][] = 'farm_sli/disable_forms';
   }
 
   /**

@@ -1,0 +1,5 @@
+disable_forms:
+  js:
+    js/disable_forms.js: {}
+  dependencies:
+    - core/jquery
