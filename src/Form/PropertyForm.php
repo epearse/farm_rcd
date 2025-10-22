@@ -141,6 +141,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#title' => $this->t('Property label'),
       '#description' => $this->t('Provide a property label to differentiate it from other properties associated with the farm.'),
       '#default_value' => $this->property ? $this->property->get('name')->value : '',
+      '#required' => TRUE,
     ];
 
     // If a property doesn't exist, attempt to populate the property label.
@@ -154,6 +155,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#title' => $this->t('Property description'),
       '#description' => $this->t('Provide a property description to be included in the resource conservation plan.'),
       '#default_value' => $this->property ? $this->property->get('notes')->value : '',
+      '#required' => TRUE,
     ];
 
     // Property boundary.
