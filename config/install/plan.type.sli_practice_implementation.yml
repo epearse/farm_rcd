@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  module:
+    - farm_sli
   enforced:
     module:
       - farm_sli
