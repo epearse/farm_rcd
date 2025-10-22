@@ -64,16 +64,19 @@ class DocumentGenerator implements DocumentGeneratorInterface {
         $template->setValue('logo', '');
       }
 
+      // Escape all special characters in the replacement values.
+      $replacement_values = self::escapeSpecialCharacters($plan->valueReplacements());
+
       // Load string replacement values from the plan (filter out non-string
       // values) and replace placeholders in the template.
-      $template->setValues(array_filter($plan->valueReplacements(), function ($value) {
+      $template->setValues(array_filter($replacement_values, function ($value) {
         return is_string($value);
       }));
 
-      // Load array replacement values from the plan (filter out non-array
-      // values) and add bulleted lists in the template.
-      $list_replacements = array_filter($plan->valueReplacements(), function ($value) {
-        return is_array($value);
+      // Load bulleted list replacement values from the plan (filter out values
+      // that are not arrays of strings) and add bulleted lists in the template.
+      $list_replacements = array_filter($replacement_values, function ($value) {
+        return is_array($value) && array_sum(array_map('is_string', $value)) === count($value);
       });
       foreach ($list_replacements as $placeholder => $items) {
         $template->cloneBlock($placeholder, count($items), TRUE, TRUE);
@@ -104,6 +107,27 @@ class DocumentGenerator implements DocumentGeneratorInterface {
     $file->setTemporary();
     $file->save();
     return $file;
+  }
+
+  /**
+   * Recursively escapes all special characters within strings in an array.
+   *
+   * @param array $input
+   *   Input array.
+   *
+   * @return mixed
+   *   Returns the input array with all strings escaped.
+   */
+  public static function escapeSpecialCharacters(array $input) {
+    foreach ($input as $key => $value) {
+      if (is_array($value)) {
+        $input[$key] = self::escapeSpecialCharacters($value);
+      }
+      elseif (is_string($value)) {
+        $input[$key] = htmlspecialchars($value);
+      }
+    }
+    return $input;
   }
 
 }
