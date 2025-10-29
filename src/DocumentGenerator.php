@@ -56,7 +56,7 @@ class DocumentGenerator implements DocumentGeneratorInterface {
     if ($plan instanceof PlanDocumentTemplateInterface) {
 
       // Create a TemplateProcessor from the plan's template file.
-      $module_path = $this->moduleHandler->getModule('farm_sli')->getPath();
+      $module_path = $this->moduleHandler->getModule($plan->module())->getPath();
       $template = new TemplateProcessor($module_path . '/templates/' . $plan->templateFilename());
 
       // If a logo is available, add it.

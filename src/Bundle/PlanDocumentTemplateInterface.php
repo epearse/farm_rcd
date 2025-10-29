@@ -12,6 +12,14 @@ use Drupal\farm_sli\Placeholder\PlaceholderInterface;
 interface PlanDocumentTemplateInterface {
 
   /**
+   * The module that provides the template in a "templates" directory.
+   *
+   * @return string
+   *   The module machine name.
+   */
+  public function module(): string;
+
+  /**
    * Provide the filename of the plan's template file.
    *
    * @return string
