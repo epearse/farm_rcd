@@ -11,10 +11,8 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\farm_sli\Event\GenerateDocumentEvent;
 use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
-use Drupal\farm_sli\Placeholder\PlaceholderInterface;
 use Drupal\farm_sli\Placeholder\StringPlaceholder;
 use Drupal\file\FileInterface;
-use Exception;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -84,31 +82,36 @@ class DocumentGenerator implements DocumentGeneratorInterface {
   /**
    * Perform placeholder replacements in a template.
    *
-   * @param TemplateProcessor $template
+   * @param \PhpOffice\PhpWord\TemplateProcessor $template
    *   The template processor.
-   * @param PlaceholderInterface[] $placeholders
+   * @param \Drupal\farm_sli\Placeholder\PlaceholderInterface[] $placeholders
    *   The placeholders.
    * @param string $suffix
    *   A suffix to append to the search string.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   protected function replacePlaceholders(TemplateProcessor $template, array $placeholders, string $suffix = '') {
-    foreach ($placeholders as $i => $placeholder) {
+    foreach ($placeholders as $placeholder) {
 
       // Build the search string with suffix.
+      // @phpstan-ignore-next-line
       $search_string = $placeholder->search . $suffix;
+
+      // Alias the replacement.
+      // @phpstan-ignore-next-line
+      $replacement = $placeholder->replace;
 
       // Replace a simple string.
       if ($placeholder instanceof StringPlaceholder) {
-        $escaped_value = htmlspecialchars($placeholder->replace);
+        $escaped_value = htmlspecialchars($replacement);
         $template->setValue($search_string, $escaped_value);
       }
 
       // Replace a bulleted list of strings.
       elseif ($placeholder instanceof ListStringPlaceholder) {
-        $template->cloneBlock($search_string, count($placeholder->replace), TRUE, TRUE);
-        foreach ($placeholder->replace as $delta => $item) {
+        $template->cloneBlock($search_string, count($replacement), TRUE, TRUE);
+        foreach ($replacement as $delta => $item) {
           $escaped_value = htmlspecialchars($item);
           $template->setValue('item' . $suffix . '#' . ($delta + 1), $escaped_value);
         }
@@ -116,15 +119,15 @@ class DocumentGenerator implements DocumentGeneratorInterface {
 
       // Replace a repeating block (may contain nested replacements).
       elseif ($placeholder instanceof ListBlockPlaceholder) {
-        $template->cloneBlock($search_string, count($placeholder->replace), TRUE, TRUE);
-        foreach ($placeholder->replace as $delta => $block_placeholders) {
+        $template->cloneBlock($search_string, count($replacement), TRUE, TRUE);
+        foreach ($replacement as $delta => $block_placeholders) {
           $this->replacePlaceholders($template, $block_placeholders, $suffix . '#' . ($delta + 1));
         }
       }
 
       // Throw an unsupported type error.
       else {
-        throw new Exception('Unsupported placeholder type: ' . $placeholder::class);
+        throw new \Exception('Unsupported placeholder type: ' . $placeholder::class);
       }
     }
   }
