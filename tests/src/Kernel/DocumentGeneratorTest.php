@@ -67,16 +67,10 @@ class DocumentGeneratorTest extends KernelTestBase {
    */
   public function testDocumentGenerator() {
 
-    // Create a test plan.
-    /** @var \Drupal\plan\Entity\PlanInterface $plan */
-    $plan = \Drupal::entityTypeManager()->getStorage('plan')->create([
-      'type' => 'test',
-      'name' => $this->randomMachineName(),
-    ]);
-    $plan->save();
-
-    // Generate a document from the plan.
-    $file = $this->documentGenerator->generate($plan, 'test-filename.docx');
+    // Generate a document from the test template.
+    $template_path = \Drupal::moduleHandler()->getModule('farm_sli_test')->getPath() . '/templates/template.docx';
+    $filename = 'test-filename.docx';
+    $file = $this->documentGenerator->generate($template_path, $filename);
     $default_schema = \Drupal::configFactory()->get('system.file')->get('default_scheme');
     $this->assertEquals($default_schema . '://docs/test-filename.docx', $file->getFileUri());
     $this->assertEquals('application/vnd.openxmlformats-officedocument.wordprocessingml.document', $file->getMimeType());

@@ -1,0 +1,5 @@
+services:
+  farm_sli_test.generate_document_event_subscriber:
+    class: Drupal\farm_sli_test\EventSubscriber\GenerateDocumentEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }

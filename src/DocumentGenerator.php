@@ -6,19 +6,17 @@ namespace Drupal\farm_sli;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\farm_sli\Bundle\PlanDocumentTemplateInterface;
+use Drupal\farm_sli\Event\GenerateDocumentEvent;
 use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
 use Drupal\farm_sli\Placeholder\PlaceholderInterface;
 use Drupal\farm_sli\Placeholder\StringPlaceholder;
 use Drupal\file\FileInterface;
-use Drupal\plan\Entity\PlanInterface;
 use Exception;
-use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\TemplateProcessor;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Document generator logic.
@@ -26,7 +24,7 @@ use PhpOffice\PhpWord\TemplateProcessor;
 class DocumentGenerator implements DocumentGeneratorInterface {
 
   public function __construct(
-    protected ModuleHandlerInterface $moduleHandler,
+    protected EventDispatcherInterface $eventDispatcher,
     protected ConfigFactoryInterface $configFactory,
     protected FileSystemInterface $fileSystem,
     protected EntityTypeManagerInterface $entityTypeManager,
@@ -36,7 +34,27 @@ class DocumentGenerator implements DocumentGeneratorInterface {
   /**
    * {@inheritdoc}
    */
-  public function generate(PlanInterface $plan, ?string $filename = NULL): FileInterface {
+  public function generate(string $template_path, ?string $filename = NULL, array $context = []): FileInterface {
+
+    // Create a TemplateProcessor object from the template file.
+    $template = new TemplateProcessor($template_path);
+
+    // If a logo is available, add it.
+    // Otherwise, remove the placeholder.
+    $logo_path = $this->configFactory->get('farm_sli.settings')->get('logo_path');
+    if (!empty($logo_path)) {
+      $template->setImageValue('logo', $logo_path);
+    }
+    else {
+      $template->setValue('logo', '');
+    }
+
+    // Create and dispatch a GenerateDocumentEvent.
+    $event = new GenerateDocumentEvent($context);
+    $this->eventDispatcher->dispatch($event, GenerateDocumentEvent::EVENT_NAME);
+
+    // Perform placeholder replacement.
+    $this->replacePlaceholders($template, $event->getPlaceholders());
 
     // If a filename was not provided, generate one.
     if (is_null($filename)) {
@@ -51,41 +69,8 @@ class DocumentGenerator implements DocumentGeneratorInterface {
     // Build the file URI.
     $uri = "$directory/$filename";
 
-    // Generate the document using a template and replacement variables, if
-    // available.
-    if ($plan instanceof PlanDocumentTemplateInterface) {
-
-      // Create a TemplateProcessor from the plan's template file.
-      $module_path = $this->moduleHandler->getModule($plan->module())->getPath();
-      $template = new TemplateProcessor($module_path . '/templates/' . $plan->templateFilename());
-
-      // If a logo is available, add it.
-      // Otherwise, remove the placeholder.
-      $logo_path = $this->configFactory->get('farm_sli.settings')->get('logo_path');
-      if (!empty($logo_path)) {
-        $template->setImageValue('logo', $logo_path);
-      }
-      else {
-        $template->setValue('logo', '');
-      }
-
-      // Perform placeholder replacements in the template.
-      $this->replacePlaceholders($template, $plan->placeholders());
-
-      // Save the file.
-      $template->saveAs($uri);
-    }
-
-    // Otherwise, generate an empty document.
-    else {
-      $doc = new PhpWord();
-      $doc->addSection();
-      ob_start();
-      $doc->save('php://output', 'Word2007');
-      $contents = ob_get_contents();
-      ob_end_clean();
-      file_put_contents($uri, $contents);
-    }
+    // Save the file.
+    $template->saveAs($uri);
 
     // Create and return a file entity.
     /** @var \Drupal\file\FileInterface $file */

@@ -2,37 +2,37 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli_test\Bundle;
+namespace Drupal\farm_sli_test\EventSubscriber;
 
-use Drupal\farm_sli\Bundle\PlanDocumentTemplateInterface;
+use Drupal\farm_sli\Event\GenerateDocumentEvent;
 use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
 use Drupal\farm_sli\Placeholder\StringPlaceholder;
-use Drupal\plan\Entity\Plan;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Test plan document template methods.
+ * An event subscriber for the GenerateDocumentEvent.
  */
-class TestPlan extends Plan implements PlanDocumentTemplateInterface {
+class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
   /**
    * {@inheritdoc}
    */
-  public function module(): string {
-    return 'farm_sli_test';
+  public static function getSubscribedEvents(): array {
+    return [
+      GenerateDocumentEvent::EVENT_NAME => ['onDocumentGenerate'],
+    ];
   }
 
   /**
-   * {@inheritdoc}
+   * React to the GenerateDocumentEvent.
+   *
+   * @param \Drupal\farm_sli\Event\GenerateDocumentEvent $event
+   *   The GenerateDocumentEvent object.
    */
-  public function templateFilename(): string {
-    return 'template.docx';
-  }
+  public function onDocumentGenerate(GenerateDocumentEvent $event) {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function placeholders(): array {
+    // Build placeholders.
     $placeholders = [];
 
     // Simple string.
@@ -51,7 +51,7 @@ class TestPlan extends Plan implements PlanDocumentTemplateInterface {
       ],
       [
         new StringPlaceholder('block_string', 'Replaced Block String 2'),
-      ]
+      ],
     ]);
 
     // Lists inside a repeating block.
@@ -67,7 +67,7 @@ class TestPlan extends Plan implements PlanDocumentTemplateInterface {
           'Replaced Block List Item 3',
           'Replaced Block List Item 4',
         ]),
-      ]
+      ],
     ]);
 
     // Repeating blocks inside a repeating block.
@@ -107,10 +107,11 @@ class TestPlan extends Plan implements PlanDocumentTemplateInterface {
             ]),
           ],
         ]),
-      ]
+      ],
     ]);
 
-    return $placeholders;
+    // Add placeholders to the event.
+    $event->addPlaceholders($placeholders);
   }
 
 }

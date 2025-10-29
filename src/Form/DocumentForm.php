@@ -6,6 +6,7 @@ namespace Drupal\farm_sli\Form;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
@@ -23,6 +24,7 @@ class DocumentForm extends PlanningWorkflowFormBase {
 
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
+    protected ModuleHandlerInterface $moduleHandler,
     protected DocumentGeneratorInterface $documentGenerator,
     protected FileSystemInterface $fileSystem,
     protected FileUrlGeneratorInterface $fileUrlGenerator,
@@ -94,11 +96,19 @@ class DocumentForm extends PlanningWorkflowFormBase {
   public function submitGenerate(array &$form, FormStateInterface $form_state) {
     try {
 
+      // Get the document template path.
+      $template_path = $this->moduleHandler->getModule('farm_sli')->getPath() . '/templates/rcp-template.docx';
+
       // Generate a filename.
       $filename = strtolower(trim(preg_replace('#\W+#', '-', $this->plan->label()), '-')) . '.docx';
 
+      // Add the plan to the document generation context.
+      $context = [
+        'plan' => $this->plan,
+      ];
+
       // Generate the report.
-      $file = $this->documentGenerator->generate($this->plan, $filename);
+      $file = $this->documentGenerator->generate($template_path, $filename, $context);
 
       // Show a link to the file.
       $url = $this->fileUrlGenerator->generateAbsoluteString($file->getFileUri());
