@@ -39,12 +39,15 @@ class DocumentGenerator implements DocumentGeneratorInterface {
 
     // If a logo is available, add it.
     // Otherwise, remove the placeholder.
+    // We use cloneBlock() because deleteBlock() and replaceBlock() don't work.
+    // @see https://github.com/PHPOffice/PHPWord/issues/341#issuecomment-557939060
     $logo_path = $this->configFactory->get('farm_sli.settings')->get('logo_path');
     if (!empty($logo_path)) {
+      $template->cloneBlock('logo_block', 1, TRUE, FALSE);
       $template->setImageValue('logo', $logo_path);
     }
     else {
-      $template->setValue('logo', '');
+      $template->cloneBlock('logo_block', 0, TRUE, FALSE);
     }
 
     // Create and dispatch a GenerateDocumentEvent.
