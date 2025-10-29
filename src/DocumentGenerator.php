@@ -10,6 +10,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\farm_sli\Bundle\PlanDocumentTemplateInterface;
+use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
 use Drupal\farm_sli\Placeholder\PlaceholderInterface;
 use Drupal\farm_sli\Placeholder\StringPlaceholder;
@@ -102,24 +103,37 @@ class DocumentGenerator implements DocumentGeneratorInterface {
    *   The template processor.
    * @param PlaceholderInterface[] $placeholders
    *   The placeholders.
+   * @param string $suffix
+   *   A suffix to append to the search string.
    *
    * @throws Exception
    */
-  protected function replacePlaceholders(TemplateProcessor $template, array $placeholders) {
-    foreach ($placeholders as $placeholder) {
+  protected function replacePlaceholders(TemplateProcessor $template, array $placeholders, string $suffix = '') {
+    foreach ($placeholders as $i => $placeholder) {
+
+      // Build the search string with suffix.
+      $search_string = $placeholder->search . $suffix;
 
       // Replace a simple string.
       if ($placeholder instanceof StringPlaceholder) {
         $escaped_value = htmlspecialchars($placeholder->replace);
-        $template->setValue($placeholder->search, $escaped_value);
+        $template->setValue($search_string, $escaped_value);
       }
 
       // Replace a bulleted list of strings.
       elseif ($placeholder instanceof ListStringPlaceholder) {
-        $template->cloneBlock($placeholder->search, count($placeholder->replace), TRUE, TRUE);
+        $template->cloneBlock($search_string, count($placeholder->replace), TRUE, TRUE);
         foreach ($placeholder->replace as $delta => $item) {
           $escaped_value = htmlspecialchars($item);
-          $template->setValue('item#' . ($delta + 1), $escaped_value);
+          $template->setValue('item' . $suffix . '#' . ($delta + 1), $escaped_value);
+        }
+      }
+
+      // Replace a repeating block (may contain nested replacements).
+      elseif ($placeholder instanceof ListBlockPlaceholder) {
+        $template->cloneBlock($search_string, count($placeholder->replace), TRUE, TRUE);
+        foreach ($placeholder->replace as $delta => $block_placeholders) {
+          $this->replacePlaceholders($template, $block_placeholders, $suffix . '#' . ($delta + 1));
         }
       }
 
