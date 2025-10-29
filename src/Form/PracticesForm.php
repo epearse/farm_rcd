@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\farm_rcd\ConservationPractices;
 use Drupal\plan\Entity\Plan;
@@ -257,13 +258,48 @@ class PracticesForm extends PlanningWorkflowFormBase {
       return;
     }
 
-    // Save the practice plans.
-    foreach ($practice_plans as $plan) {
-      $plan->save();
+    // Save the practice plans with revision log messages that reference the
+    // plan. Keep track of logs that were created or updated so that we can
+    // build a revision log message for the plan.
+    $created_plans = [];
+    $updated_plans = [];
+    foreach ($practice_plans as $practice_plan) {
+      if ($practice_plan->isNew()) {
+        $practice_plan_revision = 'Created via <a href=":plan_uri">@plan_label</a>.';
+        $created_plans[] = $practice_plan;
+      }
+      else {
+        $practice_plan_revision = 'Updated via <a href=":plan_uri">@plan_label</a>.';
+        $updated_plans[] = $practice_plan;
+      }
+      $plan_args = [
+        ':plan_uri' => $this->plan->toUrl()->toString(),
+        '@plan_label' => $this->plan->label(),
+      ];
+      $practice_plan->setRevisionLogMessage((string) new FormattableMarkup($practice_plan_revision, $plan_args));
+      $practice_plan->save();
     }
 
-    // Save them to the resource conservation plan.
+    // Build a revision log message for the plan.
+    $plan_revisions = [];
+    if (!empty($created_plans)) {
+      $plan_links = array_map(function (PlanInterface $practice_plan) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $practice_plan->toUrl()->toString(), '@label' => $practice_plan->label()]);
+      }, $created_plans);
+      $plan_revisions[] = 'Created practice implementation plan' . (count($plan_links) > 1 ? 's' : '') . ': ' . implode(', ', $plan_links) . '.';
+    }
+    if (!empty($updated_plans)) {
+      $plan_links = array_map(function (PlanInterface $practice_plan) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $practice_plan->toUrl()->toString(), '@label' => $practice_plan->label()]);
+      }, $updated_plans);
+      $plan_revisions[] = 'Updated practice implementation plan' . (count($plan_links) > 1 ? 's' : '') . ': ' . implode(', ', $plan_links) . '.';
+    }
+    $plan_revision = implode(' ', $plan_revisions);
+
+    // Save practice plans and revision log message to the resource
+    // conservation plan.
     $this->plan->set('practice_implementation_plan', $practice_plans);
+    $this->plan->setRevisionLogMessage($plan_revision);
     $this->plan->save();
 
     // Show a message.

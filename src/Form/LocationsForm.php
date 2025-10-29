@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
 use Drupal\farm_rcd\RcdOptionLists;
@@ -211,6 +212,7 @@ class LocationsForm extends PlanningWorkflowFormBase {
     // Load the land assets from storage.
     // Only new or modified assets will be included.
     $storage = $form_state->getStorage();
+    /** @var \Drupal\asset\Entity\AssetInterface[] $land_assets */
     $land_assets = $storage['assets'] ?? [];
 
     // If there are no assets, bail.
@@ -219,10 +221,44 @@ class LocationsForm extends PlanningWorkflowFormBase {
       return;
     }
 
-    // Save the land assets.
+    // Save the land assets with revision log messages that reference the plan.
+    // Keep track of assets that were created or updated so that we can build a
+    // revision log message for the plan.
+    $created_assets = [];
+    $updated_assets = [];
     foreach ($land_assets as $asset) {
+      if ($asset->isNew()) {
+        $asset_revision = 'Created via <a href=":plan_uri">@plan_label</a>.';
+        $created_assets[] = $asset;
+      }
+      else {
+        $asset_revision = 'Updated via <a href=":plan_uri">@plan_label</a>.';
+        $updated_assets[] = $asset;
+      }
+      $plan_args = [
+        ':plan_uri' => $this->plan->toUrl()->toString(),
+        '@plan_label' => $this->plan->label(),
+      ];
+      $asset->setRevisionLogMessage((string) new FormattableMarkup($asset_revision, $plan_args));
       $asset->save();
     }
+
+    // Build and save a revision log message to the plan.
+    $plan_revisions = [];
+    if (!empty($created_assets)) {
+      $asset_links = array_map(function (AssetInterface $asset) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $asset->toUrl()->toString(), '@label' => $asset->label()]);
+      }, $created_assets);
+      $plan_revisions[] = 'Created land asset' . (count($asset_links) > 1 ? 's' : '') . ': ' . implode(', ', $asset_links) . '.';
+    }
+    if (!empty($updated_assets)) {
+      $asset_links = array_map(function (AssetInterface $asset) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $asset->toUrl()->toString(), '@label' => $asset->label()]);
+      }, $updated_assets);
+      $plan_revisions[] = 'Updated land asset' . (count($asset_links) > 1 ? 's' : '') . ': ' . implode(', ', $asset_links) . '.';
+    }
+    $this->plan->setRevisionLogMessage(implode(' ', $plan_revisions));
+    $this->plan->save();
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Land assets saved.'));

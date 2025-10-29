@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -158,8 +159,9 @@ class DocumentForm extends PlanningWorkflowFormBase {
         return;
       }
 
-      // Attach the file to the plan.
+      // Attach the file to the plan and save a revision log message.
       $this->plan->get('file')->appendItem($file);
+      $this->plan->setRevisionLogMessage((string) new FormattableMarkup('Document uploaded: <a href=":uri">' . $file->label() . '</a>.', [':uri' => $this->fileUrlGenerator->generateString($file->getFileUri()), '@label' => $file->label()]));
       $this->plan->save();
 
       // Show a message.

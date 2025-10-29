@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\log\Entity\LogInterface;
 use Drupal\plan\Entity\PlanInterface;
@@ -431,10 +432,44 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       return;
     }
 
-    // Save the site assessment logs.
+    // Save the site assessment logs with revision log messages that reference
+    // the plan. Keep track of logs that were created or updated so that we can
+    // build a revision log message for the plan.
+    $created_logs = [];
+    $updated_logs = [];
     foreach ($logs as $log) {
+      if ($log->isNew()) {
+        $log_revision = 'Created via <a href=":plan_uri">@plan_label</a>.';
+        $created_logs[] = $log;
+      }
+      else {
+        $log_revision = 'Updated via <a href=":plan_uri">@plan_label</a>.';
+        $updated_logs[] = $log;
+      }
+      $plan_args = [
+        ':plan_uri' => $this->plan->toUrl()->toString(),
+        '@plan_label' => $this->plan->label(),
+      ];
+      $log->setRevisionLogMessage((string) new FormattableMarkup($log_revision, $plan_args));
       $log->save();
     }
+
+    // Build and save a revision log message to the plan.
+    $plan_revisions = [];
+    if (!empty($created_logs)) {
+      $log_links = array_map(function (LogInterface $log) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $log->toUrl()->toString(), '@label' => $log->label()]);
+      }, $created_logs);
+      $plan_revisions[] = 'Created site assessment log' . (count($log_links) > 1 ? 's' : '') . ': ' . implode(', ', $log_links) . '.';
+    }
+    if (!empty($updated_logs)) {
+      $log_links = array_map(function (LogInterface $log) {
+        return (string) new FormattableMarkup('<a href=":uri">@label</a>', [':uri' => $log->toUrl()->toString(), '@label' => $log->label()]);
+      }, $updated_logs);
+      $plan_revisions[] = 'Updated site assessment log' . (count($log_links) > 1 ? 's' : '') . ': ' . implode(', ', $log_links) . '.';
+    }
+    $this->plan->setRevisionLogMessage(implode(' ', $plan_revisions));
+    $this->plan->save();
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Site assessment logs saved.'));

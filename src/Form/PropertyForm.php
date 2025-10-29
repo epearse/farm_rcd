@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
 use Drupal\plan\Entity\PlanInterface;
@@ -315,23 +316,45 @@ class PropertyForm extends PlanningWorkflowFormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
-    // If an existing property was selected, add it to the plan.
+    // If an existing property was selected, load it and build revision log
+    // messages for the property and the plan.
     if ($form_state->getValue(['property', 'new_or_existing']) == 'existing' && !empty($form_state->getValue(['property', 'existing_property']))) {
+      /** @var \Drupal\asset\Entity\AssetInterface $property */
       $property = $this->entityTypeManager->getStorage('asset')->load($form_state->getValue(['property', 'existing_property']));
+      $property_revision = 'Added to plan: <a href=":plan_uri">@plan_label</a>.';
+      $plan_revision = 'Added property: <a href=":property_uri">@property_label</a>.';
     }
 
-    // Otherwise, try to save the property.
+    // Otherwise, create/update the property from form values and build
+    // revision log messages.
     else {
       $property = $this->generateProperty($form_state);
-      $property->setRevisionLogMessage($this->t('Updated via <a href=":uri">@label</a>.', [':uri' => $this->plan->toUrl()->toString(), '@label' => $this->plan->label()])->render());
-      $property->save();
+      if ($property->isNew()) {
+        $property_revision = 'Created via <a href=":plan_uri">@plan_label</a>.';
+        $plan_revision = 'Created property: <a href=":property_uri">@property_label</a>.';
+      }
+      else {
+        $property_revision = 'Updated via <a href=":plan_uri">@plan_label</a>.';
+        $plan_revision = 'Updated property: <a href=":property_uri">@property_label</a>.';
+      }
     }
 
     // Associate the property with the plan.
-    if (!is_null($property)) {
-      $this->plan->set('property', $property);
-      $this->plan->save();
-    }
+    $this->plan->set('property', $property);
+
+    // Save the property and plan with their revision log messages.
+    $plan_args = [
+      ':plan_uri' => $this->plan->toUrl()->toString(),
+      '@plan_label' => $this->plan->label(),
+    ];
+    $property->setRevisionLogMessage((string) new FormattableMarkup($property_revision, $plan_args));
+    $property->save();
+    $property_args = [
+      ':property_uri' => $property->toUrl()->toString(),
+      '@property_label' => $property->label(),
+    ];
+    $this->plan->setRevisionLogMessage((string) new FormattableMarkup($plan_revision, $property_args));
+    $this->plan->save();
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Property description saved.'));

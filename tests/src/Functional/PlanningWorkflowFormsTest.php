@@ -178,6 +178,10 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('ABC123', $apns[0]['value']);
 
+    // Confirm that revision log messages were added to both.
+    $this->assertEquals('Created property: <a href="/asset/' . $property->id() . '">' . $property->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="/plan/' . $plan->id() . '">' . $plan->label() . '</a>.', $property->getRevisionLogMessage());
+
     // Reload the plan entity view display and confirm that the property's
     // information is populated in the form.
     $this->drupalGet('/plan/' . $plan->id());
@@ -214,6 +218,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertNotEmpty($properties[0]);
     $this->assertEquals($property->id(), $properties[0]->id());
 
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\asset\Entity\AssetInterface $property */
+    $property = $properties[0];
+    $this->assertEquals('Added property: <a href="/asset/' . $property->id() . '">' . $property->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Added to plan: <a href="/plan/' . $plan->id() . '">' . $plan->label() . '</a>.', $property->getRevisionLogMessage());
+
     // Reload the plan entity view display.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
@@ -238,6 +248,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('', $property->get('intrinsic_geometry')->value);
     $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('XYZ123', $apns[0]['value']);
+
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Updated property: <a href="/asset/' . $property->id() . '">' . $property->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="/plan/' . $plan->id() . '">' . $plan->label() . '</a>.', $property->getRevisionLogMessage());
 
     // Reload the plan entity view display.
     $this->drupalGet('/plan/' . $plan->id());
@@ -350,6 +366,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('See corn, say corn!', $land_asset->get('notes')->value);
     $this->assertEquals('POINT(-155.60893291251693 19.431635160410153)', $land_asset->get('intrinsic_geometry')->value);
 
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Created land asset: <a href="' . $land_asset->toUrl()->toString() . '">' . $land_asset->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $land_asset->getRevisionLogMessage());
+
     // Confirm that the saved asset was added to the form, and fields are
     // pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
@@ -376,6 +398,42 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Apple orchard', $land_asset->label());
     $this->assertEquals('History haunts him who does not honour it.', $land_asset->get('notes')->value);
     $this->assertEquals('', $land_asset->get('intrinsic_geometry')->value);
+
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Updated land asset: <a href="' . $land_asset->toUrl()->toString() . '">' . $land_asset->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $land_asset->getRevisionLogMessage());
+
+    // Confirm that adding and updating assets simultaneously works as expected.
+    $this->getSession()->getPage()->fillField('locations[add][type]', 'rcd_row_crops');
+    $this->getSession()->getPage()->fillField('locations[add][label]', 'Corn field');
+    $this->getSession()->getPage()->fillField('locations[add][description]', 'See corn, say corn!');
+    $this->getSession()->getPage()->fillField('locations[' . $land_asset->id() . '][label]', 'Pear orchard');
+    $this->getSession()->getPage()->pressButton('Save land assets');
+    $this->assertSession()->pageTextContains('Land assets saved.');
+    $this->assertSession()->pageTextContains('Land asset: Corn field');
+    $this->assertSession()->pageTextContains('Land asset: Pear orchard');
+
+    // Reload the page and entities.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    /** @var \Drupal\asset\Entity\AssetInterface[] $land_assets */
+    $land_assets = $this->assetStorage->loadByProperties([
+      'type' => 'land',
+      'parent' => $property->id(),
+      'farm' => $farm->id(),
+    ]);
+    $this->assertCount(2, $land_assets);
+    $updated_land_asset = reset($land_assets);
+    $created_land_asset = next($land_assets);
+
+    // Confirm that revision log messages were added to all three.
+    $this->assertEquals('Created land asset: <a href="' . $created_land_asset->toUrl()->toString() . '">' . $created_land_asset->label() . '</a>. Updated land asset: <a href="' . $updated_land_asset->toUrl()->toString() . '">' . $updated_land_asset->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $created_land_asset->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $updated_land_asset->getRevisionLogMessage());
 
     // Confirm that submitting the form without changing any values does not
     // save the assets.
@@ -493,6 +551,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       $this->assertEquals($resource . ' strategy', $log->get('rcd_' . $resource . '_strategy')->value);
     }
 
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Created site assessment log: <a href="' . $log->toUrl()->toString() . '">' . $log->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $log->getRevisionLogMessage());
+
     // Confirm that the saved log was added to the form, and fields are
     // pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
@@ -529,7 +593,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->pageTextContains('Site assessment logs saved.');
     $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('tomorrow')) . ' ' . $location->label());
 
-    // Confirm that the new values were saved to the asset.
+    // Confirm that the new values were saved to the log.
     /** @var \Drupal\log\Entity\LogInterface $log */
     $log = $this->logStorage->load($log->id());
     $this->assertEquals(strtotime(date('m/d/Y', strtotime('tomorrow'))), $log->get('timestamp')->value);
@@ -544,6 +608,37 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       $this->assertEquals($resource . ' goals!', $log->get('rcd_' . $resource . '_goals')->value);
       $this->assertEquals($resource . ' strategy!', $log->get('rcd_' . $resource . '_strategy')->value);
     }
+
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Updated site assessment log: <a href="' . $log->toUrl()->toString() . '">' . $log->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $log->getRevisionLogMessage());
+
+    // Confirm that adding and updating logs simultaneously works as expected.
+    $this->getSession()->getPage()->fillField('assessments[add][location]', $location->id());
+    $this->getSession()->getPage()->fillField('assessments[add][land_use_history]', 'land use history');
+    $this->getSession()->getPage()->fillField('assessments[' . $log->id() . '][land_use_history]', 'land use history');
+    $this->getSession()->getPage()->pressButton('Save site assessments');
+    $this->assertSession()->pageTextContains('Site assessment logs saved.');
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('today')) . ' ' . $location->label());
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('tomorrow')) . ' ' . $location->label());
+
+    // Reload the page and entities.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    /** @var \Drupal\log\Entity\LogInterface[] $logs */
+    $logs = $this->logStorage->loadByProperties(['type' => 'rcd_site_assessment']);
+    $this->assertCount(2, $logs);
+    $updated_log = reset($logs);
+    $created_log = next($logs);
+
+    // Confirm that revision log messages were added to all three.
+    $this->assertEquals('Created site assessment log: <a href="' . $created_log->toUrl()->toString() . '">' . $created_log->label() . '</a>. Updated site assessment log: <a href="' . $updated_log->toUrl()->toString() . '">' . $updated_log->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $created_log->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $updated_log->getRevisionLogMessage());
 
     // Confirm that submitting the form without changing any values does not
     // save the logs.
@@ -641,6 +736,10 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
     $this->assertEquals('implementing', $practice_plan->get('status')->value);
 
+    // Confirm that revision log messages were added to both.
+    $this->assertEquals('Created practice implementation plan: <a href="' . $practice_plan->toUrl()->toString() . '">' . $practice_plan->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $practice_plan->getRevisionLogMessage());
+
     // Confirm that the saved practice plan was added to the form, and fields
     // are pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
@@ -664,10 +763,43 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $practice_plan = $this->planStorage->load($practice_plan->id());
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($location->label() . ': Cover Crop', $practice_plan->label());
     $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
+
+    // Confirm that revision log messages were added to both.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    $this->assertEquals('Updated practice implementation plan: <a href="' . $practice_plan->toUrl()->toString() . '">' . $practice_plan->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $practice_plan->getRevisionLogMessage());
+
+    // Confirm that adding and updating practices simultaneously works as
+    // expected.
+    $this->getSession()->getPage()->fillField('practices[add][location]', $location->id());
+    $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
+    $this->getSession()->getPage()->pressButton('Save conservation practices');
+    $this->assertSession()->pageTextContains('Practice implementation plans saved.');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
+
+    // Reload the page and entities.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->load($plan->id());
+    /** @var \Drupal\plan\Entity\PlanInterface[] $practice_plans */
+    $practice_plans = $plan->get('practice_implementation_plan')->referencedEntities();
+    $this->assertCount(2, $practice_plans);
+    $updated_practice_plan = reset($practice_plans);
+    $created_practice_plan = next($practice_plans);
+
+    // Confirm that revision log messages were added to all three.
+    $this->assertEquals('Created practice implementation plan: <a href="' . $created_practice_plan->toUrl()->toString() . '">' . $created_practice_plan->label() . '</a>. Updated practice implementation plan: <a href="' . $updated_practice_plan->toUrl()->toString() . '">' . $updated_practice_plan->label() . '</a>.', $plan->getRevisionLogMessage());
+    $this->assertEquals('Created via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $created_practice_plan->getRevisionLogMessage());
+    $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $updated_practice_plan->getRevisionLogMessage());
 
     // Confirm that submitting the form without changing any values does not
     // save the plans.
@@ -801,6 +933,9 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $file = reset($files);
     $this->assertEquals('private://rcp/' . date('Y-m-d') . '/test-rcp.docx', $file->getFileUri());
     $this->assertEquals(1, $file->get('status')->value);
+
+    // Confirm that a revision log messages was added to the plan.
+    $this->assertEquals('Document uploaded: <a href="' . \Drupal::service('file_url_generator')->generateString($file->getFileUri()) . '">' . $file->label() . '</a>.', $plan->getRevisionLogMessage());
 
     // Reload the plan and confirm that the file is displayed on the page.
     $this->drupalGet('/plan/' . $plan->id());
