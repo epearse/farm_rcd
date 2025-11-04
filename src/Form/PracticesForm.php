@@ -158,7 +158,9 @@ class PracticesForm extends PlanningWorkflowFormBase {
     $form['practice'] = [
       '#type' => 'select',
       '#title' => $this->t('Practice'),
-      '#options' => SliHelper::practices(),
+      '#options' => array_map(function ($practice) {
+        return $practice['label'];
+      }, SliHelper::practices()),
       '#default_value' => $plan ? $plan->get('sli_practice')->value : NULL,
       '#states' => [
         'required' => [
@@ -289,7 +291,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Set the name of the plan based on the land asset and practice.
     // Ensure the name is under 255 characters (we need to do this because the
     // user can't).
-    $name = $plan->get('land')->referencedEntities()[0]->label() . ': ' . SliHelper::practices()[$values['practice']];
+    $name = $plan->get('land')->referencedEntities()[0]->label() . ': ' . SliHelper::practices()[$values['practice']]['label'];
     $name = mb_strimwidth($name, 0, 255, '…');
     $plan->set('name', $name);
 

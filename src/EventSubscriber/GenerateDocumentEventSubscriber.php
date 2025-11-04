@@ -148,8 +148,9 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Iterate through the practice plans and build placeholders.
         $ecosite_practices = [];
         foreach ($plans as $plan) {
+          $practice_info = SliHelper::practices()[$plan->get('sli_practice')->value];
           $ecosite_practices[] = [
-            new StringPlaceholder('practice_name', SliHelper::practices()[$plan->get('sli_practice')->value]->render()),
+            new StringPlaceholder('practice_name', $practice_info['label']->render()),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
           ];
         }

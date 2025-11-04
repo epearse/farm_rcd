@@ -54,7 +54,9 @@ class PracticeImplementation extends FarmPlanType {
         'type' => 'list_string',
         'label' => $this->t('Conservation practice'),
         'description' => $this->t('Specify the conservation practice that this plan intends to implement.'),
-        'allowed_values' => SliHelper::practices(),
+        'allowed_values' => array_map(function ($practice) {
+          return $practice['label'];
+        }, SliHelper::practices()),
         'required' => TRUE,
       ],
 
