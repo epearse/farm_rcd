@@ -834,10 +834,17 @@ class IntakeForm extends FormBase {
     $storage = $form_state->getStorage();
     $storage['log']->save();
 
-    // Email the stakeholder.
+    // Email the stakeholder and RCD staff.
     if (!$storage['log']->get('intake_stakeholder_email')->isEmpty()) {
       $this->mailManager->mail('farm_sli', 'intake_received_stakeholder', $storage['log']->get('intake_stakeholder_email')->value, 'en');
     }
+    if (!empty($this->configFactory()->get('farm_sli.settings')->get('intake_email'))) {
+      $params = [
+        'log' => $storage['log'],
+      ];
+      $this->mailManager->mail('farm_sli', 'intake_received_staff', $this->configFactory()->get('farm_sli.settings')->get('intake_email'), 'en', $params);
+    }
+
     // Remember that the form was submitted, so we can display a message to
     // the user.
     $form_state->set('submitted', TRUE);

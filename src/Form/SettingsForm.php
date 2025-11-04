@@ -75,6 +75,14 @@ class SettingsForm extends ConfigFormbase {
       ],
     ];
 
+    // Intake notification email address.
+    $form['intake_email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Intake notification email'),
+      '#description' => $this->t('This email address will be notified when a new intake is received.'),
+      '#default_value' => $config->get('intake_email'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -163,6 +171,7 @@ class SettingsForm extends ConfigFormbase {
     // Save to config.
     $this->configFactory->getEditable(static::SETTINGS)
       ->set('logo_path', $values['logo_path'])
+      ->set('intake_email', $values['intake_email'])
       ->save();
 
     parent::submitForm($form, $form_state);

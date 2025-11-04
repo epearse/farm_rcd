@@ -2,8 +2,12 @@ intake_received_stakeholder:
   subject: 'Your information has been received by [site:name]'
   body: |-
     Thank you for your interest. A [site:name] staff member will review your information and follow up shortly.
+intake_received_staff:
+  subject: 'New intake received in [site:name]'
+  body: |-
+    A new intake has been received in [site:name]: [log:url:absolute]
 intake_assigned_staff:
-  subject: 'You have been assigned to an RCD intake'
+  subject: 'You have been assigned to an intake in [site:name]'
   body: |-
     Hello [user:account-name],
 
