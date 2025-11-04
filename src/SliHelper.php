@@ -128,117 +128,155 @@ class SliHelper {
     return [
       'bda' => [
         'label' => t('Beaver Dam Analog (BDA)'),
+        'nrcs_code' => 'E643D',
       ],
       'biochar' => [
         'label' => t('Bio-char'),
+        'nrcs_code' => '336',
       ],
       'brush_mgmt' => [
         'label' => t('Brush Management'),
+        'nrcs_code' => '314',
       ],
       'conservation_cover' => [
         'label' => t('Conservation Cover'),
+        'nrcs_code' => '327',
       ],
       'constructed_wetland' => [
         'label' => t('Constructed Wetland'),
+        'nrcs_code' => '656',
       ],
       'contour_orchard_perennials' => [
         'label' => t('Contour Orchard and Perennials'),
+        'nrcs_code' => '331',
       ],
       'cover_crop' => [
         'label' => t('Cover Crop'),
+        'nrcs_code' => '340',
       ],
       'critical_area_planting' => [
         'label' => t('Critical Area Planting'),
+        'nrcs_code' => '342',
       ],
       'filter_strip' => [
         'label' => t('Filter Strip'),
+        'nrcs_code' => '393',
       ],
       'forage_biomass_planting' => [
         'label' => t('Forage Biomass Planting'),
+        'nrcs_code' => 'E512B',
       ],
       'forest_stand_mgmt' => [
         'label' => t('Forest Stand Management'),
+        'nrcs_code' => '666',
       ],
       'fuel_break' => [
         'label' => t('Fuel Break'),
+        'nrcs_code' => '383',
       ],
       'grassed_waterway' => [
         'label' => t('Grassed Waterway'),
+        'nrcs_code' => '412',
       ],
       'hedgerow_planting' => [
         'label' => t('Hedgerow Planting'),
+        'nrcs_code' => '422',
       ],
       'irrigation_water_mgmt' => [
         'label' => t('Irrigation Water Management'),
+        'nrcs_code' => '449',
       ],
       'keyline_plow' => [
         'label' => t('Keyline Plow'),
+        'nrcs_code' => '',
       ],
       'mulching' => [
         'label' => t('Mulching'),
+        'nrcs_code' => '484',
       ],
       'nutrient_mgmt' => [
         'label' => t('Nutrient Management'),
+        'nrcs_code' => '590',
       ],
       'pollinator_habitat' => [
         'label' => t('Pollinator Habitat Enhancement'),
+        'nrcs_code' => '',
       ],
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
+        'nrcs_code' => '338',
       ],
       'prescribed_grazing' => [
         'label' => t('Prescribed Grazing'),
+        'nrcs_code' => '528',
       ],
       'range_planting' => [
         'label' => t('Range Planting'),
+        'nrcs_code' => '550',
       ],
       'residue_tillage_mgmt_no_till' => [
         'label' => t('Residue and Tillage Management, No Till'),
+        'nrcs_code' => '345',
       ],
       'riparian_forest_buffer' => [
         'label' => t('Riparian Forest Buffer'),
+        'nrcs_code' => '391',
       ],
       'riparian_herbaceous_planting' => [
         'label' => t('Riparian Herbaceous Planting'),
+        'nrcs_code' => '390',
       ],
       'roof_runoff_strucfture' => [
         'label' => t('Roof Runoff Structure'),
+        'nrcs_code' => '558',
       ],
       'silvopasture' => [
         'label' => t('Silvopasture'),
+        'nrcs_code' => '381',
       ],
       'soil_carbon_amendment' => [
         'label' => t('Soil Carbon Amendment (e.g. compost)'),
+        'nrcs_code' => '336',
       ],
       'stream_habitat_mgmt' => [
         'label' => t('Stream Habitat Improvement and Management'),
+        'nrcs_code' => '395',
       ],
       'streambank_shoreline_improvement' => [
         'label' => t('Streambank/Shoreline Improvement'),
+        'nrcs_code' => '580',
       ],
       'structure_water_control' => [
         'label' => t('Structure for Water Control'),
+        'nrcs_code' => '587',
       ],
       'structure_wildlife' => [
         'label' => t('Structures for Wildlife'),
+        'nrcs_code' => '649',
       ],
       'tree_shrub_establishment' => [
         'label' => t('Tree/Shrub Establishment'),
+        'nrcs_code' => '612',
       ],
       'upland_wildlife_mgmt' => [
         'label' => t('Upland Wildlife Management'),
+        'nrcs_code' => '645',
       ],
       'water_sediment_control_basin' => [
         'label' => t('Water and Sediment Control Basin'),
+        'nrcs_code' => '638',
       ],
       'wildlife_habitat_planting' => [
         'label' => t('Wildlife Habitat Planting'),
+        'nrcs_code' => '420',
       ],
       'windbreak_shelterbelt' => [
         'label' => t('Windbreak/Shelterbelt'),
+        'nrcs_code' => '380',
       ],
       'other' => [
         'label' => t('Other'),
+        'nrcs_code' => '',
       ],
     ];
   }

@@ -55,7 +55,11 @@ class PracticeImplementation extends FarmPlanType {
         'label' => $this->t('Conservation practice'),
         'description' => $this->t('Specify the conservation practice that this plan intends to implement.'),
         'allowed_values' => array_map(function ($practice) {
-          return $practice['label'];
+          $label = $practice['label']->render();
+          if (!empty($practice['nrcs_code'])) {
+            $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
+          }
+          return $label;
         }, SliHelper::practices()),
         'required' => TRUE,
       ],

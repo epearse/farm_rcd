@@ -159,7 +159,11 @@ class PracticesForm extends PlanningWorkflowFormBase {
       '#type' => 'select',
       '#title' => $this->t('Practice'),
       '#options' => array_map(function ($practice) {
-        return $practice['label'];
+        $label = $practice['label']->render();
+        if (!empty($practice['nrcs_code'])) {
+          $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
+        }
+        return $label;
       }, SliHelper::practices()),
       '#default_value' => $plan ? $plan->get('sli_practice')->value : NULL,
       '#states' => [
