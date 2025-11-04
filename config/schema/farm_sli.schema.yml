@@ -10,6 +10,9 @@ farm_sli.mail:
   type: config_object
   label: 'Email settings'
   mapping:
+    intake_received_stakeholder:
+      type: mail
+      label: 'Stakeholder intake notification email'
     intake_assigned_staff:
       type: mail
       label: 'Staff intake owner assignment notification email'

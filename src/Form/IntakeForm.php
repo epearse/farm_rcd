@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\farm_sli\SliHelper;
 use Drupal\log\Entity\Log;
@@ -25,6 +26,7 @@ class IntakeForm extends FormBase {
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
     protected AccountInterface $currentUser,
+    protected MailManagerInterface $mailManager,
     protected FloodInterface $flood,
   ) {}
 
@@ -832,6 +834,10 @@ class IntakeForm extends FormBase {
     $storage = $form_state->getStorage();
     $storage['log']->save();
 
+    // Email the stakeholder.
+    if (!$storage['log']->get('intake_stakeholder_email')->isEmpty()) {
+      $this->mailManager->mail('farm_sli', 'intake_received_stakeholder', $storage['log']->get('intake_stakeholder_email')->value, 'en');
+    }
     // Remember that the form was submitted, so we can display a message to
     // the user.
     $form_state->set('submitted', TRUE);
