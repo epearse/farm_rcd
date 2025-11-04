@@ -7,7 +7,7 @@ namespace Drupal\farm_sli\Plugin\Plan\PlanType;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
-use Drupal\farm_sli\SliAllowedValues;
+use Drupal\farm_sli\SliHelper;
 
 /**
  * Provides the SLI practice implementation plan type.
@@ -54,7 +54,7 @@ class PracticeImplementation extends FarmPlanType {
         'type' => 'list_string',
         'label' => $this->t('Conservation practice'),
         'description' => $this->t('Specify the conservation practice that this plan intends to implement.'),
-        'allowed_values' => SliAllowedValues::practices(),
+        'allowed_values' => SliHelper::practices(),
         'required' => TRUE,
       ],
 

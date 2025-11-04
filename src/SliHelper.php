@@ -6,8 +6,10 @@ namespace Drupal\farm_sli;
 
 /**
  * Define allowed values RCP fields.
+ *
+ * @internal
  */
-class SliAllowedValues {
+class SliHelper {
 
   /**
    * Stakeholder types.

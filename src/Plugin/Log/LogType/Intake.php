@@ -7,7 +7,7 @@ namespace Drupal\farm_sli\Plugin\Log\LogType;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\LogType;
 use Drupal\farm_entity\Plugin\Log\LogType\FarmLogType;
-use Drupal\farm_sli\SliAllowedValues;
+use Drupal\farm_sli\SliHelper;
 
 /**
  * Provides the SLI Intake log type.
@@ -49,7 +49,7 @@ class Intake extends FarmLogType {
       'intake_stakeholder_state' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder state'),
-        'allowed_values' => SliAllowedValues::states(),
+        'allowed_values' => SliHelper::states(),
       ],
       'intake_stakeholder_zip' => [
         'type' => 'string',
@@ -58,12 +58,12 @@ class Intake extends FarmLogType {
       'intake_stakeholder_type' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder type'),
-        'allowed_values' => SliAllowedValues::stakeholderTypes(),
+        'allowed_values' => SliHelper::stakeholderTypes(),
       ],
       'intake_stakeholder_group' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder group'),
-        'allowed_values' => SliAllowedValues::stakeholderGroups(),
+        'allowed_values' => SliHelper::stakeholderGroups(),
         'multiple' => TRUE,
       ],
 
@@ -104,7 +104,7 @@ class Intake extends FarmLogType {
       'intake_property_state' => [
         'type' => 'list_string',
         'label' => $this->t('Property state'),
-        'allowed_values' => SliAllowedValues::states(),
+        'allowed_values' => SliHelper::states(),
       ],
       'intake_property_zip' => [
         'type' => 'string',
@@ -117,7 +117,7 @@ class Intake extends FarmLogType {
       'intake_property_use' => [
         'type' => 'list_string',
         'label' => $this->t('Land use'),
-        'allowed_values' => SliAllowedValues::landUses(),
+        'allowed_values' => SliHelper::landUses(),
         'multiple' => TRUE,
       ],
       'intake_property_use_grazing_ac' => [
@@ -163,7 +163,7 @@ class Intake extends FarmLogType {
       'intake_goals' => [
         'type' => 'list_string',
         'label' => $this->t('Goals'),
-        'allowed_values' => SliAllowedValues::goals(),
+        'allowed_values' => SliHelper::goals(),
         'multiple' => TRUE,
       ],
       'intake_goals_other' => [
@@ -175,7 +175,7 @@ class Intake extends FarmLogType {
       'intake_concerns' => [
         'type' => 'list_string',
         'label' => $this->t('Concerns'),
-        'allowed_values' => SliAllowedValues::concerns(),
+        'allowed_values' => SliHelper::concerns(),
         'multiple' => TRUE,
       ],
       'intake_concerns_other' => [

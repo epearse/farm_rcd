@@ -6,7 +6,7 @@ namespace Drupal\Tests\farm_sli\Functional;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Tests\farm_sli\Traits\PhpWordTestingTrait;
-use Drupal\farm_sli\SliAllowedValues;
+use Drupal\farm_sli\SliHelper;
 use Drupal\plan\Entity\PlanInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -671,10 +671,10 @@ class PlanningWorkflowFormsTest extends SliTestBase {
       'intake_stakeholder_type' => 'landowner',
       'intake_property_owner' => $this->randomMachineName(),
       'intake_property_acreage' => 100,
-      'intake_stakeholder_group' => array_keys(SliAllowedValues::stakeholderGroups()),
-      'intake_property_use' => array_keys(SliAllowedValues::landUses()),
-      'intake_goals' => array_keys(SliAllowedValues::goals()),
-      'intake_concerns' => array_keys(SliAllowedValues::concerns()),
+      'intake_stakeholder_group' => array_keys(SliHelper::stakeholderGroups()),
+      'intake_property_use' => array_keys(SliHelper::landUses()),
+      'intake_goals' => array_keys(SliHelper::goals()),
+      'intake_concerns' => array_keys(SliHelper::concerns()),
     ]);
     $intake->save();
 

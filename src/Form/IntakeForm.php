@@ -11,7 +11,7 @@ use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\farm_sli\SliAllowedValues;
+use Drupal\farm_sli\SliHelper;
 use Drupal\log\Entity\Log;
 use Drupal\log\Entity\LogInterface;
 
@@ -233,7 +233,7 @@ class IntakeForm extends FormBase {
     $form['personal']['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Stakeholder type'),
-      '#options' => SliAllowedValues::stakeholderTypes(),
+      '#options' => SliHelper::stakeholderTypes(),
       '#default_value' => $saved_values['personal']['type'] ?? NULL,
       '#required' => TRUE,
     ];
@@ -280,7 +280,7 @@ class IntakeForm extends FormBase {
     $form['personal']['address']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
-      '#options' => SliAllowedValues::states(),
+      '#options' => SliHelper::states(),
       '#default_value' => $saved_values['personal']['address']['state'] ?? NULL,
       '#required' => TRUE,
     ];
@@ -298,7 +298,7 @@ class IntakeForm extends FormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('To read more about these categories, <a href=":url" target="_blank">click here</a>.', [':url' => 'https://www.cdfa.ca.gov/farmequity/']),
-      '#options' => SliAllowedValues::stakeholderGroups(),
+      '#options' => SliHelper::stakeholderGroups(),
       '#default_value' => $saved_values['personal']['group'] ?? [],
     ];
 
@@ -435,7 +435,7 @@ class IntakeForm extends FormBase {
     $form['info']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
-      '#options' => SliAllowedValues::states(),
+      '#options' => SliHelper::states(),
       '#default_value' => $saved_values['info']['state'] ?? NULL,
       '#states' => [
         'required' => [
@@ -488,7 +488,7 @@ class IntakeForm extends FormBase {
     $form['land_use']['land_use'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Select at least one'),
-      '#options' => SliAllowedValues::landUses(),
+      '#options' => SliHelper::landUses(),
       '#default_value' => $saved_values['land_use']['land_use'] ?? [],
       '#required' => TRUE,
     ];
@@ -655,7 +655,7 @@ class IntakeForm extends FormBase {
     $form['goals']['goals'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => SliAllowedValues::goals(),
+      '#options' => SliHelper::goals(),
       '#default_value' => $saved_values['goals']['goals'] ?? [],
       '#required' => TRUE,
     ];
@@ -687,7 +687,7 @@ class IntakeForm extends FormBase {
     $form['concerns']['concerns'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => SliAllowedValues::concerns(),
+      '#options' => SliHelper::concerns(),
       '#default_value' => $saved_values['concerns']['concerns'] ?? [],
       '#required' => TRUE,
     ];

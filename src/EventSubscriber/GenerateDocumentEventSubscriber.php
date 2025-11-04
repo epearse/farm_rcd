@@ -9,7 +9,7 @@ use Drupal\farm_sli\Event\GenerateDocumentEvent;
 use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
 use Drupal\farm_sli\Placeholder\StringPlaceholder;
-use Drupal\farm_sli\SliAllowedValues;
+use Drupal\farm_sli\SliHelper;
 use Drupal\plan\Entity\PlanInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -83,7 +83,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Stakeholder name and type.
       $intake_stakeholder_name = $intake->get('intake_stakeholder_name')->value;
-      $intake_stakeholder_type = SliAllowedValues::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
+      $intake_stakeholder_type = SliHelper::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
 
       // Property owner and acreage.
       $intake_property_owner = $intake->get('intake_property_owner')->value;
@@ -91,12 +91,12 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Disadvantaged groups.
       $socially_disadvantaged = implode(', ', array_map(function ($value) {
-        return SliAllowedValues::stakeholderGroups()[$value['value']]->render();
+        return SliHelper::stakeholderGroups()[$value['value']]->render();
       }, $intake->get('intake_stakeholder_group')->getValue()));
 
       // Land use.
       $intake_land_use = array_map(function ($value) {
-        return SliAllowedValues::landUses()[$value['value']]->render();
+        return SliHelper::landUses()[$value['value']]->render();
       }, $intake->get('intake_property_use')->getValue());
 
       // Stakeholder goals.
@@ -105,7 +105,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_goals_other')->value;
         }
-        return SliAllowedValues::goals()[$value]->render();
+        return SliHelper::goals()[$value]->render();
       }, $intake->get('intake_goals')->getValue());
 
       // Stakeholder concerns.
@@ -114,7 +114,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_concerns_other')->value;
         }
-        return SliAllowedValues::concerns()[$value]->render();
+        return SliHelper::concerns()[$value]->render();
       }, $intake->get('intake_concerns')->getValue());
     }
     $placeholders[] = new StringPlaceholder('intake_stakeholder_name', $intake_stakeholder_name ?? '');
@@ -149,7 +149,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         $ecosite_practices = [];
         foreach ($plans as $plan) {
           $ecosite_practices[] = [
-            new StringPlaceholder('practice_name', SliAllowedValues::practices()[$plan->get('sli_practice')->value]->render()),
+            new StringPlaceholder('practice_name', SliHelper::practices()[$plan->get('sli_practice')->value]->render()),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
           ];
         }
@@ -157,7 +157,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Build placeholders for each ecosite.
         $ecosites[] = [
           new StringPlaceholder('ecosite_name', $land_asset->label()),
-          new StringPlaceholder('ecosite_type', SliAllowedValues::landTypes()[$land_asset->get('land_type')->value]->render()),
+          new StringPlaceholder('ecosite_type', SliHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
           new StringPlaceholder('ecosite_overview', $land_asset->get('notes')->value ?? ''),
           new ListBlockPlaceholder('ecosite_practices', $ecosite_practices),
         ];
