@@ -135,7 +135,7 @@ class SliHelper {
         ],
       ],
       'biochar' => [
-        'label' => t('Bio-char'),
+        'label' => t('Soil Carbon Amendment (Biochar)'),
         'nrcs_code' => '336',
         'benefits' => [
           'Improve or maintain soil organic matter',
