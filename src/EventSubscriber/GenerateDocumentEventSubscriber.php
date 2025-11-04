@@ -156,6 +156,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
           $ecosite_practices[] = [
             new StringPlaceholder('practice_name', $practice_name),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
+            new ListStringPlaceholder('practice_benefits', $practice_info['benefits']),
           ];
         }
 
