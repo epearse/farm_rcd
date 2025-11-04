@@ -235,7 +235,7 @@ class SliHelper {
         'label' => t('Wildlife Habitat Planting'),
       ],
       'windbreak_shelterbelt' => [
-        'label' => t('Windreak/Shelterbelt'),
+        'label' => t('Windbreak/Shelterbelt'),
       ],
       'other' => [
         'label' => t('Other'),
