@@ -130,6 +130,9 @@ class SliHelper {
         'label' => t('Beaver Dam Analog (BDA)'),
         'nrcs_code' => 'E643D',
         'benefits' => [],
+        'resources' => [
+          'https://www.nrcs.usda.gov/low-tech-process-based-restoration-to-enhance-floodplain-connectivity-e643d',
+        ],
       ],
       'biochar' => [
         'label' => t('Bio-char'),
@@ -139,6 +142,9 @@ class SliHelper {
           'Sequester carbon and enhance soil carbon (C) stocks',
           'Improve soil aggregate stability',
           'Improve habitat for soil organisms',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-11/336-NHCP-CPS-Soil-Carbon-Amendment-2022.pdf',
         ],
       ],
       'brush_mgmt' => [
@@ -151,6 +157,9 @@ class SliHelper {
           'Improve forage accessibility, quality, and quantity for livestock and wildlife',
           'Manage fuel loads to achieve desired conditions',
           'Pervasive plant species are controlled to a desired level of treatment that will ultimately contribute to creation or maintenance of an ecological site description "steady state" addressing the need for forage, wildlife habitat, and/or water quality',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Brush_Management_314_CPS-3-17Final.pdf',
         ],
       ],
       'conservation_cover' => [
@@ -167,6 +176,9 @@ class SliHelper {
           'Improve soil health by enhancing habitat for soil organisms',
           'Improve soil health by reducing compaction',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2024-06/327-nhcp-cps-conservation-cover-2024.pdf',
+        ],
       ],
       'constructed_wetland' => [
         'label' => t('Constructed Wetland'),
@@ -174,6 +186,9 @@ class SliHelper {
         'benefits' => [
           'Treat wastewater or contaminated runoff from agricultural processing, livestock, or aquaculture facilities',
           'Improve water quality of storm water runoff, tile drainage outflow, or other waterflows.',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Constructed_Wetland_656_NHCP_CPS_2020.pdf',
         ],
       ],
       'contour_orchard_perennials' => [
@@ -183,6 +198,9 @@ class SliHelper {
           'Reduce sheet and rill soil erosion',
           'Reduce transport of excessive sediment and other associated contaminants',
           'Improve water use efficiency with improved infiltration',
+        ],
+        'resources' => [
+          'https://nrcs.usda.gov/sites/default/files/2022-09/Contour_Orchard_and_Other_Perennial_Crops_331_Overview.pdf',
         ],
       ],
       'cover_crop' => [
@@ -200,6 +218,9 @@ class SliHelper {
           'Supply nitrogen to the subsequent crop',
           'Improve habitat for pollinators, beneficial organisms, or natural enemies of crop pests',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2024-06/340-nhcp-cps-cover-crop-2024.pdf',
+        ],
       ],
       'critical_area_planting' => [
         'label' => t('Critical Area Planting'),
@@ -208,6 +229,9 @@ class SliHelper {
           'Stabilize areas with existing or expected high rates of soil erosion by wind or water',
           'Stabilize stream and channel banks, pond and other shorelines, earthen features of structural conservation practices',
           'Stabilize areas such as sand dunes and riparian areas',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Critical_Area_Planting_342_CPS.pdf',
         ],
       ],
       'filter_strip' => [
@@ -218,6 +242,7 @@ class SliHelper {
           'Reduce dissolved contaminant loadings in runoff',
           'Reduce suspended solids and associated contaminants in irrigation tailwater and excessive sediment in surface waters',
         ],
+        'resources' => [],
       ],
       'forage_biomass_planting' => [
         'label' => t('Forage Biomass Planting'),
@@ -227,6 +252,9 @@ class SliHelper {
           'Increase soil cover and reduce soil erosion',
           'Increase organic material in soil',
           'Increase soil health',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2024-12/E512B-Forage%20and%20biomass%20planting%20to%20reduce%20soil%20erosion%20or%20increase%20organic%20matter%20to%20build%20soil%20health.pdf',
         ],
       ],
       'forest_stand_mgmt' => [
@@ -241,6 +269,9 @@ class SliHelper {
           'Alter quantity, quality, and timing of water yield',
           'Increase or maintain carbon storage',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Forest_Stand_Improvement_666_CPS.pdf',
+        ],
       ],
       'fuel_break' => [
         'label' => t('Fuel Break'),
@@ -250,6 +281,9 @@ class SliHelper {
           'Facilitate the management of plant productivity and health with prescribed fire',
           'Facilitate the improvement of fish and wildlife habitat and/or livestock forage quality or quantity by facilitating prescribed fire',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/383_NHCP_CPS_Fuel_Break_2021_0.pdf',
+        ],
       ],
       'grassed_waterway' => [
         'label' => t('Grassed Waterway'),
@@ -258,6 +292,9 @@ class SliHelper {
           'Convey runoff from terraces, diversions, or other water concentrations without causing erosion or flooding',
           'Prevent gully formation',
           'Protect/improve water quality',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Grassed_Waterway_412_CPS_9_2020.pdf',
         ],
       ],
       'hedgerow_planting' => [
@@ -269,6 +306,9 @@ class SliHelper {
           'Filter, intercept, or adsorb airborne particulate matter, chemical drift, or odors',
           'Provide visual or physical screens and barriers',
           'Increase carbon storage in biomass and soils',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2024-01/422_NHCP_CPS_Hedgerow_Planting_2023_0.pdf',
         ],
       ],
       'irrigation_water_mgmt' => [
@@ -282,11 +322,17 @@ class SliHelper {
           'Improve poor plant productivity and health',
           'Reduce energy use',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Irrigation_Water_Management_449_CPS_9_2020.pdf',
+        ],
       ],
       'keyline_plow' => [
         'label' => t('Keyline Plow'),
         'nrcs_code' => '',
         'benefits' => [],
+        'resources' => [
+          'https://agwaterstewards.org/practices/keyline_design/',
+        ],
       ],
       'mulching' => [
         'label' => t('Mulching'),
@@ -302,6 +348,9 @@ class SliHelper {
           'Maintain or increase organic matter content',
           'Reduce emissions of particulate matter',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Mulching_CPS_484_Oct_2017.pdf',
+        ],
       ],
       'nutrient_mgmt' => [
         'label' => t('Nutrient Management'),
@@ -316,16 +365,23 @@ class SliHelper {
           'Reduce the risk of potential pathogens from manure, biosolids, or compost application from reaching surface and ground water',
           'Improve or maintain soil organic matter',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Nutrient_Management_590_NHCP_CPS_2017.pdf',
+        ],
       ],
       'pollinator_habitat' => [
         'label' => t('Pollinator Habitat Enhancement'),
         'nrcs_code' => '',
         'benefits' => [],
+        'resources' => [],
       ],
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
         'nrcs_code' => '338',
         'benefits' => [],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Prescribed_Burning_338_Overview_10_2020.pdf',
+        ],
       ],
       'prescribed_grazing' => [
         'label' => t('Prescribed Grazing'),
@@ -341,6 +397,9 @@ class SliHelper {
           'Manage biomass accumulation for the desired fuel load to reduce wildfire risk or to facilitate prescribed burning',
           'Reduce plant pest pressure from invasive and/or undesirable plants and other pests as part of an integrated plan',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2025-07/528-nhcp-cps-grazing-management-2025-rev.pdf',
+        ],
       ],
       'range_planting' => [
         'label' => t('Range Planting'),
@@ -354,11 +413,17 @@ class SliHelper {
           'Restore hydrologic function',
           'Increase and/or stabilize carbon balance and sequestration',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Range_Planting_550_NHCP_CPS_2022.pdf',
+        ],
       ],
       'residue_tillage_mgmt_no_till' => [
         'label' => t('Residue and Tillage Management, No Till'),
         'nrcs_code' => '345',
         'benefits' => [],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Residue_And_Tillage_Management_Reduced_Till_345_PS_Sept_2016.pdf',
+        ],
       ],
       'riparian_forest_buffer' => [
         'label' => t('Riparian Forest Buffer'),
@@ -369,6 +434,9 @@ class SliHelper {
           'Maintain or increase total carbon stored in soils and/or perennial biomass to reduce atmospheric concentrations of greenhouse gasses',
           'Lower elevated stream water temperatures',
           'Restore diversity, structure, and composition of riparian plant communities',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Riparian_Forest_Buffer_391_Overview_10_2020.pdf',
         ],
       ],
       'riparian_herbaceous_planting' => [
@@ -386,6 +454,9 @@ class SliHelper {
           'Dissipate stream energy and trap sediment',
           'Enhance stream bank protection as part of stream bank soil bioengineering practices',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-11/390-NHCP-CPS-Riparian-Herbaceous-Cover-2022.pdf',
+        ],
       ],
       'roof_runoff_strucfture' => [
         'label' => t('Roof Runoff Structure'),
@@ -395,6 +466,9 @@ class SliHelper {
           'Prevent erosion from roof runoff',
           'Increase infiltration of roof runoff',
           'Capture roof runoff for on-farm use',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Roof_Runoff_Structure_558_NHCP_CPS_2021.pdf',
         ],
       ],
       'silvopasture' => [
@@ -411,6 +485,9 @@ class SliHelper {
           'Increase carbon sequestration and storage',
           'Provide for beneficial organisms and pollinators',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Silvopasture-381-CPS-May-2016.pdf',
+        ],
       ],
       'soil_carbon_amendment' => [
         'label' => t('Soil Carbon Amendment (e.g. compost)'),
@@ -421,12 +498,18 @@ class SliHelper {
           'Improve soil aggregate stability',
           'Improve habitat for soil organisms',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-11/336-NHCP-CPS-Soil-Carbon-Amendment-2022.pdf',
+        ],
       ],
       'stream_habitat_mgmt' => [
         'label' => t('Stream Habitat Improvement and Management'),
         'nrcs_code' => '395',
         'benefits' => [
           'Improve or manage stream habitat by evaluating and addressing factors that impair stream function and structure',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Stream_Habitat_Improvement_And_Management_395_CPS.pdf',
         ],
       ],
       'streambank_shoreline_improvement' => [
@@ -437,6 +520,9 @@ class SliHelper {
           'Maintain the flow capacity of streams or channels',
           'Reduce the offsite or downstream effects of sediment resulting from bank erosion',
           'Improve or enhance the stream corridor or shoreline for fish and wildlife habitat, aesthetics, or recreation',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Streambank_Shoreline_Protection_580_CPS_10_2020.pdf',
         ],
       ],
       'structure_water_control' => [
@@ -455,6 +541,9 @@ class SliHelper {
           'Supplement a resource management system on land where organic waste or commercial fertilizer is applied',
           'Create, restore, or enhance wetland hydrology',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Structure_for_Water_Control_587_CPS_Oct_2017.pdf',
+        ],
       ],
       'structure_wildlife' => [
         'label' => t('Structures for Wildlife'),
@@ -462,6 +551,9 @@ class SliHelper {
         'benefits' => [
           'Enhance or sustain non-domesticated wildlife; or modify existing structures that pose a hazard to wildlife',
           'Provide loafing, escape, nesting, rearing, roosting, perching and/or basking habitat - examples are nesting islands, nesting boxes, roosting boxes, rock piles, perching structures and brush piles',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Structures_for_Wildlife_649_CPS.pdf',
         ],
       ],
       'tree_shrub_establishment' => [
@@ -477,12 +569,18 @@ class SliHelper {
           'Conserve energy',
           'Provide livestock shelter',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-12/612-NHCP-CPS-Tree-Shrub-Establishment-2022.pdf',
+        ],
       ],
       'upland_wildlife_mgmt' => [
         'label' => t('Upland Wildlife Management'),
         'nrcs_code' => '645',
         'benefits' => [
           'Treating upland wildlife habitat concerns identified during the conservation planning process that enable movement, or provide shelter, cover, food in proper amounts, locations and times to sustain wild animals that inhabit uplands during a portion of their life cycle',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-11/645-NHCP-CPS-Upland-Wildlife-Habitat-Management-2022.pdf',
         ],
       ],
       'water_sediment_control_basin' => [
@@ -493,6 +591,9 @@ class SliHelper {
           'Trap sediment',
           'Reduce and manage runoff',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2023-08/638_NHCP_CPS_Water_and_Sediment_Control_Basin_2023.pdf',
+        ],
       ],
       'wildlife_habitat_planting' => [
         'label' => t('Wildlife Habitat Planting'),
@@ -500,6 +601,9 @@ class SliHelper {
         'benefits' => [
           'Improve degraded wildlife habitat for the target wildlife species or guild',
           'Establish wildlife habitat that resembles the historic, desired, and reference native plant community',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Wildlife_Habitat_Planting_420_NHCP_CPS_2018.pdf',
         ],
       ],
       'windbreak_shelterbelt' => [
@@ -516,11 +620,15 @@ class SliHelper {
           'Reduce energy use in heating and cooling buildings, and in relocating snow',
           'Increase carbon storage in biomass and soils',
         ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-10/Windbreak-Shelterbelt_Establishment_380_NHCP_CPS_2021.pdf',
+        ],
       ],
       'other' => [
         'label' => t('Other'),
         'nrcs_code' => '',
         'benefits' => [],
+        'resources' => [],
       ],
     ];
   }

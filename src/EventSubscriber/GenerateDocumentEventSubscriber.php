@@ -157,6 +157,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
             new StringPlaceholder('practice_name', $practice_name),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
             new ListStringPlaceholder('practice_benefits', $practice_info['benefits']),
+            new ListStringPlaceholder('practice_resources', $practice_info['resources']),
           ];
         }
 
