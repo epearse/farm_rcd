@@ -1,0 +1,12 @@
+intake_assigned_staff:
+  subject: 'You have been assigned to an RCD intake'
+  body: |-
+    Hello [user:account-name],
+
+    An intake has been assigned to you in [site:name] ([site:url]):
+
+    [log:url:absolute]
+
+    A Resource Conservation Plan has been started here:
+
+    [plan:url:absolute]

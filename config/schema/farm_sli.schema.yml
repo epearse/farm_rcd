@@ -6,3 +6,10 @@ farm_sli.settings:
       type: string
       label: 'Logo path'
       description: 'Path to logo file.'
+farm_sli.mail:
+  type: config_object
+  label: 'Email settings'
+  mapping:
+    intake_assigned_staff:
+      type: mail
+      label: 'Staff intake owner assignment notification email'

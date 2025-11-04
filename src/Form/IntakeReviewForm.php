@@ -9,6 +9,7 @@ use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\log\Entity\LogInterface;
 use Drupal\organization\Entity\Organization;
@@ -25,6 +26,7 @@ class IntakeReviewForm extends FormBase {
 
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
+    protected MailManagerInterface $mailManager,
   ) {}
 
   /**
@@ -191,6 +193,19 @@ class IntakeReviewForm extends FormBase {
       ],
     ];
 
+    // Checkbox to notify the intake owner.
+    $form['notify_owner'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Notify intake owner'),
+      '#description' => $this->t('Send an email to the intake owner.'),
+      '#default_value' => TRUE,
+      '#states' => [
+        'visible' => [
+          ':input[name="decision"]' => ['value' => 'continue'],
+        ],
+      ],
+    ];
+
     // Checkbox to create a new Resource Conservation Plan.
     $form['create_plan'] = [
       '#type' => 'checkbox',
@@ -353,6 +368,16 @@ class IntakeReviewForm extends FormBase {
     if (!empty($form_state->getValue('create_plan')) && !is_null($plan)) {
       $plan->save();
       $this->messenger()->addStatus($this->t('Plan created: <a href=":uri">%name</a>', [':uri' => $plan->toUrl()->toString(), '%name' => $plan->label()]));
+    }
+
+    // Send email to intake owner, if desired.
+    if (!empty($form_state->getValue('notify_owner'))) {
+      $params = [
+        'user' => $owner,
+        'log' => $log,
+        'plan' => $plan,
+      ];
+      $this->mailManager->mail('farm_sli', 'intake_assigned_staff', $owner->getEmail(), 'en', $params);
     }
 
     // Redirect to the plan, if available.
