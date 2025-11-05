@@ -337,7 +337,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       $form['resources'][$key]['rating'] = [
         '#type' => 'select',
         '#title' => $this->t('Rating'),
-        '#description' => $this->t('Provide a rating between 1-5.'),
+        '#description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         '#options' => [
           NULL => '',
           1 => 1,

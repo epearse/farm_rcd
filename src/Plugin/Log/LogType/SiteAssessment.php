@@ -92,6 +92,7 @@ class SiteAssessment extends FarmLogType {
       'sli_soil_rating' => [
         'type' => 'integer',
         'label' => $this->t('Soil rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -119,6 +120,7 @@ class SiteAssessment extends FarmLogType {
       'sli_water_rating' => [
         'type' => 'integer',
         'label' => $this->t('Water rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -146,6 +148,7 @@ class SiteAssessment extends FarmLogType {
       'sli_plant_rating' => [
         'type' => 'integer',
         'label' => $this->t('Plant/vegetation rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -173,6 +176,7 @@ class SiteAssessment extends FarmLogType {
       'sli_aquatic_rating' => [
         'type' => 'integer',
         'label' => $this->t('Aquatic habitat rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -200,6 +204,7 @@ class SiteAssessment extends FarmLogType {
       'sli_livestock_rating' => [
         'type' => 'integer',
         'label' => $this->t('Livestock rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -227,6 +232,7 @@ class SiteAssessment extends FarmLogType {
       'sli_wildlife_rating' => [
         'type' => 'integer',
         'label' => $this->t('Wildlife rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
@@ -254,6 +260,7 @@ class SiteAssessment extends FarmLogType {
       'sli_infrastructure_rating' => [
         'type' => 'integer',
         'label' => $this->t('Infrastructure rating'),
+        'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
         'size' => 'tiny',
         'min' => 1,
         'max' => 5,
