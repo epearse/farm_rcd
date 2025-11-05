@@ -467,13 +467,11 @@ class IntakeForm extends FormBase {
     // Property address: parcel number or GPS coordinates.
     $form['info']['parcel_gps'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('If no address exists, please enter the parcel number or GPS coordinates'),
+      '#title' => $this->t('Parcel number or GPS coordinates'),
+      '#description' => $this->t('Please provide a parcel number or GPS coordinates to help locate the property.'),
       '#default_value' => $saved_values['info']['parcel_gps'] ?? '',
       '#states' => [
         'required' => [
-          ':input[name="property[info][has_address]"]' => ['value' => 'no'],
-        ],
-        'visible' => [
           ':input[name="property[info][has_address]"]' => ['value' => 'no'],
         ],
       ],
