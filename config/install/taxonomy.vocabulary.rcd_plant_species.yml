@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  enforced:
+    module:
+      - farm_rcd
 name: 'Plant species'
 vid: rcd_plant_species
 description: null

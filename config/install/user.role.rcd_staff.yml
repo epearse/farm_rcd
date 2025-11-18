@@ -17,6 +17,9 @@ dependencies:
     - quantity
     - system
     - toolbar
+  enforced:
+    module:
+      - farm_rcd
 id: rcd_staff
 label: Staff
 weight: 2
