@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Hook;
+namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -12,10 +12,10 @@ use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\farm_sli\Form\IntakeReviewForm;
+use Drupal\farm_rcd\Form\IntakeReviewForm;
 
 /**
- * Theme hook implementations for farm_sli.
+ * Theme hook implementations for farm_rcd.
  */
 class ThemeHooks implements ContainerInjectionInterface {
 
@@ -69,28 +69,28 @@ class ThemeHooks implements ContainerInjectionInterface {
   public function planView(array &$build, EntityInterface $plan, EntityViewDisplayInterface $display, $view_mode): void {
 
     // Only modify RCP plans in full view mode.
-    if (!($plan->bundle() == 'sli_rcp' && $view_mode == 'full')) {
+    if (!($plan->bundle() == 'rcd_rcp' && $view_mode == 'full')) {
       return;
     }
 
     // Add planning workflow forms.
-    $build['sli_property'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PropertyForm', $plan);
-    $build['sli_ecosites'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\EcositesForm', $plan);
-    $build['sli_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\SiteAssessmentsForm', $plan);
-    $build['sli_practices'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\PracticesForm', $plan);
-    $build['sli_document'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\DocumentForm', $plan);
-    $build['sli_status'] = $this->formBuilder->getForm('Drupal\farm_sli\Form\StatusForm', $plan);
+    $build['rcd_property'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PropertyForm', $plan);
+    $build['rcd_ecosites'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\EcositesForm', $plan);
+    $build['rcd_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\SiteAssessmentsForm', $plan);
+    $build['rcd_practices'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PracticesForm', $plan);
+    $build['rcd_document'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\DocumentForm', $plan);
+    $build['rcd_status'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\StatusForm', $plan);
 
     // Attach behavior for disabling forms when one is updated.
     $build['#attached']['drupalSettings']['disable_form_ids'] = [
-      'farm-sli-property-form',
-      'farm-sli-ecosites-form',
-      'farm-sli-site-assessment-form',
-      'farm-sli-practice-form',
-      'farm-sli-document-form',
-      'farm-sli-status-form',
+      'farm-rcd-property-form',
+      'farm-rcd-ecosites-form',
+      'farm-rcd-site-assessment-form',
+      'farm-rcd-practice-form',
+      'farm-rcd-document-form',
+      'farm-rcd-status-form',
     ];
-    $build['#attached']['library'][] = 'farm_sli/disable_forms';
+    $build['#attached']['library'][] = 'farm_rcd/disable_forms';
   }
 
   /**
@@ -101,7 +101,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     /** @var \Drupal\log\Entity\LogInterface $entity */
 
     // Only modify intake logs in full view mode.
-    if (!($entity->bundle() == 'sli_intake' && $view_mode == 'full')) {
+    if (!($entity->bundle() == 'rcd_intake' && $view_mode == 'full')) {
       return;
     }
 
@@ -111,7 +111,7 @@ class ThemeHooks implements ContainerInjectionInterface {
       '#title' => $this->t('Review intake'),
       '#open' => TRUE,
       '#access' => IntakeReviewForm::access($this->currentUser, $entity),
-      'form' => $this->formBuilder->getForm('Drupal\farm_sli\Form\IntakeReviewForm', $entity),
+      'form' => $this->formBuilder->getForm('Drupal\farm_rcd\Form\IntakeReviewForm', $entity),
     ];
   }
 
@@ -124,7 +124,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     // Expose the intake review form on intake logs.
     return [
       'log' => [
-        'sli_intake' => [
+        'rcd_intake' => [
           'display' => [
             'review_intake' => [
               'label' => $this->t('Intake review form'),
@@ -147,12 +147,12 @@ class ThemeHooks implements ContainerInjectionInterface {
     if ($entity_type == 'plan') {
       return [
         'bottom' => [
-          'sli_property',
-          'sli_ecosites',
-          'sli_site_assessments',
-          'sli_practices',
-          'sli_document',
-          'sli_status',
+          'rcd_property',
+          'rcd_ecosites',
+          'rcd_site_assessments',
+          'rcd_practices',
+          'rcd_document',
+          'rcd_status',
         ],
       ];
     }

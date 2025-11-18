@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - farm_rcd
+id: land_type_rcd_vineyard
+color: purple
+conditions:
+  asset_type:
+    - land
+  land_type:
+    - rcd_vineyard

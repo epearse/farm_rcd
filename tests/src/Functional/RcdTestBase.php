@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\Tests\farm_rcd\Functional;
+
+use Drupal\Tests\farm_test\Functional\FarmBrowserTestBase;
+
+/**
+ * Base class for RCD functional tests.
+ */
+class RcdTestBase extends FarmBrowserTestBase {
+
+  /**
+   * Test user.
+   *
+   * @var \Drupal\user\Entity\User|bool
+   */
+  protected $user;
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'farm_rcd',
+
+    // Add farm_ui to test that our alterations work.
+    'farm_ui',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+
+    // Create and login a user with the Staff role.
+    $this->user = $this->createUser();
+    $this->user->addRole('rcd_staff');
+    $this->user->save();
+    $this->drupalLogin($this->user);
+  }
+
+}

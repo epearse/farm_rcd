@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - farm_rcd
+  enforced:
+    module:
+      - farm_rcd
+id: rcd_practice_implementation
+label: Practice implementation plan
+description: ''
+workflow: rcd_practice_implementation
+new_revision: true

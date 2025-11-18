@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Event;
+namespace Drupal\farm_rcd\Event;
 
 use Drupal\Component\EventDispatcher\Event;
 
@@ -31,7 +31,7 @@ class GenerateDocumentEvent extends Event {
   /**
    * Get placeholders.
    *
-   * @return \Drupal\farm_sli\Placeholder\PlaceholderInterface[]
+   * @return \Drupal\farm_rcd\Placeholder\PlaceholderInterface[]
    *   Returns a list of PlaceholderInterface objects.
    */
   public function getPlaceholders(): array {
@@ -41,7 +41,7 @@ class GenerateDocumentEvent extends Event {
   /**
    * Add placeholders.
    *
-   * @param \Drupal\farm_sli\Placeholder\PlaceholderInterface[] $placeholders
+   * @param \Drupal\farm_rcd\Placeholder\PlaceholderInterface[] $placeholders
    *   Adds an array of PlaceholderInterface objects.
    */
   public function addPlaceholders(array $placeholders) {

@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\farm_sli\Functional;
+namespace Drupal\Tests\farm_rcd\Functional;
 
 /**
  * Tests the intake review form.
  */
-class IntakeReviewFormTest extends SliTestBase {
+class IntakeReviewFormTest extends RcdTestBase {
 
   /**
    * Test the intake review form.
    */
   public function testIntakeReviewForm() {
 
-    // Create a pending sli_intake log.
+    // Create a pending rcd_intake log.
     $log_storage = \Drupal::entityTypeManager()->getStorage('log');
     $log = $log_storage->create([
-      'type' => 'sli_intake',
+      'type' => 'rcd_intake',
       'status' => 'pending',
       'intake_farm_name' => 'My Example Farm',
     ]);
@@ -70,7 +70,7 @@ class IntakeReviewFormTest extends SliTestBase {
     $this->assertCount(1, $plans);
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $plans[1];
-    $this->assertEquals('sli_rcp', $plan->bundle());
+    $this->assertEquals('rcd_rcp', $plan->bundle());
     $this->assertEquals('My Example Farm RCP', $plan->label());
     $this->assertEquals($farm->id(), $plan->get('farm')->target_id);
     $this->assertEquals($log->id(), $plan->get('intake')->target_id);
@@ -107,7 +107,7 @@ class IntakeReviewFormTest extends SliTestBase {
     $this->assertCount(2, $plans);
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $plans[2];
-    $this->assertEquals('sli_rcp', $plan->bundle());
+    $this->assertEquals('rcd_rcp', $plan->bundle());
     $this->assertEquals('My Example Farm RCP', $plan->label());
     $this->assertEquals($farm->id(), $plan->get('farm')->target_id);
     $this->assertEquals($log->id(), $plan->get('intake')->target_id);

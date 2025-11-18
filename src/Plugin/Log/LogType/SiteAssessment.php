@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Plugin\Log\LogType;
+namespace Drupal\farm_rcd\Plugin\Log\LogType;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\LogType;
 use Drupal\farm_entity\Plugin\Log\LogType\FarmLogType;
 
 /**
- * Provides the SLI site assessment log type.
+ * Provides the RCD site assessment log type.
  */
 #[LogType(
-  id: 'sli_site_assessment',
+  id: 'rcd_site_assessment',
   label: new TranslatableMarkup('Site assessment'),
 )]
 class SiteAssessment extends FarmLogType {
@@ -25,71 +25,71 @@ class SiteAssessment extends FarmLogType {
     $field_info = [
 
       // Land use history.
-      'sli_land_use_history' => [
+      'rcd_land_use_history' => [
         'type' => 'string_long',
         'label' => $this->t('Land use history'),
       ],
 
       // Existing infrastructure.
-      'sli_infrastructure' => [
+      'rcd_infrastructure' => [
         'type' => 'string_long',
         'label' => $this->t('Existing infrastructure'),
       ],
 
       // Priority environmental concerns.
-      'sli_priority_concerns' => [
+      'rcd_priority_concerns' => [
         'type' => 'string_long',
         'label' => $this->t('Priority environmental concerns'),
       ],
 
       // Watersheds.
-      'sli_watershed' => [
+      'rcd_watershed' => [
         'type' => 'entity_reference',
         'label' => $this->t('Watersheds'),
         'target_type' => 'taxonomy_term',
-        'target_bundle' => 'sli_watershed',
+        'target_bundle' => 'rcd_watershed',
         'multiple' => TRUE,
         'auto_create' => TRUE,
       ],
 
       // Groundwater basins.
-      'sli_groundwater_basin' => [
+      'rcd_groundwater_basin' => [
         'type' => 'entity_reference',
         'label' => $this->t('Groundwater basins'),
         'target_type' => 'taxonomy_term',
-        'target_bundle' => 'sli_groundwater_basin',
+        'target_bundle' => 'rcd_groundwater_basin',
         'multiple' => TRUE,
         'auto_create' => TRUE,
       ],
 
       // Wildlife species.
-      'sli_wildlife_species' => [
+      'rcd_wildlife_species' => [
         'type' => 'entity_reference',
         'label' => $this->t('Wildlife species'),
         'target_type' => 'taxonomy_term',
-        'target_bundle' => 'sli_wildlife_species',
+        'target_bundle' => 'rcd_wildlife_species',
         'multiple' => TRUE,
         'auto_create' => TRUE,
       ],
 
       // Plant species.
-      'sli_plant_species' => [
+      'rcd_plant_species' => [
         'type' => 'entity_reference',
         'label' => $this->t('Plant species'),
         'target_type' => 'taxonomy_term',
-        'target_bundle' => 'sli_plant_species',
+        'target_bundle' => 'rcd_plant_species',
         'multiple' => TRUE,
         'auto_create' => TRUE,
       ],
 
       // Landowner objectives.
-      'sli_landowner_objectives' => [
+      'rcd_landowner_objectives' => [
         'type' => 'string_long',
         'label' => $this->t('Landowner objectives'),
       ],
 
       // Soil rating.
-      'sli_soil_rating' => [
+      'rcd_soil_rating' => [
         'type' => 'integer',
         'label' => $this->t('Soil rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -99,25 +99,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Soil baseline conditions.
-      'sli_soil_baseline' => [
+      'rcd_soil_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Soil baseline conditions'),
       ],
 
       // Soil goals.
-      'sli_soil_goals' => [
+      'rcd_soil_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Soil goals'),
       ],
 
       // Soil strategy.
-      'sli_soil_strategy' => [
+      'rcd_soil_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Soil strategy to achieve goals'),
       ],
 
       // Water rating.
-      'sli_water_rating' => [
+      'rcd_water_rating' => [
         'type' => 'integer',
         'label' => $this->t('Water rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -127,25 +127,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Water baseline conditions.
-      'sli_water_baseline' => [
+      'rcd_water_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Water baseline conditions'),
       ],
 
       // Water goals.
-      'sli_water_goals' => [
+      'rcd_water_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Water goals'),
       ],
 
       // Water strategy.
-      'sli_water_strategy' => [
+      'rcd_water_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Water strategy to achieve goals'),
       ],
 
       // Plant/vegetation rating.
-      'sli_plant_rating' => [
+      'rcd_plant_rating' => [
         'type' => 'integer',
         'label' => $this->t('Plant/vegetation rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -155,25 +155,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Plant/vegetation baseline conditions.
-      'sli_plant_baseline' => [
+      'rcd_plant_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Plant/vegetation baseline conditions'),
       ],
 
       // Plant/vegetation goals.
-      'sli_plant_goals' => [
+      'rcd_plant_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Plant/vegetation goals'),
       ],
 
       // Plant/vegetation strategy.
-      'sli_plant_strategy' => [
+      'rcd_plant_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Plant/vegetation strategy to achieve goals'),
       ],
 
       // Aquatic habitat rating.
-      'sli_aquatic_rating' => [
+      'rcd_aquatic_rating' => [
         'type' => 'integer',
         'label' => $this->t('Aquatic habitat rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -183,25 +183,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Aquatic habitat baseline conditions.
-      'sli_aquatic_baseline' => [
+      'rcd_aquatic_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Aquatic habitat baseline conditions'),
       ],
 
       // Aquatic habitat goals.
-      'sli_aquatic_goals' => [
+      'rcd_aquatic_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Aquatic habitat goals'),
       ],
 
       // Aquatic habitat strategy.
-      'sli_aquatic_strategy' => [
+      'rcd_aquatic_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Aquatic habitat strategy to achieve goals'),
       ],
 
       // Livestock rating.
-      'sli_livestock_rating' => [
+      'rcd_livestock_rating' => [
         'type' => 'integer',
         'label' => $this->t('Livestock rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -211,25 +211,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Livestock baseline conditions.
-      'sli_livestock_baseline' => [
+      'rcd_livestock_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Livestock baseline conditions'),
       ],
 
       // Livestock goals.
-      'sli_livestock_goals' => [
+      'rcd_livestock_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Livestock goals'),
       ],
 
       // Livestock strategy.
-      'sli_livestock_strategy' => [
+      'rcd_livestock_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Livestock strategy to achieve goals'),
       ],
 
       // Wildlife rating.
-      'sli_wildlife_rating' => [
+      'rcd_wildlife_rating' => [
         'type' => 'integer',
         'label' => $this->t('Wildlife rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -239,25 +239,25 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Wildlife baseline conditions.
-      'sli_wildlife_baseline' => [
+      'rcd_wildlife_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Wildlife baseline conditions'),
       ],
 
       // Wildlife goals.
-      'sli_wildlife_goals' => [
+      'rcd_wildlife_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Wildlife goals'),
       ],
 
       // Wildlife strategy.
-      'sli_wildlife_strategy' => [
+      'rcd_wildlife_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Wildlife strategy to achieve goals'),
       ],
 
       // Infrastructure rating.
-      'sli_infrastructure_rating' => [
+      'rcd_infrastructure_rating' => [
         'type' => 'integer',
         'label' => $this->t('Infrastructure rating'),
         'description' => $this->t('Please rate the condition of this resource between 1-5, where 1 is terrible and 5 is excellent.'),
@@ -267,19 +267,19 @@ class SiteAssessment extends FarmLogType {
       ],
 
       // Infrastructure baseline conditions.
-      'sli_infrastructure_baseline' => [
+      'rcd_infrastructure_baseline' => [
         'type' => 'string_long',
         'label' => $this->t('Infrastructure baseline conditions'),
       ],
 
       // Infrastructure goals.
-      'sli_infrastructure_goals' => [
+      'rcd_infrastructure_goals' => [
         'type' => 'string_long',
         'label' => $this->t('Infrastructure goals'),
       ],
 
       // Infrastructure strategy.
-      'sli_infrastructure_strategy' => [
+      'rcd_infrastructure_strategy' => [
         'type' => 'string_long',
         'label' => $this->t('Infrastructure strategy to achieve goals'),
       ],

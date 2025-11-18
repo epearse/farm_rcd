@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\DependencyInjection\AutowireTrait;
@@ -33,7 +33,7 @@ class IntakeReviewForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_intake_review_form';
+    return 'farm_rcd_intake_review_form';
   }
 
   /**
@@ -50,7 +50,7 @@ class IntakeReviewForm extends FormBase {
   public static function access(AccountInterface $account, LogInterface $log) {
 
     // If the log is not an intake, deny access.
-    if ($log->bundle() != 'sli_intake') {
+    if ($log->bundle() != 'rcd_intake') {
       return AccessResult::forbidden();
     }
 
@@ -81,7 +81,7 @@ class IntakeReviewForm extends FormBase {
 
     // Build a list of active managers.
     $users = $this->entityTypeManager->getStorage('user')->loadByProperties([
-      'roles' => 'sli_staff',
+      'roles' => 'rcd_staff',
       'status' => TRUE,
     ]);
     $owner_options = array_combine(
@@ -377,7 +377,7 @@ class IntakeReviewForm extends FormBase {
         'log' => $log,
         'plan' => $plan,
       ];
-      $this->mailManager->mail('farm_sli', 'intake_assigned_staff', $owner->getEmail(), 'en', $params);
+      $this->mailManager->mail('farm_rcd', 'intake_assigned_staff', $owner->getEmail(), 'en', $params);
     }
 
     // Redirect to the plan, if available.
@@ -404,7 +404,7 @@ class IntakeReviewForm extends FormBase {
   }
 
   /**
-   * Generate a sli_rcp plan entity.
+   * Generate a rcd_rcp plan entity.
    *
    * @param \Drupal\organization\Entity\OrganizationInterface $farm
    *   The farm organization entity.
@@ -417,7 +417,7 @@ class IntakeReviewForm extends FormBase {
    */
   protected function generatePlan(OrganizationInterface $farm, LogInterface $intake): ?PlanInterface {
     return Plan::create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => $farm->label() . ' RCP',
       'farm' => $farm,
       'intake' => $intake,

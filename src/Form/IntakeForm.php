@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\DependencyInjection\AutowireTrait;
@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\farm_sli\SliHelper;
+use Drupal\farm_rcd\RcdHelper;
 use Drupal\log\Entity\Log;
 use Drupal\log\Entity\LogInterface;
 
@@ -34,7 +34,7 @@ class IntakeForm extends FormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_intake_form';
+    return 'farm_rcd_intake_form';
   }
 
   /**
@@ -92,7 +92,7 @@ class IntakeForm extends FormBase {
 
     // If flood control restrictions have been exceeded, display a message.
     // A threshold of 2 means that the form can be submitted once per hour.
-    if (!$this->flood->isAllowed('sli_intake_form', 2)) {
+    if (!$this->flood->isAllowed('rcd_intake_form', 2)) {
       $form['status'] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
@@ -235,7 +235,7 @@ class IntakeForm extends FormBase {
     $form['personal']['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Stakeholder type'),
-      '#options' => SliHelper::stakeholderTypes(),
+      '#options' => RcdHelper::stakeholderTypes(),
       '#default_value' => $saved_values['personal']['type'] ?? NULL,
       '#required' => TRUE,
     ];
@@ -282,7 +282,7 @@ class IntakeForm extends FormBase {
     $form['personal']['address']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
-      '#options' => SliHelper::states(),
+      '#options' => RcdHelper::states(),
       '#default_value' => $saved_values['personal']['address']['state'] ?? NULL,
       '#required' => TRUE,
     ];
@@ -300,7 +300,7 @@ class IntakeForm extends FormBase {
       '#type' => 'checkboxes',
       '#title' => $this->t('Many grants are prioritized for specific groups of farmers and ranchers. Please let us know if you or a property owner identify as any of the following as it could increase likelihood of funding projects on your land (choose all that apply):'),
       '#description' => $this->t('To read more about these categories, <a href=":url" target="_blank">click here</a>.', [':url' => 'https://www.cdfa.ca.gov/farmequity/']),
-      '#options' => SliHelper::stakeholderGroups(),
+      '#options' => RcdHelper::stakeholderGroups(),
       '#default_value' => $saved_values['personal']['group'] ?? [],
     ];
 
@@ -308,7 +308,7 @@ class IntakeForm extends FormBase {
     $form['personal']['share_rcds'] = [
       '#type' => 'radios',
       '#title' => $this->t('Would you like to share the application information with other RCDs?'),
-      '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your Sustainable land initiatives in order to collaborate and share best practices.'),
+      '#description' => $this->t('You have the right to submit the application and not to share the information with other RCDs. However, allowing your application information to be shared will allow the RCDs in the State to follow more transparently the development of your conservation practices in order to collaborate and share best practices.'),
       '#options' => [
         'yes' => $this->t('Yes'),
         'no' => $this->t('No'),
@@ -437,7 +437,7 @@ class IntakeForm extends FormBase {
     $form['info']['state'] = [
       '#type' => 'select',
       '#title' => $this->t('State'),
-      '#options' => SliHelper::states(),
+      '#options' => RcdHelper::states(),
       '#default_value' => $saved_values['info']['state'] ?? NULL,
       '#states' => [
         'required' => [
@@ -488,7 +488,7 @@ class IntakeForm extends FormBase {
     $form['land_use']['land_use'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Select at least one'),
-      '#options' => SliHelper::landUses(),
+      '#options' => RcdHelper::landUses(),
       '#default_value' => $saved_values['land_use']['land_use'] ?? [],
       '#required' => TRUE,
     ];
@@ -655,7 +655,7 @@ class IntakeForm extends FormBase {
     $form['goals']['goals'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => SliHelper::goals(),
+      '#options' => RcdHelper::goals(),
       '#default_value' => $saved_values['goals']['goals'] ?? [],
       '#required' => TRUE,
     ];
@@ -687,7 +687,7 @@ class IntakeForm extends FormBase {
     $form['concerns']['concerns'] = [
       '#type' => 'checkboxes',
       '#title' => $this->t('Please select at least one'),
-      '#options' => SliHelper::concerns(),
+      '#options' => RcdHelper::concerns(),
       '#default_value' => $saved_values['concerns']['concerns'] ?? [],
       '#required' => TRUE,
     ];
@@ -733,7 +733,7 @@ class IntakeForm extends FormBase {
     $log = $this->generateIntakeLog($saved_values);
 
     // Render the log entity.
-    $form['log'] = $this->entityTypeManager->getViewBuilder('log')->view($log, 'sli_intake_preview');
+    $form['log'] = $this->entityTypeManager->getViewBuilder('log')->view($log, 'rcd_intake_preview');
 
     return $form;
   }
@@ -806,7 +806,7 @@ class IntakeForm extends FormBase {
       return;
     }
 
-    // Generate and validate sli_intake log.
+    // Generate and validate rcd_intake log.
     $log = $this->generateIntakeLog($saved_values);
     $violations = $log->validate();
     if ($violations->count() > 0) {
@@ -825,7 +825,7 @@ class IntakeForm extends FormBase {
 
     // Register a flood control event if this is an anonymous user.
     if ($this->currentUser->isAnonymous()) {
-      $this->flood->register('sli_intake_form');
+      $this->flood->register('rcd_intake_form');
     }
 
     // Load the log from storage and save it.
@@ -834,13 +834,13 @@ class IntakeForm extends FormBase {
 
     // Email the stakeholder and RCD staff.
     if (!$storage['log']->get('intake_stakeholder_email')->isEmpty()) {
-      $this->mailManager->mail('farm_sli', 'intake_received_stakeholder', $storage['log']->get('intake_stakeholder_email')->value, 'en');
+      $this->mailManager->mail('farm_rcd', 'intake_received_stakeholder', $storage['log']->get('intake_stakeholder_email')->value, 'en');
     }
-    if (!empty($this->configFactory()->get('farm_sli.settings')->get('intake_email'))) {
+    if (!empty($this->configFactory()->get('farm_rcd.settings')->get('intake_email'))) {
       $params = [
         'log' => $storage['log'],
       ];
-      $this->mailManager->mail('farm_sli', 'intake_received_staff', $this->configFactory()->get('farm_sli.settings')->get('intake_email'), 'en', $params);
+      $this->mailManager->mail('farm_rcd', 'intake_received_staff', $this->configFactory()->get('farm_rcd.settings')->get('intake_email'), 'en', $params);
     }
 
     // Remember that the form was submitted, so we can display a message to
@@ -850,13 +850,13 @@ class IntakeForm extends FormBase {
   }
 
   /**
-   * Generate a sli_intake log entity from saved values.
+   * Generate a rcd_intake log entity from saved values.
    *
    * @param array $saved_values
    *   Saved values for this step.
    *
    * @return \Drupal\log\Entity\LogInterface|null
-   *   Returns an unsaved sli_intake log entity, or null if something goes
+   *   Returns an unsaved rcd_intake log entity, or null if something goes
    *   wrong.
    */
   protected function generateIntakeLog(array $saved_values): ?LogInterface {
@@ -875,7 +875,7 @@ class IntakeForm extends FormBase {
 
     // Create and return the log.
     return Log::create([
-      'type' => 'sli_intake',
+      'type' => 'rcd_intake',
       'intake_stakeholder_name' => $saved_values['stakeholder']['personal']['name'],
       'intake_stakeholder_type' => $saved_values['stakeholder']['personal']['type'],
       'intake_stakeholder_email' => $saved_values['stakeholder']['personal']['email'],

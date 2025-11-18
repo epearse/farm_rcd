@@ -1,0 +1,4 @@
+farm_rcd.settings:
+  base_route: farm_settings.settings_page
+  route_name: farm_rcd.settings
+  title: 'RCD'

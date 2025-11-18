@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - farm_rcd
+id: rcd_rcp
+label: Resource conservation plan
+description: ''
+workflow: plan_default
+new_revision: true

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli;
+namespace Drupal\farm_rcd;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\farm_sli\Event\GenerateDocumentEvent;
-use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
-use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
-use Drupal\farm_sli\Placeholder\StringPlaceholder;
+use Drupal\farm_rcd\Event\GenerateDocumentEvent;
+use Drupal\farm_rcd\Placeholder\ListBlockPlaceholder;
+use Drupal\farm_rcd\Placeholder\ListStringPlaceholder;
+use Drupal\farm_rcd\Placeholder\StringPlaceholder;
 use Drupal\file\FileInterface;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -41,7 +41,7 @@ class DocumentGenerator implements DocumentGeneratorInterface {
     // Otherwise, remove the placeholder.
     // We use cloneBlock() because deleteBlock() and replaceBlock() don't work.
     // @see https://github.com/PHPOffice/PHPWord/issues/341#issuecomment-557939060
-    $logo_path = $this->configFactory->get('farm_sli.settings')->get('logo_path');
+    $logo_path = $this->configFactory->get('farm_rcd.settings')->get('logo_path');
     if (!empty($logo_path)) {
       $template->cloneBlock('logo_block', 1, TRUE, FALSE);
       $template->setImageValue('logo', $logo_path);
@@ -87,7 +87,7 @@ class DocumentGenerator implements DocumentGeneratorInterface {
    *
    * @param \PhpOffice\PhpWord\TemplateProcessor $template
    *   The template processor.
-   * @param \Drupal\farm_sli\Placeholder\PlaceholderInterface[] $placeholders
+   * @param \Drupal\farm_rcd\Placeholder\PlaceholderInterface[] $placeholders
    *   The placeholders.
    * @param string $suffix
    *   A suffix to append to the search string.

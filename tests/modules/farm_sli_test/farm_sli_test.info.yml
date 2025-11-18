@@ -1,7 +1,0 @@
-name: SLI Testing Module
-description: Support module for SLI testing.
-type: module
-package: Testing
-core_version_requirement: ^11
-dependencies:
-  - farm_sli:farm_sli

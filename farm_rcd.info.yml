@@ -1,0 +1,15 @@
+name: farmOS Conservation Planner
+description: Provides farmOS features for Resource Conservation Districts to aid in the conservation planning processes.
+type: module
+package: farmOS Contrib
+core_version_requirement: ^11
+dependencies:
+  - drupal:help
+  - farm_entity
+  - farm_farm
+  - farm_land
+  - farm_log
+  - farm_ui_dashboard
+  - file
+  - plan
+  - tagify:tagify

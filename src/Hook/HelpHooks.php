@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Hook;
+namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
- * Help hook implementations for farm_sli.
+ * Help hook implementations for farm_rcd.
  */
 class HelpHooks {
 
@@ -22,7 +22,7 @@ class HelpHooks {
   public function help(string $route_name, RouteMatchInterface $route_match): string|\Stringable|array|null {
 
     // Intake review form.
-    if ($route_name == 'farm_sli.intake_review') {
+    if ($route_name == 'farm_rcd.intake_review') {
       return $this->t('Use this form to review an intake, assign ownership, and decide whether to continue or abandon.');
     }
 

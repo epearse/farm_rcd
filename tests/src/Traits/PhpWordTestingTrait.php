@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\farm_sli\Traits;
+namespace Drupal\Tests\farm_rcd\Traits;
 
 use PhpOffice\PhpWord\PhpWord;
 

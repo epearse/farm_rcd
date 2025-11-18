@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Plugin\Plan\PlanType;
+namespace Drupal\farm_rcd\Plugin\Plan\PlanType;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\entity\BundleFieldDefinition;
@@ -10,10 +10,10 @@ use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
 
 /**
- * Provides the SLI resource conservation plan type.
+ * Provides the RCD resource conservation plan type.
  */
 #[PlanType(
-  id: 'sli_rcp',
+  id: 'rcd_rcp',
   label: new TranslatableMarkup('Resource conservation plan'),
 )]
 class Rcp extends FarmPlanType {
@@ -48,9 +48,9 @@ class Rcp extends FarmPlanType {
       'intake' => [
         'type' => 'entity_reference',
         'label' => $this->t('Intake'),
-        'description' => $this->t('Links the plan to an SLI intake log.'),
+        'description' => $this->t('Links the plan to an RCD intake log.'),
         'target_type' => 'log',
-        'target_bundle' => 'sli_intake',
+        'target_bundle' => 'rcd_intake',
       ],
 
     ];
@@ -68,7 +68,7 @@ class Rcp extends FarmPlanType {
     $field->setSetting('handler', 'default:plan');
     $field->setSetting('handler_settings', [
       'target_bundles' => [
-        'sli_practice_implementation' => 'sli_practice_implementation',
+        'rcd_practice_implementation' => 'rcd_practice_implementation',
       ],
       'sort' => [
         'field' => '_none',

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Config\TypedConfigManagerInterface;
@@ -15,7 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StreamWrapper\StreamWrapperManager;
 
 /**
- * Provides a settings form for the SLI module.
+ * Provides a settings form for the RCD module.
  */
 class SettingsForm extends ConfigFormbase {
 
@@ -35,13 +35,13 @@ class SettingsForm extends ConfigFormbase {
    *
    * @var string
    */
-  const SETTINGS = 'farm_sli.settings';
+  const SETTINGS = 'farm_rcd.settings';
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_settings';
+    return 'farm_rcd_settings';
   }
 
   /**

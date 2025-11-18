@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+  rcd.document.generator:
+    class: Drupal\farm_rcd\DocumentGenerator
+  Drupal\farm_rcd\DocumentGeneratorInterface: '@rcd.document.generator'
+  rcd.generate_document_event_subscriber:
+    class: Drupal\farm_rcd\EventSubscriber\GenerateDocumentEventSubscriber
+    tags:
+      - { name: 'event_subscriber' }

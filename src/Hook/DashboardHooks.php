@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Hook;
+namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
- * Dashboard hook implementations for farm_sli.
+ * Dashboard hook implementations for farm_rcd.
  */
 class DashboardHooks {
 
@@ -20,13 +20,13 @@ class DashboardHooks {
 
       // Add a farm organization search block to the dashboard.
       'farm_search' => [
-        'view' => 'farm_sli_farm_organizations',
+        'view' => 'farm_rcd_farm_organizations',
         'view_display_id' => 'block',
       ],
 
       // Add pending intakes block to the dashboard.
       'pending_intakes' => [
-        'view' => 'farm_sli_intakes',
+        'view' => 'farm_rcd_intakes',
         'view_display_id' => 'block',
       ],
     ];

@@ -1,0 +1,15 @@
+farm_rcd.intake:
+  path: '/intake'
+  defaults:
+    _form: 'Drupal\farm_rcd\Form\IntakeForm'
+    _title: Intake form
+  requirements:
+    _custom_access: '\Drupal\farm_rcd\Form\IntakeForm::access'
+
+farm_rcd.settings:
+  path: 'farm/settings/rcd'
+  defaults:
+    _form: '\Drupal\farm_rcd\Form\SettingsForm'
+    _title: 'RCD settings'
+  requirements:
+    _permission: 'administer farm_rcd'

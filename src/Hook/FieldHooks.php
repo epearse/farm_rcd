@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Hook;
+namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\farm_field\FarmFieldFactoryInterface;
 
 /**
- * Field hook implementations for farm_sli.
+ * Field hook implementations for farm_rcd.
  */
 class FieldHooks {
 
@@ -38,21 +38,21 @@ class FieldHooks {
         'label' => $this->t('APN'),
         'multiple' => TRUE,
       ];
-      $fields['sli_apn'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+      $fields['rcd_apn'] = $this->farmFieldFactory->bundleFieldDefinition($options);
 
       // Riparian areas.
       $options = [
         'type' => 'string_long',
         'label' => $this->t('Riparian areas'),
       ];
-      $fields['sli_riparian_areas'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+      $fields['rcd_riparian_areas'] = $this->farmFieldFactory->bundleFieldDefinition($options);
 
       // Native wildlife.
       $options = [
         'type' => 'string_long',
         'label' => $this->t('Native wildlife'),
       ];
-      $fields['sli_native_wildlife'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+      $fields['rcd_native_wildlife'] = $this->farmFieldFactory->bundleFieldDefinition($options);
     }
 
     return $fields;

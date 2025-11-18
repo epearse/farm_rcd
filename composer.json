@@ -1,8 +1,8 @@
 {
-  "name": "farmier/farm_sli",
-  "description": "Sustainable Land Initiative module for farmOS.",
+  "name": "farmier/farm_rcd",
+  "description": "Resource Conservation District module for farmOS.",
   "type": "drupal-module",
-  "homepage": "https://github.com/farmier/farm_sli",
+  "homepage": "https://github.com/farmier/farm_rcd",
   "license": "GPL-2.0-or-later",
   "authors": [
     {

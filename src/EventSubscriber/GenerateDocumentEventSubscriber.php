@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\EventSubscriber;
+namespace Drupal\farm_rcd\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\farm_sli\Event\GenerateDocumentEvent;
-use Drupal\farm_sli\Placeholder\ListBlockPlaceholder;
-use Drupal\farm_sli\Placeholder\ListStringPlaceholder;
-use Drupal\farm_sli\Placeholder\StringPlaceholder;
-use Drupal\farm_sli\SliHelper;
+use Drupal\farm_rcd\Event\GenerateDocumentEvent;
+use Drupal\farm_rcd\Placeholder\ListBlockPlaceholder;
+use Drupal\farm_rcd\Placeholder\ListStringPlaceholder;
+use Drupal\farm_rcd\Placeholder\StringPlaceholder;
+use Drupal\farm_rcd\RcdHelper;
 use Drupal\plan\Entity\PlanInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -34,7 +34,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
   /**
    * React to the GenerateDocumentEvent.
    *
-   * @param \Drupal\farm_sli\Event\GenerateDocumentEvent $event
+   * @param \Drupal\farm_rcd\Event\GenerateDocumentEvent $event
    *   The GenerateDocumentEvent object.
    */
   public function onDocumentGenerate(GenerateDocumentEvent $event) {
@@ -43,7 +43,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
     $context = $event->getContext();
 
     // Only proceed if a test plan is included in the context.
-    if (empty($context['plan']) || !($context['plan'] instanceof PlanInterface && $context['plan']->bundle() == 'sli_rcp')) {
+    if (empty($context['plan']) || !($context['plan'] instanceof PlanInterface && $context['plan']->bundle() == 'rcd_rcp')) {
       return;
     }
     $plan = $context['plan'];
@@ -67,9 +67,9 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
       $property_description = $property->get('notes')->value;
       $property_apns = implode(', ', array_map(function ($value) {
         return $value['value'];
-      }, $property->get('sli_apn')->getValue()));
-      $riparian_areas = $property->get('sli_riparian_areas')->value;
-      $native_wildlife = $property->get('sli_native_wildlife')->value;
+      }, $property->get('rcd_apn')->getValue()));
+      $riparian_areas = $property->get('rcd_riparian_areas')->value;
+      $native_wildlife = $property->get('rcd_native_wildlife')->value;
     }
     $placeholders[] = new StringPlaceholder('property_label', $property_label ?? '');
     $placeholders[] = new StringPlaceholder('property_description', $property_description ?? '');
@@ -83,7 +83,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Stakeholder name and type.
       $intake_stakeholder_name = $intake->get('intake_stakeholder_name')->value;
-      $intake_stakeholder_type = SliHelper::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
+      $intake_stakeholder_type = RcdHelper::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
 
       // Property owner and acreage.
       $intake_property_owner = $intake->get('intake_property_owner')->value;
@@ -91,12 +91,12 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Disadvantaged groups.
       $socially_disadvantaged = implode(', ', array_map(function ($value) {
-        return SliHelper::stakeholderGroups()[$value['value']]->render();
+        return RcdHelper::stakeholderGroups()[$value['value']]->render();
       }, $intake->get('intake_stakeholder_group')->getValue()));
 
       // Land use.
       $intake_land_use = array_map(function ($value) {
-        return SliHelper::landUses()[$value['value']]->render();
+        return RcdHelper::landUses()[$value['value']]->render();
       }, $intake->get('intake_property_use')->getValue());
 
       // Stakeholder goals.
@@ -105,7 +105,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_goals_other')->value;
         }
-        return SliHelper::goals()[$value]->render();
+        return RcdHelper::goals()[$value]->render();
       }, $intake->get('intake_goals')->getValue());
 
       // Stakeholder concerns.
@@ -114,7 +114,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_concerns_other')->value;
         }
-        return SliHelper::concerns()[$value]->render();
+        return RcdHelper::concerns()[$value]->render();
       }, $intake->get('intake_concerns')->getValue());
     }
     $placeholders[] = new StringPlaceholder('intake_stakeholder_name', $intake_stakeholder_name ?? '');
@@ -148,7 +148,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Iterate through the practice plans and build placeholders.
         $ecosite_practices = [];
         foreach ($plans as $plan) {
-          $practice_info = SliHelper::practices()[$plan->get('sli_practice')->value];
+          $practice_info = RcdHelper::practices()[$plan->get('rcd_practice')->value];
           $practice_name = $practice_info['label']->render();
           if (!empty($practice_info['nrcs_code'])) {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';
@@ -164,7 +164,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Build placeholders for each ecosite.
         $ecosites[] = [
           new StringPlaceholder('ecosite_name', $land_asset->label()),
-          new StringPlaceholder('ecosite_type', SliHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
+          new StringPlaceholder('ecosite_type', RcdHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
           new StringPlaceholder('ecosite_overview', $land_asset->get('notes')->value ?? ''),
           new ListBlockPlaceholder('ecosite_practices', $ecosite_practices),
         ];

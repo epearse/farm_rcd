@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
-use Drupal\farm_sli\SliHelper;
+use Drupal\farm_rcd\RcdHelper;
 use Drupal\plan\Entity\PlanInterface;
 
 /**
@@ -18,7 +18,7 @@ class EcositesForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_ecosites_form';
+    return 'farm_rcd_ecosites_form';
   }
 
   /**
@@ -111,7 +111,7 @@ class EcositesForm extends PlanningWorkflowFormBase {
     $form['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type'),
-      '#options' => SliHelper::landTypes(),
+      '#options' => RcdHelper::landTypes(),
       '#required' => !is_null($asset),
       '#default_value' => !is_null($asset) ? $asset->get('land_type')->value : NULL,
     ];

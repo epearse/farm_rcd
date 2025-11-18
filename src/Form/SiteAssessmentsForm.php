@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\log\Entity\LogInterface;
@@ -17,7 +17,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_site_assessment_form';
+    return 'farm_rcd_site_assessment_form';
   }
 
   /**
@@ -171,21 +171,21 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     $form['land_use_history'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Land use history'),
-      '#default_value' => $log ? $log->get('sli_land_use_history')->value : '',
+      '#default_value' => $log ? $log->get('rcd_land_use_history')->value : '',
     ];
 
     // Existing infrastructure.
     $form['infrastructure'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Existing infrastructure'),
-      '#default_value' => $log ? $log->get('sli_infrastructure')->value : '',
+      '#default_value' => $log ? $log->get('rcd_infrastructure')->value : '',
     ];
 
     // Priority environmental concerns.
     $form['priority_concerns'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Priority environmental concerns'),
-      '#default_value' => $log ? $log->get('sli_priority_concerns')->value : '',
+      '#default_value' => $log ? $log->get('rcd_priority_concerns')->value : '',
     ];
 
     // Watersheds.
@@ -195,7 +195,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#target_type' => 'taxonomy_term',
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
-        'target_bundles' => ['sli_watershed'],
+        'target_bundles' => ['rcd_watershed'],
         'sort' => [
           'field' => 'name',
           'direction' => 'asc',
@@ -206,7 +206,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#attributes' => [
         'class' => ['tagify--autocreate'],
       ],
-      '#default_value' => $log ? $log->get('sli_watershed')->referencedEntities() : NULL,
+      '#default_value' => $log ? $log->get('rcd_watershed')->referencedEntities() : NULL,
     ];
 
     // Groundwater basins.
@@ -216,7 +216,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#target_type' => 'taxonomy_term',
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
-        'target_bundles' => ['sli_groundwater_basin'],
+        'target_bundles' => ['rcd_groundwater_basin'],
         'sort' => [
           'field' => 'name',
           'direction' => 'asc',
@@ -227,7 +227,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#attributes' => [
         'class' => ['tagify--autocreate'],
       ],
-      '#default_value' => $log ? $log->get('sli_groundwater_basin')->referencedEntities() : NULL,
+      '#default_value' => $log ? $log->get('rcd_groundwater_basin')->referencedEntities() : NULL,
     ];
 
     // Wildlife species.
@@ -237,7 +237,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#target_type' => 'taxonomy_term',
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
-        'target_bundles' => ['sli_wildlife_species'],
+        'target_bundles' => ['rcd_wildlife_species'],
         'sort' => [
           'field' => 'name',
           'direction' => 'asc',
@@ -248,7 +248,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#attributes' => [
         'class' => ['tagify--autocreate'],
       ],
-      '#default_value' => $log ? $log->get('sli_wildlife_species')->referencedEntities() : NULL,
+      '#default_value' => $log ? $log->get('rcd_wildlife_species')->referencedEntities() : NULL,
     ];
 
     // Plant species.
@@ -258,7 +258,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#target_type' => 'taxonomy_term',
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
-        'target_bundles' => ['sli_plant_species'],
+        'target_bundles' => ['rcd_plant_species'],
         'sort' => [
           'field' => 'name',
           'direction' => 'asc',
@@ -269,14 +269,14 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#attributes' => [
         'class' => ['tagify--autocreate'],
       ],
-      '#default_value' => $log ? $log->get('sli_plant_species')->referencedEntities() : NULL,
+      '#default_value' => $log ? $log->get('rcd_plant_species')->referencedEntities() : NULL,
     ];
 
     // Landowner objectives.
     $form['landowner_objectives'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Landowner objectives'),
-      '#default_value' => $log ? $log->get('sli_landowner_objectives')->value : '',
+      '#default_value' => $log ? $log->get('rcd_landowner_objectives')->value : '',
     ];
 
     // Notes.
@@ -346,28 +346,28 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
           4 => 4,
           5 => 5,
         ],
-        '#default_value' => $log ? $log->get('sli_' . $key . '_rating')->value : NULL,
+        '#default_value' => $log ? $log->get('rcd_' . $key . '_rating')->value : NULL,
       ];
 
       // Baseline conditions.
       $form['resources'][$key]['baseline'] = [
         '#type' => 'textarea',
         '#title' => $this->t('Baseline conditions'),
-        '#default_value' => $log ? $log->get('sli_' . $key . '_baseline')->value : '',
+        '#default_value' => $log ? $log->get('rcd_' . $key . '_baseline')->value : '',
       ];
 
       // Goals.
       $form['resources'][$key]['goals'] = [
         '#type' => 'textarea',
         '#title' => $this->t('Goals'),
-        '#default_value' => $log ? $log->get('sli_' . $key . '_goals')->value : '',
+        '#default_value' => $log ? $log->get('rcd_' . $key . '_goals')->value : '',
       ];
 
       // How to achieve resource goals.
       $form['resources'][$key]['strategy'] = [
         '#type' => 'textarea',
         '#title' => $this->t('How to achieve resource goals'),
-        '#default_value' => $log ? $log->get('sli_' . $key . '_strategy')->value : '',
+        '#default_value' => $log ? $log->get('rcd_' . $key . '_strategy')->value : '',
       ];
     }
 
@@ -457,7 +457,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
       $land = $asset_storage->load($values['ecosite']);
       $log = $log_storage->create([
-        'type' => 'sli_site_assessment',
+        'type' => 'rcd_site_assessment',
         'location' => [$land],
         'status' => 'done',
       ]);
@@ -465,10 +465,10 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
 
     // Fill in the log details from form values.
     $log->set('timestamp', strtotime($values['date']));
-    $log->set('sli_land_use_history', $values['land_use_history']);
-    $log->set('sli_infrastructure', $values['infrastructure']);
-    $log->set('sli_priority_concerns', $values['priority_concerns']);
-    $log->set('sli_landowner_objectives', $values['landowner_objectives']);
+    $log->set('rcd_land_use_history', $values['land_use_history']);
+    $log->set('rcd_infrastructure', $values['infrastructure']);
+    $log->set('rcd_priority_concerns', $values['priority_concerns']);
+    $log->set('rcd_landowner_objectives', $values['landowner_objectives']);
     $log->set('notes', $values['notes']);
     foreach ([
       'soil',
@@ -479,10 +479,10 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       'wildlife',
       'infrastructure',
     ] as $resource) {
-      $log->set('sli_' . $resource . '_rating', $values['resources'][$resource]['rating']);
-      $log->set('sli_' . $resource . '_baseline', $values['resources'][$resource]['baseline']);
-      $log->set('sli_' . $resource . '_goals', $values['resources'][$resource]['goals']);
-      $log->set('sli_' . $resource . '_strategy', $values['resources'][$resource]['strategy']);
+      $log->set('rcd_' . $resource . '_rating', $values['resources'][$resource]['rating']);
+      $log->set('rcd_' . $resource . '_baseline', $values['resources'][$resource]['baseline']);
+      $log->set('rcd_' . $resource . '_goals', $values['resources'][$resource]['goals']);
+      $log->set('rcd_' . $resource . '_strategy', $values['resources'][$resource]['strategy']);
     }
 
     // Process taxonomy reference fields.
@@ -493,7 +493,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       'wildlife_species',
       'plant_species',
     ] as $name) {
-      $vid = 'sli_' . $name;
+      $vid = 'rcd_' . $name;
       $log->set($vid, []);
       if (!empty($values[$name])) {
         $terms = array_map(function ($value) use ($term_storage, $vid) {

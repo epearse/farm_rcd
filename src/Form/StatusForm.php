@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\plan\Entity\PlanInterface;
@@ -16,7 +16,7 @@ class StatusForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_status_form';
+    return 'farm_rcd_status_form';
   }
 
   /**

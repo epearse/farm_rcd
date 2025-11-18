@@ -1,0 +1,5 @@
+farm_rcd.intake:
+  route_name: farm_rcd.intake
+  title: Add Intake
+  appears_on:
+    - farm.dashboard

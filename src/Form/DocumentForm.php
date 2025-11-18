@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -11,7 +11,7 @@ use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\farm_sli\DocumentGeneratorInterface;
+use Drupal\farm_rcd\DocumentGeneratorInterface;
 use Drupal\file\FileInterface;
 use Drupal\plan\Entity\PlanInterface;
 
@@ -36,7 +36,7 @@ class DocumentForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_document_form';
+    return 'farm_rcd_document_form';
   }
 
   /**
@@ -97,7 +97,7 @@ class DocumentForm extends PlanningWorkflowFormBase {
     try {
 
       // Get the document template path.
-      $template_path = $this->moduleHandler->getModule('farm_sli')->getPath() . '/templates/rcp-template.docx';
+      $template_path = $this->moduleHandler->getModule('farm_rcd')->getPath() . '/templates/rcp-template.docx';
 
       // Generate a filename.
       $filename = strtolower(trim(preg_replace('#\W+#', '-', $this->plan->label()), '-')) . '.docx';

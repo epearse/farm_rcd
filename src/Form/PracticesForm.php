@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\farm_sli\SliHelper;
+use Drupal\farm_rcd\RcdHelper;
 use Drupal\plan\Entity\Plan;
 use Drupal\plan\Entity\PlanInterface;
 
@@ -18,7 +18,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_practice_form';
+    return 'farm_rcd_practice_form';
   }
 
   /**
@@ -164,8 +164,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
           $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
         }
         return $label;
-      }, SliHelper::practices()),
-      '#default_value' => $plan ? $plan->get('sli_practice')->value : NULL,
+      }, RcdHelper::practices()),
+      '#default_value' => $plan ? $plan->get('rcd_practice')->value : NULL,
       '#states' => [
         'required' => [
           ':input[name="' . $ecosite_name . '"]' => ['filled' => TRUE],
@@ -184,7 +184,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Load available status options from a mock plan, if necessary.
     if (is_null($plan)) {
       $plan = Plan::create([
-        'type' => 'sli_practice_implementation',
+        'type' => 'rcd_practice_implementation',
         'status' => 'planning',
       ]);
     }
@@ -286,7 +286,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
       $land = $asset_storage->load($values['ecosite']);
       $plan = $plan_storage->create([
-        'type' => 'sli_practice_implementation',
+        'type' => 'rcd_practice_implementation',
         'farm' => [$this->farm],
         'land' => [$land],
       ]);
@@ -295,12 +295,12 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Set the name of the plan based on the land asset and practice.
     // Ensure the name is under 255 characters (we need to do this because the
     // user can't).
-    $name = $plan->get('land')->referencedEntities()[0]->label() . ': ' . SliHelper::practices()[$values['practice']]['label'];
+    $name = $plan->get('land')->referencedEntities()[0]->label() . ': ' . RcdHelper::practices()[$values['practice']]['label'];
     $name = mb_strimwidth($name, 0, 255, '…');
     $plan->set('name', $name);
 
     // Fill in the plan details from form values.
-    $plan->set('sli_practice', $values['practice']);
+    $plan->set('rcd_practice', $values['practice']);
     $plan->set('notes', $values['notes']);
     $plan->set('status', $values['status']);
 

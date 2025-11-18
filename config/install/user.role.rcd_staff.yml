@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.default
+  module:
+    - asset
+    - farm_flag
+    - farm_id_tag
+    - farm_land
+    - farm_ui_dashboard
+    - file
+    - filter
+    - log
+    - organization
+    - plan
+    - quantity
+    - system
+    - toolbar
+id: rcd_staff
+label: Staff
+weight: 2
+is_admin: false
+permissions:
+  - 'access asset overview'
+  - 'access content'
+  - 'access farm dashboard'
+  - 'access toolbar'
+  - 'access user profiles'
+  - 'change own username'
+  - 'delete own files'
+  - 'use text format default'
+  - 'view all asset revisions'
+  - 'view all log revisions'
+  - 'view all organization revisions'
+  - 'view all plan revisions'
+  - 'view all quantity revisions'
+  - 'view any asset'
+  - 'view any farm organization'
+  - 'view any land asset'
+  - 'view any log'
+  - 'view any organization'
+  - 'view any plan'
+  - 'view any quantity'
+  - 'view any rcd_intake log'
+  - 'view any rcd_practice_implementation plan'
+  - 'view any rcd_rcp plan'
+  - 'view any rcd_site_assessment log'
+  - 'view asset_type'
+  - 'view flag'
+  - 'view land_type'
+  - 'view log_type'
+  - 'view own asset'
+  - 'view own farm organization'
+  - 'view own land asset'
+  - 'view own log'
+  - 'view own organization'
+  - 'view own plan'
+  - 'view own quantity'
+  - 'view own rcd_intake log'
+  - 'view own rcd_practice_implementation plan'
+  - 'view own rcd_rcp plan'
+  - 'view own rcd_site_assessment log'
+  - 'view plan_type'
+  - 'view quantity_type'
+  - 'view tag_type'

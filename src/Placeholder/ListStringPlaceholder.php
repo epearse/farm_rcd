@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Placeholder;
+namespace Drupal\farm_rcd\Placeholder;
 
 /**
  * List of strings placeholder plugin.

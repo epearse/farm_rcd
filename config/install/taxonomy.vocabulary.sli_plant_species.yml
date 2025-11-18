@@ -1,8 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: 'Plant species'
-vid: sli_plant_species
-description: null
-weight: 0
-new_revision: false

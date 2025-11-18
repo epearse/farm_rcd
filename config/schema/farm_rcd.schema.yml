@@ -1,0 +1,24 @@
+farm_rcd.settings:
+  type: config_object
+  label: 'RCD Settings'
+  mapping:
+    logo_path:
+      type: string
+      label: 'Logo path'
+      description: 'Path to logo file.'
+    intake_email:
+      type: email
+      label: 'Intake notification email'
+farm_rcd.mail:
+  type: config_object
+  label: 'Email settings'
+  mapping:
+    intake_received_stakeholder:
+      type: mail
+      label: 'Stakeholder intake notification email'
+    intake_received_staff:
+      type: mail
+      label: 'Staff intake notification email'
+    intake_assigned_staff:
+      type: mail
+      label: 'Staff intake owner assignment notification email'

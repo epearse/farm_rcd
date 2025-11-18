@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
@@ -17,7 +17,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_sli_property_form';
+    return 'farm_rcd_property_form';
   }
 
   /**
@@ -45,7 +45,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       // Load existing properties.
       $existing_properties = $this->entityTypeManager->getStorage('asset')->loadByProperties([
         'type' => 'land',
-        'land_type' => 'sli_property',
+        'land_type' => 'rcd_property',
         'farm' => $this->farm->id(),
       ]);
 
@@ -163,7 +163,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Riparian areas'),
       '#description' => $this->t('Describe the riparian areas on this property.'),
-      '#default_value' => $this->property ? $this->property->get('sli_riparian_areas')->value : '',
+      '#default_value' => $this->property ? $this->property->get('rcd_riparian_areas')->value : '',
       '#required' => TRUE,
     ];
 
@@ -172,7 +172,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Native wildlife'),
       '#description' => $this->t('Describe the native wildlife on this property.'),
-      '#default_value' => $this->property ? $this->property->get('sli_native_wildlife')->value : '',
+      '#default_value' => $this->property ? $this->property->get('rcd_native_wildlife')->value : '',
       '#required' => TRUE,
     ];
 
@@ -199,7 +199,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
     if (!is_null($this->property)) {
       $saved_apns = array_map(function ($value) {
         return $value['value'];
-      }, $this->property->get('sli_apn')->getValue());
+      }, $this->property->get('rcd_apn')->getValue());
     }
     $num_apns = $form_state->get('num_apns');
     if ($num_apns === NULL) {
@@ -355,7 +355,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
     if (is_null($property)) {
       $property = $this->entityTypeManager->getStorage('asset')->create([
         'type' => 'land',
-        'land_type' => 'sli_property',
+        'land_type' => 'rcd_property',
         'farm' => [$this->farm],
       ]);
     }
@@ -370,13 +370,13 @@ class PropertyForm extends PlanningWorkflowFormBase {
     if (!empty($values)) {
       $property->set('name', $values['label']);
       $property->set('notes', $values['description']);
-      $property->set('sli_riparian_areas', $values['riparian_areas']);
-      $property->set('sli_native_wildlife', $values['native_wildlife']);
+      $property->set('rcd_riparian_areas', $values['riparian_areas']);
+      $property->set('rcd_native_wildlife', $values['native_wildlife']);
       $property->set('intrinsic_geometry', ['value' => $values['boundary']]);
       $apns = array_filter($values['apn'] ?? [], function ($value) {
         return is_string($value) && !empty($value);
       });
-      $property->set('sli_apn', $apns);
+      $property->set('rcd_apn', $apns);
     }
 
     return $property;

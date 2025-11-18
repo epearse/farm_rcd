@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Hook;
+namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
- * Form hook implementations for farm_sli.
+ * Form hook implementations for farm_rcd.
  */
 class FormHooks {
 
@@ -18,9 +18,9 @@ class FormHooks {
   #[Hook('form_asset_form_alter')]
   public function formAssetFormAlter(&$form, FormStateInterface $form_state, $form_id) {
 
-    // Only show the "APN" field if the land type is "sli_property".
-    if (isset($form['land_type']) && isset($form['sli_apn'])) {
-      $form['sli_apn']['#states']['visible'] = [':input[name="land_type"]' => ['value' => 'sli_property']];
+    // Only show the "APN" field if the land type is "rcd_property".
+    if (isset($form['land_type']) && isset($form['rcd_apn'])) {
+      $form['rcd_apn']['#states']['visible'] = [':input[name="land_type"]' => ['value' => 'rcd_property']];
     }
   }
 

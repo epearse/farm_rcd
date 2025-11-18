@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\farm_sli\Functional;
+namespace Drupal\Tests\farm_rcd\Functional;
 
 /**
- * Tests the SLI dashboard functionality.
+ * Tests the RCD dashboard functionality.
  */
-class DashboardTest extends SliTestBase {
+class DashboardTest extends RcdTestBase {
 
   /**
-   * Test SLI dashboard panes.
+   * Test dashboard panes.
    */
-  public function testSliDashboard() {
+  public function testDashboard() {
 
     // Confirm that dashboard loads.
     $this->drupalGet('/dashboard');

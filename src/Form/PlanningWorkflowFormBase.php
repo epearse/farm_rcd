@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Form;
+namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -131,7 +131,7 @@ abstract class PlanningWorkflowFormBase extends FormBase {
       $site_assessment_ids = $log_storage
         ->getQuery()
         ->accessCheck(TRUE)
-        ->condition('type', 'sli_site_assessment')
+        ->condition('type', 'rcd_site_assessment')
         ->condition('location', $land_asset_ids, 'IN')
         ->execute();
       $this->siteAssessmentLogs = $log_storage->loadMultiple($site_assessment_ids);

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\farm_sli\Functional;
+namespace Drupal\Tests\farm_rcd\Functional;
 
 use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Tests\farm_sli\Traits\PhpWordTestingTrait;
-use Drupal\farm_sli\SliHelper;
+use Drupal\Tests\farm_rcd\Traits\PhpWordTestingTrait;
+use Drupal\farm_rcd\RcdHelper;
 use Drupal\plan\Entity\PlanInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -14,7 +14,7 @@ use PhpOffice\PhpWord\PhpWord;
 /**
  * Tests the planning workflow forms.
  */
-class PlanningWorkflowFormsTest extends SliTestBase {
+class PlanningWorkflowFormsTest extends RcdTestBase {
 
   use PhpWordTestingTrait;
 
@@ -95,7 +95,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create an intake log with minimum data for these tests.
     /** @var \Drupal\log\Entity\LogInterface $intake */
     $intake = $this->logStorage->create([
-      'type' => 'sli_intake',
+      'type' => 'rcd_intake',
       'intake_property_street' => '123 Fake Street',
       'intake_property_city' => 'Fake City',
       'intake_property_state' => 'AL',
@@ -107,7 +107,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create a resource conservation plan associated with the farm and intake.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'intake' => [$intake],
@@ -169,13 +169,13 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $properties[0];
     $this->assertEquals('land', $property->bundle());
-    $this->assertEquals('sli_property', $property->get('land_type')->value);
+    $this->assertEquals('rcd_property', $property->get('land_type')->value);
     $this->assertEquals('Parcel 123', $property->label());
     $this->assertEquals('Lorem ipsum', $property->get('notes')->value);
-    $this->assertEquals('Dolor sit amet', $property->get('sli_riparian_areas')->value);
-    $this->assertEquals('Consectetur adipiscing elit', $property->get('sli_native_wildlife')->value);
+    $this->assertEquals('Dolor sit amet', $property->get('rcd_riparian_areas')->value);
+    $this->assertEquals('Consectetur adipiscing elit', $property->get('rcd_native_wildlife')->value);
     $this->assertEquals('POINT(-155.59217843773246 19.472231748612728)', $property->get('intrinsic_geometry')->value);
-    $apns = $property->get('sli_apn')->getValue();
+    $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('ABC123', $apns[0]['value']);
 
     // Reload the plan entity view display and confirm that the property's
@@ -233,10 +233,10 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $property = $this->assetStorage->load($property->id());
     $this->assertEquals('Updated label', $property->label());
     $this->assertEquals('Updated description', $property->get('notes')->value);
-    $this->assertEquals('Updated riparian areas', $property->get('sli_riparian_areas')->value);
-    $this->assertEquals('Updated native wildlife', $property->get('sli_native_wildlife')->value);
+    $this->assertEquals('Updated riparian areas', $property->get('rcd_riparian_areas')->value);
+    $this->assertEquals('Updated native wildlife', $property->get('rcd_native_wildlife')->value);
     $this->assertEquals('', $property->get('intrinsic_geometry')->value);
-    $apns = $property->get('sli_apn')->getValue();
+    $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('XYZ123', $apns[0]['value']);
 
     // Reload the plan entity view display.
@@ -253,7 +253,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Confirm that both APNs are saved.
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->load($property->id());
-    $apns = $property->get('sli_apn')->getValue();
+    $apns = $property->get('rcd_apn')->getValue();
     $this->assertCount(2, $apns);
     $this->assertEquals('XYZ123', $apns[0]['value']);
     $this->assertEquals('ABC123', $apns[1]['value']);
@@ -270,7 +270,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Confirm that only the second APN exists.
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->load($property->id());
-    $apns = $property->get('sli_apn')->getValue();
+    $apns = $property->get('rcd_apn')->getValue();
     $this->assertCount(1, $apns);
     $this->assertEquals('ABC123', $apns[0]['value']);
   }
@@ -291,7 +291,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create a resource conservation plan associated with the farm.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
     ]);
@@ -310,7 +310,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_property',
+      'land_type' => 'rcd_property',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
     ]);
@@ -326,7 +326,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->assertSession()->responseContains('Save land assets');
 
     // Fill in the form and submit it.
-    $this->getSession()->getPage()->fillField('ecosites[add][type]', 'sli_row_crops');
+    $this->getSession()->getPage()->fillField('ecosites[add][type]', 'rcd_row_crops');
     $this->getSession()->getPage()->fillField('ecosites[add][label]', 'Corn field');
     $this->getSession()->getPage()->fillField('ecosites[add][description]', 'See corn, say corn!');
     $this->getSession()->getPage()->fillField('ecosites[add][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
@@ -345,7 +345,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     ]);
     $this->assertCount(1, $land_assets);
     $land_asset = reset($land_assets);
-    $this->assertEquals('sli_row_crops', $land_asset->get('land_type')->value);
+    $this->assertEquals('rcd_row_crops', $land_asset->get('land_type')->value);
     $this->assertEquals('Corn field', $land_asset->label());
     $this->assertEquals('See corn, say corn!', $land_asset->get('notes')->value);
     $this->assertEquals('POINT(-155.60893291251693 19.431635160410153)', $land_asset->get('intrinsic_geometry')->value);
@@ -355,13 +355,13 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Land asset: Corn field');
-    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][type]', 'sli_row_crops');
+    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][type]', 'rcd_row_crops');
     $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][label]', 'Corn field');
     $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][description]', 'See corn, say corn!');
     $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
 
     // Edit the asset's fields and submit the form.
-    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][type]', 'sli_orchard');
+    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][type]', 'rcd_orchard');
     $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][label]', 'Apple orchard');
     $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][description]', 'History haunts him who does not honour it.');
     $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][boundary][value]', '');
@@ -372,7 +372,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Confirm that the new values were saved to the asset.
     /** @var \Drupal\asset\Entity\AssetInterface $land_asset */
     $land_asset = $this->assetStorage->load($land_asset->id());
-    $this->assertEquals('sli_orchard', $land_asset->get('land_type')->value);
+    $this->assertEquals('rcd_orchard', $land_asset->get('land_type')->value);
     $this->assertEquals('Apple orchard', $land_asset->label());
     $this->assertEquals('History haunts him who does not honour it.', $land_asset->get('notes')->value);
     $this->assertEquals('', $land_asset->get('intrinsic_geometry')->value);
@@ -395,7 +395,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_property',
+      'land_type' => 'rcd_property',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
     ]);
@@ -405,7 +405,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // property.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'property' => [$property],
@@ -425,7 +425,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crops',
+      'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -470,22 +470,22 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Confirm that a site assessment log was created with all expected details
     // filled in.
     /** @var \Drupal\log\Entity\LogInterface[] $logs */
-    $logs = $this->logStorage->loadByProperties(['type' => 'sli_site_assessment']);
+    $logs = $this->logStorage->loadByProperties(['type' => 'rcd_site_assessment']);
     $this->assertCount(1, $logs);
     $log = reset($logs);
     $this->assertEquals($ecosite->id(), $log->get('location')->referencedEntities()[0]->id());
     $this->assertEquals(date('m/d/Y') . ' ' . $ecosite->label(), $log->label());
     $this->assertEquals('done', $log->get('status')->value);
-    $this->assertEquals('land use history', $log->get('sli_land_use_history')->value);
-    $this->assertEquals('existing infrastructure', $log->get('sli_infrastructure')->value);
-    $this->assertEquals('priority environmental concerns', $log->get('sli_priority_concerns')->value);
+    $this->assertEquals('land use history', $log->get('rcd_land_use_history')->value);
+    $this->assertEquals('existing infrastructure', $log->get('rcd_infrastructure')->value);
+    $this->assertEquals('priority environmental concerns', $log->get('rcd_priority_concerns')->value);
     // @todo Test taxonomy terms (Tagify requires JavaScript).
     $this->assertEquals('The site has been assessed.', $log->get('notes')->value);
     foreach ($resources as $resource) {
-      $this->assertEquals(5, $log->get('sli_' . $resource . '_rating')->value);
-      $this->assertEquals($resource . ' baseline', $log->get('sli_' . $resource . '_baseline')->value);
-      $this->assertEquals($resource . ' goals', $log->get('sli_' . $resource . '_goals')->value);
-      $this->assertEquals($resource . ' strategy', $log->get('sli_' . $resource . '_strategy')->value);
+      $this->assertEquals(5, $log->get('rcd_' . $resource . '_rating')->value);
+      $this->assertEquals($resource . ' baseline', $log->get('rcd_' . $resource . '_baseline')->value);
+      $this->assertEquals($resource . ' goals', $log->get('rcd_' . $resource . '_goals')->value);
+      $this->assertEquals($resource . ' strategy', $log->get('rcd_' . $resource . '_strategy')->value);
     }
 
     // Confirm that the saved log was added to the form, and fields are
@@ -528,16 +528,16 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\log\Entity\LogInterface $log */
     $log = $this->logStorage->load($log->id());
     $this->assertEquals(strtotime(date('m/d/Y', strtotime('tomorrow'))), $log->get('timestamp')->value);
-    $this->assertEquals('land use history!', $log->get('sli_land_use_history')->value);
-    $this->assertEquals('existing infrastructure!', $log->get('sli_infrastructure')->value);
-    $this->assertEquals('priority environmental concerns!', $log->get('sli_priority_concerns')->value);
+    $this->assertEquals('land use history!', $log->get('rcd_land_use_history')->value);
+    $this->assertEquals('existing infrastructure!', $log->get('rcd_infrastructure')->value);
+    $this->assertEquals('priority environmental concerns!', $log->get('rcd_priority_concerns')->value);
     // @todo Test taxonomy terms (Tagify requires JavaScript).
     $this->assertEquals('The site has been assessed!', $log->get('notes')->value);
     foreach ($resources as $resource) {
-      $this->assertEquals(1, $log->get('sli_' . $resource . '_rating')->value);
-      $this->assertEquals($resource . ' baseline!', $log->get('sli_' . $resource . '_baseline')->value);
-      $this->assertEquals($resource . ' goals!', $log->get('sli_' . $resource . '_goals')->value);
-      $this->assertEquals($resource . ' strategy!', $log->get('sli_' . $resource . '_strategy')->value);
+      $this->assertEquals(1, $log->get('rcd_' . $resource . '_rating')->value);
+      $this->assertEquals($resource . ' baseline!', $log->get('rcd_' . $resource . '_baseline')->value);
+      $this->assertEquals($resource . ' goals!', $log->get('rcd_' . $resource . '_goals')->value);
+      $this->assertEquals($resource . ' strategy!', $log->get('rcd_' . $resource . '_strategy')->value);
     }
   }
 
@@ -558,7 +558,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_property',
+      'land_type' => 'rcd_property',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
     ]);
@@ -568,7 +568,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // property.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'property' => [$property],
@@ -588,7 +588,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crops',
+      'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -621,11 +621,11 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $practice_plans = $plan->get('practice_implementation_plan')->referencedEntities();
     $this->assertCount(1, $practice_plans);
     $practice_plan = reset($practice_plans);
-    $this->assertEquals('sli_practice_implementation', $practice_plan->bundle());
+    $this->assertEquals('rcd_practice_implementation', $practice_plan->bundle());
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($ecosite->label() . ': Other', $practice_plan->label());
-    $this->assertEquals('other', $practice_plan->get('sli_practice')->value);
+    $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
     $this->assertEquals('implementing', $practice_plan->get('status')->value);
 
@@ -653,7 +653,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($ecosite->label() . ': Cover Crop', $practice_plan->label());
-    $this->assertEquals('cover_crop', $practice_plan->get('sli_practice')->value);
+    $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
   }
@@ -666,15 +666,15 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create an intake log with minimum data for these tests.
     /** @var \Drupal\log\Entity\LogInterface $intake */
     $intake = $this->logStorage->create([
-      'type' => 'sli_intake',
+      'type' => 'rcd_intake',
       'intake_stakeholder_name' => $this->randomMachineName(),
       'intake_stakeholder_type' => 'landowner',
       'intake_property_owner' => $this->randomMachineName(),
       'intake_property_acreage' => 100,
-      'intake_stakeholder_group' => array_keys(SliHelper::stakeholderGroups()),
-      'intake_property_use' => array_keys(SliHelper::landUses()),
-      'intake_goals' => array_keys(SliHelper::goals()),
-      'intake_concerns' => array_keys(SliHelper::concerns()),
+      'intake_stakeholder_group' => array_keys(RcdHelper::stakeholderGroups()),
+      'intake_property_use' => array_keys(RcdHelper::landUses()),
+      'intake_goals' => array_keys(RcdHelper::goals()),
+      'intake_concerns' => array_keys(RcdHelper::concerns()),
     ]);
     $intake->save();
 
@@ -690,11 +690,11 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $property */
     $property = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_property',
+      'land_type' => 'rcd_property',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'notes' => $this->randomMachineName(),
-      'sli_apn' => [
+      'rcd_apn' => [
         $this->randomMachineName(),
         $this->randomMachineName(),
       ],
@@ -705,7 +705,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // and intake.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => 'Test RCP',
       'farm' => [$farm],
       'property' => [$property],
@@ -717,7 +717,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
     $ecosite = $this->assetStorage->create([
       'type' => 'land',
-      'land_type' => 'sli_row_crops',
+      'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
@@ -727,11 +727,11 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create a practice implementation plan and link it to the resource
     // conservation plan.
     $practice_plan = $this->planStorage->create([
-      'type' => 'sli_practice_implementation',
+      'type' => 'rcd_practice_implementation',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'land' => [$ecosite],
-      'sli_practice' => 'other',
+      'rcd_practice' => 'other',
     ]);
     $practice_plan->save();
     $plan->set('practice_implementation_plan', [$practice_plan]);
@@ -816,7 +816,7 @@ class PlanningWorkflowFormsTest extends SliTestBase {
     // Create a resource conservation plan associated with the farm.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
     $plan = $this->planStorage->create([
-      'type' => 'sli_rcp',
+      'type' => 'rcd_rcp',
       'name' => 'Test RCP',
       'farm' => [$farm],
     ]);

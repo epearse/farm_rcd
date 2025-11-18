@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Drupal\Tests\farm_sli\Kernel;
+namespace Drupal\Tests\farm_rcd\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
-use Drupal\Tests\farm_sli\Traits\PhpWordTestingTrait;
+use Drupal\Tests\farm_rcd\Traits\PhpWordTestingTrait;
 use PhpOffice\PhpWord\IOFactory;
 
 /**
@@ -18,7 +18,7 @@ class DocumentGeneratorTest extends KernelTestBase {
   /**
    * Document generator service.
    *
-   * @var \Drupal\farm_sli\DocumentGeneratorInterface
+   * @var \Drupal\farm_rcd\DocumentGeneratorInterface
    */
   protected $documentGenerator;
 
@@ -34,8 +34,8 @@ class DocumentGeneratorTest extends KernelTestBase {
     'farm_land',
     'farm_log',
     'farm_map',
-    'farm_sli',
-    'farm_sli_test',
+    'farm_rcd',
+    'farm_rcd_test',
     'file',
     'log',
     'options',
@@ -57,9 +57,9 @@ class DocumentGeneratorTest extends KernelTestBase {
     $this->installEntitySchema('file');
     $this->installEntitySchema('plan');
     $this->installConfig([
-      'farm_sli_test',
+      'farm_rcd_test',
     ]);
-    $this->documentGenerator = \Drupal::service('sli.document.generator');
+    $this->documentGenerator = \Drupal::service('rcd.document.generator');
   }
 
   /**
@@ -68,7 +68,7 @@ class DocumentGeneratorTest extends KernelTestBase {
   public function testDocumentGenerator() {
 
     // Generate a document from the test template.
-    $template_path = \Drupal::moduleHandler()->getModule('farm_sli_test')->getPath() . '/templates/template.docx';
+    $template_path = \Drupal::moduleHandler()->getModule('farm_rcd_test')->getPath() . '/templates/template.docx';
     $filename = 'test-filename.docx';
     $file = $this->documentGenerator->generate($template_path, $filename);
     $default_schema = \Drupal::configFactory()->get('system.file')->get('default_scheme');

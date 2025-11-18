@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Drupal\farm_sli\Plugin\Plan\PlanType;
+namespace Drupal\farm_rcd\Plugin\Plan\PlanType;
 
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
-use Drupal\farm_sli\SliHelper;
+use Drupal\farm_rcd\RcdHelper;
 
 /**
- * Provides the SLI practice implementation plan type.
+ * Provides the RCD practice implementation plan type.
  */
 #[PlanType(
-  id: 'sli_practice_implementation',
+  id: 'rcd_practice_implementation',
   label: new TranslatableMarkup('Practice implementation plan'),
 )]
 class PracticeImplementation extends FarmPlanType {
@@ -50,7 +50,7 @@ class PracticeImplementation extends FarmPlanType {
       ],
 
       // Conservation practice.
-      'sli_practice' => [
+      'rcd_practice' => [
         'type' => 'list_string',
         'label' => $this->t('Conservation practice'),
         'description' => $this->t('Specify the conservation practice that this plan intends to implement.'),
@@ -60,12 +60,12 @@ class PracticeImplementation extends FarmPlanType {
             $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
           }
           return $label;
-        }, SliHelper::practices()),
+        }, RcdHelper::practices()),
         'required' => TRUE,
       ],
 
       // Funding source.
-      'sli_funding_source' => [
+      'rcd_funding_source' => [
         'type' => 'string',
         'label' => $this->t('Funding source'),
         'description' => $this->t('Describe where the funding for this practice came from.'),
