@@ -23,7 +23,10 @@ Current maintainers:
 
 - Michael Stenta (mstenta) - https://github.com/mstenta
 
-This project has been sponsored by:
+This project has been supported by:
 
-- [CalPoly](https://www.calpoly.edu/)
+- [Upper Salinas-Las Tablas Resource Conservation District](https://www.us-ltrcd.org/)
+- [Coastal San Luis Resource Conservation District](https://www.coastalrcd.org/)
+- [CalPoly Initiative for Climate Leadership and Resilience](https://climate.calpoly.edu/)
+- [Point Blue Conservation Science](https://www.pointblue.org/)
 - [Farmier](https://farmier.com/)
