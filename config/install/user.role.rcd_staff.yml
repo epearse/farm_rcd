@@ -25,9 +25,14 @@ label: Staff
 weight: 2
 is_admin: false
 permissions:
+  - 'access asset collection'
   - 'access asset overview'
   - 'access content'
   - 'access farm dashboard'
+  - 'access log collection'
+  - 'access organization collection'
+  - 'access plan collection'
+  - 'access quantity collection'
   - 'access toolbar'
   - 'access user profiles'
   - 'change own username'
