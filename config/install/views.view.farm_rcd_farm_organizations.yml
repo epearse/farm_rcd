@@ -10,7 +10,7 @@ dependencies:
     module:
       - farm_rcd
 id: farm_rcd_farm_organizations
-label: 'RCD Farm Organiations'
+label: 'RCD Farm Organizations'
 module: views
 description: ''
 tag: ''
