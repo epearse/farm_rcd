@@ -167,12 +167,12 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#required' => TRUE,
     ];
 
-    // Native wildlife.
-    $form['native_wildlife'] = [
+    // Wildlife.
+    $form['wildlife'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Native wildlife'),
-      '#description' => $this->t('Describe the native wildlife on this property.'),
-      '#default_value' => $this->property ? $this->property->get('rcd_native_wildlife')->value : '',
+      '#title' => $this->t('Wildlife'),
+      '#description' => $this->t('Describe any wildlife on the property. Include known sightings or evidence of special status wildlife as well as nuisance animals, pests, problematic weeds and existing management strategies.'),
+      '#default_value' => $this->property ? $this->property->get('rcd_wildlife')->value : '',
       '#required' => TRUE,
     ];
 
@@ -371,7 +371,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
       $property->set('name', $values['label']);
       $property->set('notes', $values['description']);
       $property->set('rcd_riparian_areas', $values['riparian_areas']);
-      $property->set('rcd_native_wildlife', $values['native_wildlife']);
+      $property->set('rcd_wildlife', $values['wildlife']);
       $property->set('intrinsic_geometry', ['value' => $values['boundary']]);
       $apns = array_filter($values['apn'] ?? [], function ($value) {
         return is_string($value) && !empty($value);

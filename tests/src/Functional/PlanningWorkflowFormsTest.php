@@ -131,7 +131,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->fieldValueEquals('property[form][label]', '123 Fake Street, Fake City, AL, 123456');
     $this->assertSession()->fieldValueEquals('property[form][description]', '');
     $this->assertSession()->fieldValueEquals('property[form][riparian_areas]', '');
-    $this->assertSession()->fieldValueEquals('property[form][native_wildlife]', '');
+    $this->assertSession()->fieldValueEquals('property[form][wildlife]', '');
     $this->assertSession()->fieldValueEquals('property[form][boundary][value]', '');
     $this->assertSession()->fieldValueEquals('property[form][apn][0]', '');
 
@@ -147,11 +147,11 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->fieldValueEquals('property[form][label]', 'Parcel 123');
 
-    // Fill in the property description, riparian areas, native wildlife,
-    // boundary, and APN, and then submit the form.
+    // Fill in the property description, riparian areas, wildlife, boundary,
+    // and APN, and then submit the form.
     $this->getSession()->getPage()->fillField('property[form][description]', 'Lorem ipsum');
     $this->getSession()->getPage()->fillField('property[form][riparian_areas]', 'Dolor sit amet');
-    $this->getSession()->getPage()->fillField('property[form][native_wildlife]', 'Consectetur adipiscing elit');
+    $this->getSession()->getPage()->fillField('property[form][wildlife]', 'Consectetur adipiscing elit');
     $this->getSession()->getPage()->fillField('property[form][boundary][value]', 'POINT(-155.59217843773246 19.472231748612728)');
     $this->getSession()->getPage()->fillField('property[form][apn][0]', 'ABC123');
     $this->getSession()->getPage()->pressButton('Save property information');
@@ -173,7 +173,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Parcel 123', $property->label());
     $this->assertEquals('Lorem ipsum', $property->get('notes')->value);
     $this->assertEquals('Dolor sit amet', $property->get('rcd_riparian_areas')->value);
-    $this->assertEquals('Consectetur adipiscing elit', $property->get('rcd_native_wildlife')->value);
+    $this->assertEquals('Consectetur adipiscing elit', $property->get('rcd_wildlife')->value);
     $this->assertEquals('POINT(-155.59217843773246 19.472231748612728)', $property->get('intrinsic_geometry')->value);
     $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('ABC123', $apns[0]['value']);
@@ -185,7 +185,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->fieldValueEquals('property[form][label]', 'Parcel 123');
     $this->assertSession()->fieldValueEquals('property[form][description]', 'Lorem ipsum');
     $this->assertSession()->fieldValueEquals('property[form][riparian_areas]', 'Dolor sit amet');
-    $this->assertSession()->fieldValueEquals('property[form][native_wildlife]', 'Consectetur adipiscing elit');
+    $this->assertSession()->fieldValueEquals('property[form][wildlife]', 'Consectetur adipiscing elit');
     $this->assertSession()->fieldValueEquals('property[form][boundary][value]', 'POINT(-155.59217843773246 19.472231748612728)');
     $this->assertSession()->fieldValueEquals('property[form][apn][0]', 'ABC123');
 
@@ -222,7 +222,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->fillField('property[form][label]', 'Updated label');
     $this->getSession()->getPage()->fillField('property[form][description]', 'Updated description');
     $this->getSession()->getPage()->fillField('property[form][riparian_areas]', 'Updated riparian areas');
-    $this->getSession()->getPage()->fillField('property[form][native_wildlife]', 'Updated native wildlife');
+    $this->getSession()->getPage()->fillField('property[form][wildlife]', 'Updated wildlife');
     $this->getSession()->getPage()->fillField('property[form][boundary][value]', '');
     $this->getSession()->getPage()->fillField('property[form][apn][0]', 'XYZ123');
     $this->getSession()->getPage()->pressButton('Save property information');
@@ -234,7 +234,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Updated label', $property->label());
     $this->assertEquals('Updated description', $property->get('notes')->value);
     $this->assertEquals('Updated riparian areas', $property->get('rcd_riparian_areas')->value);
-    $this->assertEquals('Updated native wildlife', $property->get('rcd_native_wildlife')->value);
+    $this->assertEquals('Updated wildlife', $property->get('rcd_wildlife')->value);
     $this->assertEquals('', $property->get('intrinsic_geometry')->value);
     $apns = $property->get('rcd_apn')->getValue();
     $this->assertEquals('XYZ123', $apns[0]['value']);

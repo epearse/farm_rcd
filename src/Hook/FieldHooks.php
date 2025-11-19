@@ -47,12 +47,12 @@ class FieldHooks {
       ];
       $fields['rcd_riparian_areas'] = $this->farmFieldFactory->bundleFieldDefinition($options);
 
-      // Native wildlife.
+      // Wildlife.
       $options = [
         'type' => 'string_long',
-        'label' => $this->t('Native wildlife'),
+        'label' => $this->t('Wildlife'),
       ];
-      $fields['rcd_native_wildlife'] = $this->farmFieldFactory->bundleFieldDefinition($options);
+      $fields['rcd_wildlife'] = $this->farmFieldFactory->bundleFieldDefinition($options);
     }
 
     return $fields;

@@ -69,13 +69,13 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         return $value['value'];
       }, $property->get('rcd_apn')->getValue()));
       $riparian_areas = $property->get('rcd_riparian_areas')->value;
-      $native_wildlife = $property->get('rcd_native_wildlife')->value;
+      $wildlife = $property->get('rcd_wildlife')->value;
     }
     $placeholders[] = new StringPlaceholder('property_label', $property_label ?? '');
     $placeholders[] = new StringPlaceholder('property_description', $property_description ?? '');
     $placeholders[] = new StringPlaceholder('property_apns', $property_apns ?? '');
     $placeholders[] = new StringPlaceholder('riparian_areas', $riparian_areas ?? '');
-    $placeholders[] = new StringPlaceholder('native_wildlife', $native_wildlife ?? '');
+    $placeholders[] = new StringPlaceholder('wildlife', $wildlife ?? '');
 
     // Load values from the intake log associated with the plan (if available).
     if (!$plan->get('intake')->isEmpty()) {
