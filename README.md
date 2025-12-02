@@ -6,17 +6,6 @@ conservation planning processes.
 This module is an add-on for the [farmOS](http://drupal.org/project/farm)
 Drupal distribution.
 
-## Installation
-
-Install as you would normally install a contributed Drupal module.
-
-With composer:
-
-```
-composer config repositories.farm_rcd vcs https://github.com/farmier/farm_rcd.git
-composer require farmier/farm_rcd
-```
-
 ## Maintainers
 
 Current maintainers:

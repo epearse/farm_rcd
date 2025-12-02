@@ -1,8 +1,8 @@
 {
-  "name": "farmier/farm_rcd",
-  "description": "Resource Conservation District module for farmOS.",
+  "name": "drupal/farm_rcd",
+  "description": "farmOS Conservation Planner",
   "type": "drupal-module",
-  "homepage": "https://github.com/farmier/farm_rcd",
+  "homepage": "https://www.drupal.org/project/farm_rcd",
   "license": "GPL-2.0-or-later",
   "authors": [
     {
