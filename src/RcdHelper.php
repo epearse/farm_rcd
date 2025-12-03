@@ -129,7 +129,14 @@ class RcdHelper {
       'bda' => [
         'label' => t('Beaver Dam Analog (BDA)'),
         'nrcs_code' => 'E643D',
-        'benefits' => [],
+        'benefits' => [
+          'Promotes ecological, geomorphic, and hydrologic processes such as ponding, scour, sediment deposition, streambank stabilization, groundwater recharge, and riparian vegetation establishment',
+          'Increased ponding and establishment of backwaters promotes greater connectivity of aquatic habitat',
+          'Dam structures may obstruct debris, sediment and pollutants',
+          'Increased groundwater recharge as a result of slower water discharge',
+          'Decreased intensity of flooding and headcutting of channels as a result of slower water discharge',
+          'Raised water levels from dams creates habitat conditions for riparian vegetation',
+        ],
         'resources' => [
           'https://www.nrcs.usda.gov/low-tech-process-based-restoration-to-enhance-floodplain-connectivity-e643d',
         ],
@@ -242,7 +249,9 @@ class RcdHelper {
           'Reduce dissolved contaminant loadings in runoff',
           'Reduce suspended solids and associated contaminants in irrigation tailwater and excessive sediment in surface waters',
         ],
-        'resources' => [],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Filter_Strip_393_CPS.pdf',
+        ],
       ],
       'forage_biomass_planting' => [
         'label' => t('Forage Biomass Planting'),
@@ -329,8 +338,15 @@ class RcdHelper {
       'keyline_plow' => [
         'label' => t('Keyline Plow'),
         'nrcs_code' => '',
-        'benefits' => [],
+        'benefits' => [
+          'Loosens the sub-soil without inverting the soil',
+          'The small ridges created by the plow on the soil surface facilitate the movement of water downwards through the soil profile and direct the movement of water across the land',
+          'The plow also facilitates the transport of organic matter deeper into the soil horizon',
+          'Keyline systems capture significant quantities of water that would otherwise run off, and store it in the soil',
+          'Builds soil fertility due to increased water availability and increased biological activity which further improves moisture-holding capacity',
+        ],
         'resources' => [
+          'https://www.fws.gov/project/nature-based-solutions-restoring-rangelands-keyline-design',
           'https://agwaterstewards.org/practices/keyline_design/',
         ],
       ],
@@ -372,13 +388,28 @@ class RcdHelper {
       'pollinator_habitat' => [
         'label' => t('Pollinator Habitat Enhancement'),
         'nrcs_code' => '',
-        'benefits' => [],
-        'resources' => [],
+        'benefits' => [
+          'Increase diversity and abundance of nectar plants for native pollinators',
+          'Improve soil health by maintaining or increasing soil organic matter quantity',
+          'Improve soil health by increasing soil aggregate stability',
+          'Improve soil health by enhancing habitat for soil organisms',
+          'Improve soil health by reducing compaction',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/resources/guides-and-instructions/resources-to-help-pollinators',
+        ],
       ],
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
         'nrcs_code' => '338',
-        'benefits' => [],
+        'benefits' => [
+          'Manage undesirable vegetation and reduce plant pressure caused by pests, pathogens, and diseases',
+          'Reduce the various risks associated with wildfire',
+          'Improve terrestrial habitat for wildlife and invertebrates (pollinators)',
+          'Improve plant and seed production, quantity, and/or quality',
+          'Improve livestock-forage balance by enhancing plant productivity and the distribution of grazing and browsing animals',
+          'Improve habitat for soil organisms, thereby enhancing soil health',
+        ],
         'resources' => [
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Prescribed_Burning_338_Overview_10_2020.pdf',
         ],
@@ -420,7 +451,10 @@ class RcdHelper {
       'residue_tillage_mgmt_no_till' => [
         'label' => t('Residue and Tillage Management, No Till'),
         'nrcs_code' => '345',
-        'benefits' => [],
+        'benefits' => [
+          'Increase soil organic matter and tilth',
+          'Increase productivity as the constant supply of organic material left on the soil surface is decomposed by a healthy population of earth worms and other organisms',
+        ],
         'resources' => [
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Residue_And_Tillage_Management_Reduced_Till_345_PS_Sept_2016.pdf',
         ],
