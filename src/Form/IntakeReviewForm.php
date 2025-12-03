@@ -16,6 +16,7 @@ use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\Plan;
 use Drupal\plan\Entity\PlanInterface;
+use Drupal\user\UserInterface;
 
 /**
  * Form for reviewing an intake.
@@ -291,7 +292,9 @@ class IntakeReviewForm extends FormBase {
     // Generate and validate a resource conservation plan, if necessary, and
     // store it in form state storage.
     if (!empty($form_state->getValue('create_plan'))) {
-      $plan = $this->generatePlan($organization, $log);
+      /** @var \Drupal\user\UserInterface $owner */
+      $owner = $this->entityTypeManager->getStorage('user')->load($form_state->getValue('owner'));
+      $plan = $this->generatePlan($organization, $log, $owner);
       $violations = $plan->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
@@ -410,17 +413,20 @@ class IntakeReviewForm extends FormBase {
    *   The farm organization entity.
    * @param \Drupal\log\Entity\LogInterface $intake
    *   The intake log entity.
+   * @param \Drupal\user\UserInterface $owner
+   *   The owner of the plan.
    *
    * @return \Drupal\plan\Entity\PlanInterface|null
    *   Returns an unsaved farm organization entity, or null if something goes
    *   wrong.
    */
-  protected function generatePlan(OrganizationInterface $farm, LogInterface $intake): ?PlanInterface {
+  protected function generatePlan(OrganizationInterface $farm, LogInterface $intake, UserInterface $owner): ?PlanInterface {
     return Plan::create([
       'type' => 'rcd_rcp',
       'name' => $farm->label() . ' RCP',
       'farm' => $farm,
       'intake' => $intake,
+      'owner' => [$owner],
     ]);
   }
 

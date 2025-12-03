@@ -74,6 +74,7 @@ class IntakeReviewFormTest extends RcdTestBase {
     $this->assertEquals('My Example Farm RCP', $plan->label());
     $this->assertEquals($farm->id(), $plan->get('farm')->target_id);
     $this->assertEquals($log->id(), $plan->get('intake')->target_id);
+    $this->assertEquals($this->user->id(), $plan->get('owner')->target_id);
 
     // Confirm that the intake review form no longer shows on the log now that
     // it has a status of done.
