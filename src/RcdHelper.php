@@ -141,19 +141,6 @@ class RcdHelper {
           'https://www.nrcs.usda.gov/low-tech-process-based-restoration-to-enhance-floodplain-connectivity-e643d',
         ],
       ],
-      'biochar' => [
-        'label' => t('Soil Carbon Amendment (Biochar)'),
-        'nrcs_code' => '336',
-        'benefits' => [
-          'Improve or maintain soil organic matter',
-          'Sequester carbon and enhance soil carbon (C) stocks',
-          'Improve soil aggregate stability',
-          'Improve habitat for soil organisms',
-        ],
-        'resources' => [
-          'https://www.nrcs.usda.gov/sites/default/files/2022-11/336-NHCP-CPS-Soil-Carbon-Amendment-2022.pdf',
-        ],
-      ],
       'brush_mgmt' => [
         'label' => t('Brush Management'),
         'nrcs_code' => '314',
@@ -525,6 +512,19 @@ class RcdHelper {
       ],
       'soil_carbon_amendment' => [
         'label' => t('Soil Carbon Amendment (e.g. compost)'),
+        'nrcs_code' => '336',
+        'benefits' => [
+          'Improve or maintain soil organic matter',
+          'Sequester carbon and enhance soil carbon (C) stocks',
+          'Improve soil aggregate stability',
+          'Improve habitat for soil organisms',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-11/336-NHCP-CPS-Soil-Carbon-Amendment-2022.pdf',
+        ],
+      ],
+      'biochar' => [
+        'label' => t('Soil Carbon Amendment (Biochar)'),
         'nrcs_code' => '336',
         'benefits' => [
           'Improve or maintain soil organic matter',
