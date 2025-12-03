@@ -30,13 +30,13 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     $form['assessments'] = [
       '#type' => 'details',
       '#title' => $this->t('Site Assessments'),
-      '#description' => $this->t('Site assessments are used to collect more information about ecosites during a site visit.'),
+      '#description' => $this->t('Site assessments are used to collect more information about land use areas during a site visit.'),
     ];
 
     // Require that a property with land asset children is associated with the
     // plan first.
     if (empty($this->landAssets)) {
-      $form['assessments']['#markup'] = $this->t('Ecological site descriptions must be created before site assessments can be made.');
+      $form['assessments']['#markup'] = $this->t('Land use areas must be created before site assessments can be made.');
       return $form;
     }
 
@@ -65,7 +65,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     $form['assessments']['add'] = $this->buildSiteAssessmentForm();
     $form['assessments']['add']['#type'] = 'details';
     $form['assessments']['add']['#title'] = $this->t('+ Add site assessment');
-    $form['assessments']['add']['#description'] = $this->t('Create a new site assessment log to record information about an ecosite.');
+    $form['assessments']['add']['#description'] = $this->t('Create a new site assessment log to record information about a land use area.');
 
     // If there are site assessment logs, show the add form in vertical tabs.
     // Otherwise, leave it ungrouped and open it by default.
@@ -106,15 +106,15 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#value' => !is_null($log) ? $log->id() : NULL,
     ];
 
-    // Ecosite reference.
+    // Location reference.
     // If this is an existing log, show links to land assets, but do not allow
     // editing.
     if (!is_null($log)) {
       /** @var \Drupal\asset\Entity\AssetInterface[] $locations */
       $locations = $log->get('location')->referencedEntities();
-      $form['ecosite'] = [
+      $form['location'] = [
         '#type' => 'checkboxes',
-        '#title' => $this->t('Ecosite'),
+        '#title' => $this->t('Land use area'),
         '#options' => array_combine(
           array_map(function ($asset) {
             return $asset->id();
@@ -131,9 +131,9 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       ];
     }
     else {
-      $form['ecosite'] = [
+      $form['location'] = [
         '#type' => 'select',
-        '#title' => $this->t('Ecosite'),
+        '#title' => $this->t('Land use area'),
         '#options' => array_combine(
           array_keys($this->landAssets),
           array_map(function ($asset) {
@@ -145,13 +145,13 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       // Add a null option to the beginning and default to that.
       // Drupal core only adds this if the field is required and doesn't have a
       // null default value. We do this to ensure that the form can be submitted
-      // without requiring the new ecosite details. See #states below.
-      $form['ecosite']['#options'] = [NULL => '- Select -'] + $form['ecosite']['#options'];
-      $form['ecosite']['#default_value'] = NULL;
+      // without requiring the new location details. See #states below.
+      $form['location']['#options'] = [NULL => '- Select -'] + $form['location']['#options'];
+      $form['location']['#default_value'] = NULL;
     }
 
-    // Build the name of the ecosite field for #states below.
-    $ecosite_name = !is_null($log) ? 'assessments[' . $log->id() . '][ecosite]' : 'assessments[add][ecosite]';
+    // Build the name of the location field for #states below.
+    $location_name = !is_null($log) ? 'assessments[' . $log->id() . '][location]' : 'assessments[add][location]';
 
     // Date of site visit.
     $form['date'] = [
@@ -162,7 +162,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       '#default_value' => date('Y-m-d', $log ? (int) $log->get('timestamp')->value : NULL),
       '#states' => [
         'required' => [
-          ':input[name="' . $ecosite_name . '"]' => ['filled' => TRUE],
+          ':input[name="' . $location_name . '"]' => ['filled' => TRUE],
         ],
       ],
     ];
@@ -385,9 +385,9 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       return is_numeric($key) || $key === 'add';
     }, ARRAY_FILTER_USE_KEY);
 
-    // If the "add" ecosite field is empty, a new site assessment log will not
+    // If the "add" location field is empty, a new site assessment log will not
     // be created.
-    if (empty($assessment_values['add']['ecosite'])) {
+    if (empty($assessment_values['add']['location'])) {
       unset($assessment_values['add']);
     }
 
@@ -455,7 +455,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     }
     else {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
-      $land = $asset_storage->load($values['ecosite']);
+      $land = $asset_storage->load($values['location']);
       $log = $log_storage->create([
         'type' => 'rcd_site_assessment',
         'location' => [$land],

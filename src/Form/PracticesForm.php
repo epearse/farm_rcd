@@ -30,13 +30,13 @@ class PracticesForm extends PlanningWorkflowFormBase {
     $form['practices'] = [
       '#type' => 'details',
       '#title' => $this->t('Conservation Practices'),
-      '#description' => $this->t('Propose conservation practices for each ecosite. A Practice Implementation Plan will be created for each practice with its own status and logs for tracking implementation details.'),
+      '#description' => $this->t('Propose conservation practices for each land use area. A Practice Implementation Plan will be created for each practice with its own status and logs for tracking implementation details.'),
     ];
 
     // Require that a property with land asset children is associated with the
     // plan first.
     if (empty($this->landAssets)) {
-      $form['practices']['#markup'] = $this->t('Ecological site descriptions must be created before conservations practices can be added.');
+      $form['practices']['#markup'] = $this->t('Land use areas must be created before conservations practices can be added.');
       return $form;
     }
 
@@ -107,15 +107,15 @@ class PracticesForm extends PlanningWorkflowFormBase {
       '#value' => !is_null($plan) ? $plan->id() : NULL,
     ];
 
-    // Ecosite reference.
+    // Location land asset reference.
     // If this is an existing practice implementation plan, show links to land
     // assets, but do not allow editing.
     if (!is_null($plan)) {
       /** @var \Drupal\asset\Entity\AssetInterface[] $land_assets */
       $land_assets = $plan->get('land')->referencedEntities();
-      $form['ecosite'] = [
+      $form['location'] = [
         '#type' => 'checkboxes',
-        '#title' => $this->t('Ecosite'),
+        '#title' => $this->t('Land use area'),
         '#options' => array_combine(
           array_map(function ($asset) {
             return $asset->id();
@@ -132,9 +132,9 @@ class PracticesForm extends PlanningWorkflowFormBase {
       ];
     }
     else {
-      $form['ecosite'] = [
+      $form['location'] = [
         '#type' => 'select',
-        '#title' => $this->t('Ecosite'),
+        '#title' => $this->t('Land use area'),
         '#options' => array_combine(
           array_keys($this->landAssets),
           array_map(function ($asset) {
@@ -146,13 +146,13 @@ class PracticesForm extends PlanningWorkflowFormBase {
       // Add a null option to the beginning and default to that.
       // Drupal core only adds this if the field is required and doesn't have a
       // null default value. We do this to ensure that the form can be submitted
-      // without requiring the new ecosite details. See #states below.
-      $form['ecosite']['#options'] = [NULL => '- Select -'] + $form['ecosite']['#options'];
-      $form['ecosite']['#default_value'] = NULL;
+      // without requiring the new location details. See #states below.
+      $form['location']['#options'] = [NULL => '- Select -'] + $form['location']['#options'];
+      $form['location']['#default_value'] = NULL;
     }
 
-    // Build the name of the ecosite field for #states below.
-    $ecosite_name = !is_null($plan) ? 'practices[' . $plan->id() . '][ecosite]' : 'practices[add][ecosite]';
+    // Build the name of the location field for #states below.
+    $location_name = !is_null($plan) ? 'practices[' . $plan->id() . '][location]' : 'practices[add][location]';
 
     // Practice.
     $form['practice'] = [
@@ -168,7 +168,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
       '#default_value' => $plan ? $plan->get('rcd_practice')->value : NULL,
       '#states' => [
         'required' => [
-          ':input[name="' . $ecosite_name . '"]' => ['filled' => TRUE],
+          ':input[name="' . $location_name . '"]' => ['filled' => TRUE],
         ],
       ],
     ];
@@ -211,9 +211,9 @@ class PracticesForm extends PlanningWorkflowFormBase {
       return is_numeric($key) || $key === 'add';
     }, ARRAY_FILTER_USE_KEY);
 
-    // If the "add" ecosite field is empty, a new practice plan will not be
+    // If the "add" location field is empty, a new practice plan will not be
     // created.
-    if (empty($practice_values['add']['ecosite'])) {
+    if (empty($practice_values['add']['location'])) {
       unset($practice_values['add']);
     }
 
@@ -284,7 +284,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
     }
     else {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
-      $land = $asset_storage->load($values['ecosite']);
+      $land = $asset_storage->load($values['location']);
       $plan = $plan_storage->create([
         'type' => 'rcd_practice_implementation',
         'farm' => [$this->farm],

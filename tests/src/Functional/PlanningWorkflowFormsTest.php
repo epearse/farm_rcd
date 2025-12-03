@@ -72,7 +72,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
    */
   public function testPlanningWorkflowForms() {
     $this->doTestPropertyForm();
-    $this->doTestEcositesForm();
+    $this->doTestLocationsForm();
     $this->doTestSiteAssessmentsForm();
     $this->doTestPracticesForm();
     $this->doTestDocumentForm();
@@ -276,9 +276,9 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
   }
 
   /**
-   * Test ecosites form.
+   * Test locations form.
    */
-  public function doTestEcositesForm() {
+  public function doTestLocationsForm() {
 
     // Create a farm organization.
     /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
@@ -297,13 +297,13 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     ]);
     $plan->save();
 
-    // Go to the plan entity view display and confirm that the ecosite form is
+    // Go to the plan entity view display and confirm that the location form is
     // present, but not accessible yet.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Ecological Site Descriptions');
-    $this->assertSession()->pageTextContains('A property description must be created before ecological site descriptions can be added.');
-    $this->assertSession()->pageTextNotContains('+ Add ecosite');
+    $this->assertSession()->pageTextContains('Land Use Areas');
+    $this->assertSession()->pageTextContains('A property description must be created before land use areas can be added.');
+    $this->assertSession()->pageTextNotContains('+ Add land use area');
     $this->assertSession()->responseNotContains('Save land assets');
 
     // Create a property land asset associated with the farm and plan.
@@ -318,18 +318,18 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $plan->set('property', [$property]);
     $plan->save();
 
-    // Reload the form and confirm that the ecosite form is accessible.
+    // Reload the form and confirm that the location form is accessible.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('A property description must be created before ecological site descriptions can be added.');
-    $this->assertSession()->pageTextContains('+ Add ecosite');
+    $this->assertSession()->pageTextNotContains('A property description must be created before land use areas can be added.');
+    $this->assertSession()->pageTextContains('+ Add land use area');
     $this->assertSession()->responseContains('Save land assets');
 
     // Fill in the form and submit it.
-    $this->getSession()->getPage()->fillField('ecosites[add][type]', 'rcd_row_crops');
-    $this->getSession()->getPage()->fillField('ecosites[add][label]', 'Corn field');
-    $this->getSession()->getPage()->fillField('ecosites[add][description]', 'See corn, say corn!');
-    $this->getSession()->getPage()->fillField('ecosites[add][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
+    $this->getSession()->getPage()->fillField('locations[add][type]', 'rcd_row_crops');
+    $this->getSession()->getPage()->fillField('locations[add][label]', 'Corn field');
+    $this->getSession()->getPage()->fillField('locations[add][description]', 'See corn, say corn!');
+    $this->getSession()->getPage()->fillField('locations[add][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
     $this->getSession()->getPage()->pressButton('Save land assets');
 
     // Confirm that a message was shown to the user.
@@ -355,16 +355,16 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Land asset: Corn field');
-    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][type]', 'rcd_row_crops');
-    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][label]', 'Corn field');
-    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][description]', 'See corn, say corn!');
-    $this->assertSession()->fieldValueEquals('ecosites[' . $land_asset->id() . '][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
+    $this->assertSession()->fieldValueEquals('locations[' . $land_asset->id() . '][type]', 'rcd_row_crops');
+    $this->assertSession()->fieldValueEquals('locations[' . $land_asset->id() . '][label]', 'Corn field');
+    $this->assertSession()->fieldValueEquals('locations[' . $land_asset->id() . '][description]', 'See corn, say corn!');
+    $this->assertSession()->fieldValueEquals('locations[' . $land_asset->id() . '][boundary][value]', 'POINT(-155.60893291251693 19.431635160410153)');
 
     // Edit the asset's fields and submit the form.
-    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][type]', 'rcd_orchard');
-    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][label]', 'Apple orchard');
-    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][description]', 'History haunts him who does not honour it.');
-    $this->getSession()->getPage()->fillField('ecosites[' . $land_asset->id() . '][boundary][value]', '');
+    $this->getSession()->getPage()->fillField('locations[' . $land_asset->id() . '][type]', 'rcd_orchard');
+    $this->getSession()->getPage()->fillField('locations[' . $land_asset->id() . '][label]', 'Apple orchard');
+    $this->getSession()->getPage()->fillField('locations[' . $land_asset->id() . '][description]', 'History haunts him who does not honour it.');
+    $this->getSession()->getPage()->fillField('locations[' . $land_asset->id() . '][boundary][value]', '');
     $this->getSession()->getPage()->pressButton('Save land assets');
     $this->assertSession()->pageTextContains('Land assets saved.');
     $this->assertSession()->pageTextContains('Land asset: Apple orchard');
@@ -417,31 +417,31 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Site Assessments');
-    $this->assertSession()->pageTextContains('Ecological site descriptions must be created before site assessments can be made. ');
+    $this->assertSession()->pageTextContains('Land use areas must be created before site assessments can be made. ');
     $this->assertSession()->pageTextNotContains('+ Add site assessment');
     $this->assertSession()->responseNotContains('Save site assessments');
 
-    // Create a land asset to represent an ecosite.
-    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
-    $ecosite = $this->assetStorage->create([
+    // Create a land asset to represent a location.
+    /** @var \Drupal\asset\Entity\AssetInterface $location */
+    $location = $this->assetStorage->create([
       'type' => 'land',
       'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
     ]);
-    $ecosite->save();
+    $location->save();
 
     // Reload the form and confirm that the site assessments form is
     // accessible.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('Ecological site descriptions must be created before site assessments can be made.');
+    $this->assertSession()->pageTextNotContains('Land use areas must be created before site assessments can be made.');
     $this->assertSession()->pageTextContains('+ Add site assessment');
     $this->assertSession()->responseContains('Save site assessments');
 
     // Fill in the form and submit it.
-    $this->getSession()->getPage()->fillField('assessments[add][ecosite]', $ecosite->id());
+    $this->getSession()->getPage()->fillField('assessments[add][location]', $location->id());
     $this->getSession()->getPage()->fillField('assessments[add][land_use_history]', 'land use history');
     $this->getSession()->getPage()->fillField('assessments[add][infrastructure]', 'existing infrastructure');
     $this->getSession()->getPage()->fillField('assessments[add][priority_concerns]', 'priority environmental concerns');
@@ -473,8 +473,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $logs = $this->logStorage->loadByProperties(['type' => 'rcd_site_assessment']);
     $this->assertCount(1, $logs);
     $log = reset($logs);
-    $this->assertEquals($ecosite->id(), $log->get('location')->referencedEntities()[0]->id());
-    $this->assertEquals(date('m/d/Y') . ' ' . $ecosite->label(), $log->label());
+    $this->assertEquals($location->id(), $log->get('location')->referencedEntities()[0]->id());
+    $this->assertEquals(date('m/d/Y') . ' ' . $location->label(), $log->label());
     $this->assertEquals('done', $log->get('status')->value);
     $this->assertEquals('land use history', $log->get('rcd_land_use_history')->value);
     $this->assertEquals('existing infrastructure', $log->get('rcd_infrastructure')->value);
@@ -492,8 +492,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y') . ' ' . $ecosite->label());
-    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][ecosite][' . $ecosite->id() . ']', $ecosite->id());
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y') . ' ' . $location->label());
+    $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][location][' . $location->id() . ']', $location->id());
     $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][date]', date('Y-m-d'));
     $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][land_use_history]', 'land use history');
     $this->assertSession()->fieldValueEquals('assessments[' . $log->id() . '][infrastructure]', 'existing infrastructure');
@@ -522,7 +522,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     }
     $this->getSession()->getPage()->pressButton('Save site assessments');
     $this->assertSession()->pageTextContains('Site assessment logs saved.');
-    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('tomorrow')) . ' ' . $ecosite->label());
+    $this->assertSession()->pageTextContains('Site assessment log: ' . date('m/d/Y', strtotime('tomorrow')) . ' ' . $location->label());
 
     // Confirm that the new values were saved to the asset.
     /** @var \Drupal\log\Entity\LogInterface $log */
@@ -580,31 +580,31 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Conservation Practices');
-    $this->assertSession()->pageTextContains('Ecological site descriptions must be created before conservations practices can be added.');
+    $this->assertSession()->pageTextContains('Land use areas must be created before conservations practices can be added.');
     $this->assertSession()->pageTextNotContains('+ Add practice');
     $this->assertSession()->responseNotContains('Save conservation practices');
 
-    // Create a land asset to represent an ecosite.
-    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
-    $ecosite = $this->assetStorage->create([
+    // Create a land asset to represent a location.
+    /** @var \Drupal\asset\Entity\AssetInterface $location */
+    $location = $this->assetStorage->create([
       'type' => 'land',
       'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
     ]);
-    $ecosite->save();
+    $location->save();
 
     // Reload the form and confirm that the site assessments form is
     // accessible.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextNotContains('Ecological site descriptions must be created before conservations practices can be added.');
+    $this->assertSession()->pageTextNotContains('Land use areas must be created before conservations practices can be added.');
     $this->assertSession()->pageTextContains('+ Add practice');
     $this->assertSession()->responseContains('Save conservation practices');
 
     // Fill in the form and submit it.
-    $this->getSession()->getPage()->fillField('practices[add][ecosite]', $ecosite->id());
+    $this->getSession()->getPage()->fillField('practices[add][location]', $location->id());
     $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
     $this->getSession()->getPage()->fillField('practices[add][notes]', 'Plant lots of sunflowers.');
     $this->getSession()->getPage()->fillField('practices[add][status]', 'implementing');
@@ -623,8 +623,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $practice_plan = reset($practice_plans);
     $this->assertEquals('rcd_practice_implementation', $practice_plan->bundle());
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
-    $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
-    $this->assertEquals($ecosite->label() . ': Other', $practice_plan->label());
+    $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($location->label() . ': Other', $practice_plan->label());
     $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
     $this->assertEquals('implementing', $practice_plan->get('status')->value);
@@ -633,8 +633,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // are pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $ecosite->label() . ': Other');
-    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][ecosite][' . $ecosite->id() . ']', $ecosite->id());
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][location][' . $location->id() . ']', $location->id());
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'other');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'implementing');
@@ -645,14 +645,14 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'review');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $ecosite->label() . ': Cover Crop');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
 
     // Confirm that the new values were saved to the practice plan.
     /** @var \Drupal\plan\Entity\PlanInterface $practice_plan */
     $practice_plan = $this->planStorage->load($practice_plan->id());
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
-    $this->assertEquals($ecosite->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
-    $this->assertEquals($ecosite->label() . ': Cover Crop', $practice_plan->label());
+    $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($location->label() . ': Cover Crop', $practice_plan->label());
     $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
@@ -713,16 +713,16 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     ]);
     $plan->save();
 
-    // Create a land asset to represent an ecosite.
-    /** @var \Drupal\asset\Entity\AssetInterface $ecosite */
-    $ecosite = $this->assetStorage->create([
+    // Create a land asset to represent a location.
+    /** @var \Drupal\asset\Entity\AssetInterface $location */
+    $location = $this->assetStorage->create([
       'type' => 'land',
       'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
     ]);
-    $ecosite->save();
+    $location->save();
 
     // Create a practice implementation plan and link it to the resource
     // conservation plan.
@@ -730,7 +730,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'type' => 'rcd_practice_implementation',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
-      'land' => [$ecosite],
+      'land' => [$location],
       'rcd_practice' => 'other',
     ]);
     $practice_plan->save();

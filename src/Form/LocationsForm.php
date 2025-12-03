@@ -10,15 +10,15 @@ use Drupal\farm_rcd\RcdHelper;
 use Drupal\plan\Entity\PlanInterface;
 
 /**
- * Ecosites form.
+ * Locations form.
  */
-class EcositesForm extends PlanningWorkflowFormBase {
+class LocationsForm extends PlanningWorkflowFormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'farm_rcd_ecosites_form';
+    return 'farm_rcd_locations_form';
   }
 
   /**
@@ -28,26 +28,26 @@ class EcositesForm extends PlanningWorkflowFormBase {
     $form = parent::buildForm($form, $form_state, $plan);
 
     // Form details.
-    $form['ecosites'] = [
+    $form['locations'] = [
       '#type' => 'details',
-      '#title' => $this->t('Ecological Site Descriptions'),
-      '#description' => $this->t('Each property must have one or more ecological sites (represented as child land assets of the property). These ecological sites may be associated with multiple plans, and their descriptions will be shared with all of them.'),
+      '#title' => $this->t('Land Use Areas'),
+      '#description' => $this->t('Each property must have one or more land use areas (represented as child land assets of the property). These land use areas may be associated with multiple plans, and their descriptions will be shared with all of them.'),
     ];
 
     // Require that a property is associated with the plan first.
     if (is_null($this->property)) {
-      $form['ecosites']['#markup'] = $this->t('A property description must be created before ecological site descriptions can be added.');
+      $form['locations']['#markup'] = $this->t('A property description must be created before land use areas can be added.');
       return $form;
     }
 
     // Open if the status is "planning" and there are no land assets associated
     // with the property.
     else {
-      $form['ecosites']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->landAssets);
+      $form['locations']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->landAssets);
     }
 
-    // Build vertical tabs for each ecosite form.
-    $form['ecosites']['tabs'] = [
+    // Build vertical tabs for each location form.
+    $form['locations']['tabs'] = [
       '#type' => 'vertical_tabs',
     ];
 
@@ -55,34 +55,34 @@ class EcositesForm extends PlanningWorkflowFormBase {
     foreach ($this->landAssets as $id => $asset) {
 
       // Details wrapper.
-      $form['ecosites'][$id] = $this->buildLandAssetForm($asset);
-      $form['ecosites'][$id]['#type'] = 'details';
-      $form['ecosites'][$id]['#title'] = $asset->label();
-      $form['ecosites'][$id]['#description'] = $this->t('Land asset: <a href=":uri">%label</a>', [':uri' => $asset->toUrl()->toString(), '%label' => $asset->label()]);
-      $form['ecosites'][$id]['#group'] = 'ecosites][tabs';
+      $form['locations'][$id] = $this->buildLandAssetForm($asset);
+      $form['locations'][$id]['#type'] = 'details';
+      $form['locations'][$id]['#title'] = $asset->label();
+      $form['locations'][$id]['#description'] = $this->t('Land asset: <a href=":uri">%label</a>', [':uri' => $asset->toUrl()->toString(), '%label' => $asset->label()]);
+      $form['locations'][$id]['#group'] = 'locations][tabs';
     }
 
     // Add a new land asset.
-    $form['ecosites']['add'] = $this->buildLandAssetForm();
-    $form['ecosites']['add']['#type'] = 'details';
-    $form['ecosites']['add']['#title'] = $this->t('+ Add ecosite');
-    $form['ecosites']['add']['#description'] = $this->t('Create a new land asset to represent an ecological site associated with this property.');
+    $form['locations']['add'] = $this->buildLandAssetForm();
+    $form['locations']['add']['#type'] = 'details';
+    $form['locations']['add']['#title'] = $this->t('+ Add land use area');
+    $form['locations']['add']['#description'] = $this->t('Create a new land asset to represent a land use area associated with this property.');
 
     // If there are land assets, show the add form in vertical tabs.
     // Otherwise, leave it ungrouped and open it by default.
     if (!empty($this->landAssets)) {
-      $form['ecosites']['add']['#group'] = 'ecosites][tabs';
+      $form['locations']['add']['#group'] = 'locations][tabs';
     }
     else {
-      $form['ecosites']['add']['#open'] = TRUE;
+      $form['locations']['add']['#open'] = TRUE;
     }
 
     // Submit button.
-    $form['ecosites']['actions'] = [
+    $form['locations']['actions'] = [
       '#type' => 'actions',
       '#weight' => 1000,
     ];
-    $form['ecosites']['actions']['submit'] = [
+    $form['locations']['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save land assets'),
     ];
@@ -119,13 +119,13 @@ class EcositesForm extends PlanningWorkflowFormBase {
     // If there is no asset, add a null option to the beginning.
     // Drupal core only adds this if the field is required and doesn't have a
     // null default value. We do this to ensure that the form can be submitted
-    // without requiring the new ecosite details. See #states below.
+    // without requiring the new location details. See #states below.
     if (is_null($asset)) {
       $form['type']['#options'] = [NULL => '- Select -'] + $form['type']['#options'];
     }
 
     // Build the name of the type field for #states below.
-    $type_name = !is_null($asset) ? 'ecosites[' . $asset->id() . '][type]' : 'ecosites[add][type]';
+    $type_name = !is_null($asset) ? 'locations[' . $asset->id() . '][type]' : 'locations[add][type]';
 
     // Label.
     $form['label'] = [
@@ -170,18 +170,18 @@ class EcositesForm extends PlanningWorkflowFormBase {
 
     // Filter submitted values to those with a numeric key (representing the
     // asset ID), or "add" (for adding a new asset).
-    $ecosite_values = array_filter($form_state->getValue('ecosites'), function ($key) {
+    $location_values = array_filter($form_state->getValue('locations'), function ($key) {
       return is_numeric($key) || $key === 'add';
     }, ARRAY_FILTER_USE_KEY);
 
     // If the "add" type is empty, a new asset will not be created.
-    if (empty($ecosite_values['add']['type'])) {
-      unset($ecosite_values['add']);
+    if (empty($location_values['add']['type'])) {
+      unset($location_values['add']);
     }
 
     // For each set of values, generate/update and validate the land asset.
     $assets = [];
-    foreach ($ecosite_values as $values) {
+    foreach ($location_values as $values) {
       $asset = $this->generateLandAsset($values);
       $violations = $asset->validate();
       if ($violations->count() > 0) {

@@ -128,32 +128,32 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
     // Load values from practice implementation plans associated with the plan
     // to build a set of repeating blocks for each practice, within repeating
-    // blocks for each ecosite.
+    // blocks for each location.
     if (!$plan->get('practice_implementation_plan')->isEmpty()) {
 
-      // Load all practice plans, indexed by ecosite.
-      $practices_by_ecosite = array_reduce($plan->get('practice_implementation_plan')->referencedEntities(), function ($carry, $plan) {
-        $ecosite_id = $plan->get('land')->first()->target_id;
-        $carry[$ecosite_id][] = $plan;
+      // Load all practice plans, indexed by location (land asset).
+      $practices_by_location = array_reduce($plan->get('practice_implementation_plan')->referencedEntities(), function ($carry, $plan) {
+        $asset_id = $plan->get('land')->first()->target_id;
+        $carry[$asset_id][] = $plan;
         return $carry;
       }, []);
 
-      // Iterate through each ecosite and build placeholders.
-      $ecosites = [];
-      foreach ($practices_by_ecosite as $ecosite_id => $plans) {
+      // Iterate through each location and build placeholders.
+      $locations = [];
+      foreach ($practices_by_location as $asset_id => $plans) {
 
-        // Load the ecosite land asset.
-        $land_asset = $this->entityTypeManager->getStorage('asset')->load($ecosite_id);
+        // Load the location land asset.
+        $land_asset = $this->entityTypeManager->getStorage('asset')->load($asset_id);
 
         // Iterate through the practice plans and build placeholders.
-        $ecosite_practices = [];
+        $location_practices = [];
         foreach ($plans as $plan) {
           $practice_info = RcdHelper::practices()[$plan->get('rcd_practice')->value];
           $practice_name = $practice_info['label']->render();
           if (!empty($practice_info['nrcs_code'])) {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';
           }
-          $ecosite_practices[] = [
+          $location_practices[] = [
             new StringPlaceholder('practice_name', $practice_name),
             new StringPlaceholder('practice_overview', $plan->get('notes')->value ?? ''),
             new ListStringPlaceholder('practice_benefits', $practice_info['benefits']),
@@ -161,16 +161,16 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
           ];
         }
 
-        // Build placeholders for each ecosite.
-        $ecosites[] = [
-          new StringPlaceholder('ecosite_name', $land_asset->label()),
-          new StringPlaceholder('ecosite_type', RcdHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
-          new StringPlaceholder('ecosite_overview', $land_asset->get('notes')->value ?? ''),
-          new ListBlockPlaceholder('ecosite_practices', $ecosite_practices),
+        // Build placeholders for each location.
+        $locations[] = [
+          new StringPlaceholder('location_name', $land_asset->label()),
+          new StringPlaceholder('location_type', RcdHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
+          new StringPlaceholder('location_overview', $land_asset->get('notes')->value ?? ''),
+          new ListBlockPlaceholder('location_practices', $location_practices),
         ];
       }
     }
-    $placeholders[] = new ListBlockPlaceholder('ecosites', $ecosites ?? []);
+    $placeholders[] = new ListBlockPlaceholder('locations', $locations ?? []);
 
     // Add placeholders to the event.
     $event->addPlaceholders($placeholders);

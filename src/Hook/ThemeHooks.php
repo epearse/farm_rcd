@@ -75,7 +75,7 @@ class ThemeHooks implements ContainerInjectionInterface {
 
     // Add planning workflow forms.
     $build['rcd_property'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PropertyForm', $plan);
-    $build['rcd_ecosites'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\EcositesForm', $plan);
+    $build['rcd_locations'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\LocationsForm', $plan);
     $build['rcd_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\SiteAssessmentsForm', $plan);
     $build['rcd_practices'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PracticesForm', $plan);
     $build['rcd_document'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\DocumentForm', $plan);
@@ -84,7 +84,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     // Attach behavior for disabling forms when one is updated.
     $build['#attached']['drupalSettings']['disable_form_ids'] = [
       'farm-rcd-property-form',
-      'farm-rcd-ecosites-form',
+      'farm-rcd-locations-form',
       'farm-rcd-site-assessment-form',
       'farm-rcd-practice-form',
       'farm-rcd-document-form',
@@ -148,7 +148,7 @@ class ThemeHooks implements ContainerInjectionInterface {
       return [
         'bottom' => [
           'rcd_property',
-          'rcd_ecosites',
+          'rcd_locations',
           'rcd_site_assessments',
           'rcd_practices',
           'rcd_document',
