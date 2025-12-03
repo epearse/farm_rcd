@@ -55,6 +55,13 @@ class DocumentForm extends PlanningWorkflowFormBase {
     // plans associated with the plan, but no files are attached.
     $form['document']['#open'] = $this->plan->get('status')->value == 'planning' && !empty($this->practicePlans) && $this->plan->get('file')->isEmpty();
 
+    // Generate document button.
+    $form['document']['generate'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Generate document from template'),
+      '#submit' => [[$this, 'submitGenerate']],
+    ];
+
     // Upload finished document.
     $form['document']['upload'] = [
       '#type' => 'file',
@@ -67,15 +74,10 @@ class DocumentForm extends PlanningWorkflowFormBase {
       ],
     ];
 
-    // Submit buttons.
+    // Save documents button.
     $form['document']['actions'] = [
       '#type' => 'actions',
       '#weight' => 1000,
-    ];
-    $form['document']['actions']['generate'] = [
-      '#type' => 'submit',
-      '#value' => $this->t('Generate document from template'),
-      '#submit' => [[$this, 'submitGenerate']],
     ];
     $form['document']['actions']['submit'] = [
       '#type' => 'submit',
