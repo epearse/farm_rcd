@@ -162,7 +162,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
     $form['riparian_areas'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Riparian areas'),
-      '#description' => $this->t('Describe the riparian areas on this property.'),
+      '#description' => $this->t('Name or describe the riparian areas on this property. USFWS Riparian Areas definition: <a href=":url" target="_blank">:url</a>', [':url' => 'https://www.fws.gov/glossary/riparian']),
       '#default_value' => $this->property ? $this->property->get('rcd_riparian_areas')->value : '',
       '#required' => TRUE,
     ];

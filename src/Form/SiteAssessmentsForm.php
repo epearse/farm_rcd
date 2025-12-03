@@ -315,7 +315,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       ],
       'wildlife' => [
         'title' => $this->t('Wildlife'),
-        'description' => $this->t('Describe wildlife pollinator habitat, IPM, crop protection, predation issues, etc.'),
+        'description' => $this->t('Describe wildlife and pollinator habitat, IPM and/or pest management strategies, crop protection, predation issues, etc.'),
       ],
       'infrastructure' => [
         'title' => $this->t('Infrastructure'),
