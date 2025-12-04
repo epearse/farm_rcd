@@ -7,7 +7,7 @@ namespace Drupal\farm_rcd\Plugin\Plan\PlanType;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\PlanType;
 use Drupal\farm_entity\Plugin\Plan\PlanType\FarmPlanType;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\ConservationPractices;
 
 /**
  * Provides the RCD practice implementation plan type.
@@ -60,7 +60,7 @@ class PracticeImplementation extends FarmPlanType {
             $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
           }
           return $label;
-        }, RcdHelper::practices()),
+        }, ConservationPractices::definitions()),
         'required' => TRUE,
       ],
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\farm_rcd\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\farm_rcd\ConservationPractices;
 use Drupal\farm_rcd\Event\GenerateDocumentEvent;
 use Drupal\farm_rcd\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_rcd\Placeholder\ListStringPlaceholder;
@@ -148,7 +149,10 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Iterate through the practice plans and build placeholders.
         $location_practices = [];
         foreach ($plans as $plan) {
-          $practice_info = RcdHelper::practices()[$plan->get('rcd_practice')->value];
+          $practice_info = ConservationPractices::get($plan->get('rcd_practice')->value);
+          if (is_null($practice_info)) {
+            continue;
+          }
           $practice_name = $practice_info['label']->render();
           if (!empty($practice_info['nrcs_code'])) {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';

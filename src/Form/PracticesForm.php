@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\ConservationPractices;
 use Drupal\plan\Entity\Plan;
 use Drupal\plan\Entity\PlanInterface;
 
@@ -164,7 +164,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
           $label .= ' (NRCS code ' . $practice['nrcs_code'] . ')';
         }
         return $label;
-      }, RcdHelper::practices()),
+      }, ConservationPractices::definitions()),
       '#default_value' => $plan ? $plan->get('rcd_practice')->value : NULL,
       '#states' => [
         'required' => [
@@ -295,7 +295,11 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Set the name of the plan based on the land asset and practice.
     // Ensure the name is under 255 characters (we need to do this because the
     // user can't).
-    $name = $plan->get('land')->referencedEntities()[0]->label() . ': ' . RcdHelper::practices()[$values['practice']]['label'];
+    $name = $plan->get('land')->referencedEntities()[0]->label();
+    $practice_info = ConservationPractices::get($values['practice']);
+    if (!is_null($practice_info)) {
+      $name .= ': ' . $practice_info['label'];
+    }
     $name = mb_strimwidth($name, 0, 255, '…');
     $plan->set('name', $name);
 
