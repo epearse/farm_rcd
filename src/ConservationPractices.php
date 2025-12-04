@@ -254,6 +254,21 @@ class ConservationPractices {
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Nutrient_Management_590_NHCP_CPS_2017.pdf',
         ],
       ],
+      'pasture_hay_planting' => [
+        'label' => t('Pasture and Hay Planting'),
+        'nrcs_code' => '512',
+        'benefits' => [
+          'Improve or maintain livestock nutrition and health',
+          'Provide or increase forage supply during periods of low forage production',
+          'Reduce soil erosion',
+          'Improve water quality',
+          'Improve air quality',
+          'Improve soil health',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Pasture_and_Hay_Planting_512_NHCP_CPS_2020.pdf',
+        ],
+      ],
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
         'nrcs_code' => '338',
@@ -312,6 +327,23 @@ class ConservationPractices {
         ],
         'resources' => [
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Residue_And_Tillage_Management_Reduced_Till_345_PS_Sept_2016.pdf',
+        ],
+      ],
+      'natural_restoration' => [
+        'label' => t('Restoration of Rare or Declining Natural Communities'),
+        'nrcs_code' => '643',
+        'benefits' => [
+          'Restores the physical conditions and/or unique plant community on sites that partially support, or once supported, a rare or declining natural community',
+          'Addresses resource concerns of a degraded plant condition and/or inadequate wildlife habitat',
+          'Promotes ecological, geomorphic, or hydrologic processes such as ponding, scour, sediment deposition, streambank stabilization, groundwater recharge, and riparian vegetation establishment',
+          'Increased ponding and establishment of backwaters promotes greater connectivity of aquatic habitat',
+          'Dam structures may obstruct debris, sediment and pollutants',
+          'Increased groundwater recharge as a result of slower water discharge',
+          'Decreased intensity of flooding and headcutting of channels as a result of slower water discharge',
+          'Raised water levels from dams creates habitat conditions for riparian vegetation',
+        ],
+        'resources' => [
+          'https://www.nrcs.usda.gov/sites/default/files/2022-09/Restoration_Of_Rare_Or_Declining_Natural_Communities_643_CPS-3-17Final.pdf',
         ],
       ],
       'riparian_forest_buffer' => [
