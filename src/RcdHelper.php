@@ -126,21 +126,6 @@ class RcdHelper {
    */
   public static function practices() {
     return [
-      'bda' => [
-        'label' => t('Beaver Dam Analog (BDA)'),
-        'nrcs_code' => 'E643D',
-        'benefits' => [
-          'Promotes ecological, geomorphic, and hydrologic processes such as ponding, scour, sediment deposition, streambank stabilization, groundwater recharge, and riparian vegetation establishment',
-          'Increased ponding and establishment of backwaters promotes greater connectivity of aquatic habitat',
-          'Dam structures may obstruct debris, sediment and pollutants',
-          'Increased groundwater recharge as a result of slower water discharge',
-          'Decreased intensity of flooding and headcutting of channels as a result of slower water discharge',
-          'Raised water levels from dams creates habitat conditions for riparian vegetation',
-        ],
-        'resources' => [
-          'https://www.nrcs.usda.gov/low-tech-process-based-restoration-to-enhance-floodplain-connectivity-e643d',
-        ],
-      ],
       'brush_mgmt' => [
         'label' => t('Brush Management'),
         'nrcs_code' => '314',
@@ -238,19 +223,6 @@ class RcdHelper {
         ],
         'resources' => [
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Filter_Strip_393_CPS.pdf',
-        ],
-      ],
-      'forage_biomass_planting' => [
-        'label' => t('Forage Biomass Planting'),
-        'nrcs_code' => 'E512B',
-        'benefits' => [
-          'Increase available forage for grazing livestock',
-          'Increase soil cover and reduce soil erosion',
-          'Increase organic material in soil',
-          'Increase soil health',
-        ],
-        'resources' => [
-          'https://www.nrcs.usda.gov/sites/default/files/2024-12/E512B-Forage%20and%20biomass%20planting%20to%20reduce%20soil%20erosion%20or%20increase%20organic%20matter%20to%20build%20soil%20health.pdf',
         ],
       ],
       'forest_stand_mgmt' => [
@@ -370,20 +342,6 @@ class RcdHelper {
         ],
         'resources' => [
           'https://www.nrcs.usda.gov/sites/default/files/2022-09/Nutrient_Management_590_NHCP_CPS_2017.pdf',
-        ],
-      ],
-      'pollinator_habitat' => [
-        'label' => t('Pollinator Habitat Enhancement'),
-        'nrcs_code' => '',
-        'benefits' => [
-          'Increase diversity and abundance of nectar plants for native pollinators',
-          'Improve soil health by maintaining or increasing soil organic matter quantity',
-          'Improve soil health by increasing soil aggregate stability',
-          'Improve soil health by enhancing habitat for soil organisms',
-          'Improve soil health by reducing compaction',
-        ],
-        'resources' => [
-          'https://www.nrcs.usda.gov/resources/guides-and-instructions/resources-to-help-pollinators',
         ],
       ],
       'prescribed_burn' => [
@@ -511,20 +469,7 @@ class RcdHelper {
         ],
       ],
       'soil_carbon_amendment' => [
-        'label' => t('Soil Carbon Amendment (e.g. compost)'),
-        'nrcs_code' => '336',
-        'benefits' => [
-          'Improve or maintain soil organic matter',
-          'Sequester carbon and enhance soil carbon (C) stocks',
-          'Improve soil aggregate stability',
-          'Improve habitat for soil organisms',
-        ],
-        'resources' => [
-          'https://www.nrcs.usda.gov/sites/default/files/2022-11/336-NHCP-CPS-Soil-Carbon-Amendment-2022.pdf',
-        ],
-      ],
-      'biochar' => [
-        'label' => t('Soil Carbon Amendment (Biochar)'),
+        'label' => t('Soil Carbon Amendment'),
         'nrcs_code' => '336',
         'benefits' => [
           'Improve or maintain soil organic matter',
