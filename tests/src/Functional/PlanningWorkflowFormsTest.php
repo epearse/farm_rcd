@@ -572,6 +572,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'property' => [$property],
+      'owner' => [$this->user],
     ]);
     $plan->save();
 
@@ -624,6 +625,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('rcd_practice_implementation', $practice_plan->bundle());
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
+    $this->assertEquals($plan->get('owner')->referencedEntities()[0]->id(), $practice_plan->get('owner')->referencedEntities()[0]->id());
     $this->assertEquals($location->label() . ': Other', $practice_plan->label());
     $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);

@@ -289,6 +289,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
         'type' => 'rcd_practice_implementation',
         'farm' => [$this->farm],
         'land' => [$land],
+        'owner' => $this->plan->get('owner'),
       ]);
     }
 
