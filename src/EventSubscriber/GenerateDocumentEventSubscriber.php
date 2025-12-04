@@ -10,7 +10,7 @@ use Drupal\farm_rcd\Event\GenerateDocumentEvent;
 use Drupal\farm_rcd\Placeholder\ListBlockPlaceholder;
 use Drupal\farm_rcd\Placeholder\ListStringPlaceholder;
 use Drupal\farm_rcd\Placeholder\StringPlaceholder;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\RcdOptionLists;
 use Drupal\plan\Entity\PlanInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -84,7 +84,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Stakeholder name and type.
       $intake_stakeholder_name = $intake->get('intake_stakeholder_name')->value;
-      $intake_stakeholder_type = RcdHelper::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
+      $intake_stakeholder_type = RcdOptionLists::stakeholderTypes()[$intake->get('intake_stakeholder_type')->value]->render();
 
       // Property owner and acreage.
       $intake_property_owner = $intake->get('intake_property_owner')->value;
@@ -92,12 +92,12 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Disadvantaged groups.
       $socially_disadvantaged = implode(', ', array_map(function ($value) {
-        return RcdHelper::stakeholderGroups()[$value['value']]->render();
+        return RcdOptionLists::stakeholderGroups()[$value['value']]->render();
       }, $intake->get('intake_stakeholder_group')->getValue()));
 
       // Land use.
       $intake_land_use = array_map(function ($value) {
-        return RcdHelper::landUses()[$value['value']]->render();
+        return RcdOptionLists::landUses()[$value['value']]->render();
       }, $intake->get('intake_property_use')->getValue());
 
       // Stakeholder goals.
@@ -106,7 +106,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_goals_other')->value;
         }
-        return RcdHelper::goals()[$value]->render();
+        return RcdOptionLists::goals()[$value]->render();
       }, $intake->get('intake_goals')->getValue());
 
       // Stakeholder concerns.
@@ -115,7 +115,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         if ($value == 'other') {
           return 'Other: ' . $intake->get('intake_concerns_other')->value;
         }
-        return RcdHelper::concerns()[$value]->render();
+        return RcdOptionLists::concerns()[$value]->render();
       }, $intake->get('intake_concerns')->getValue());
     }
     $placeholders[] = new StringPlaceholder('intake_stakeholder_name', $intake_stakeholder_name ?? '');
@@ -168,7 +168,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
         // Build placeholders for each location.
         $locations[] = [
           new StringPlaceholder('location_name', $land_asset->label()),
-          new StringPlaceholder('location_type', RcdHelper::landTypes()[$land_asset->get('land_type')->value]->render()),
+          new StringPlaceholder('location_type', RcdOptionLists::landTypes()[$land_asset->get('land_type')->value]->render()),
           new StringPlaceholder('location_overview', $land_asset->get('notes')->value ?? ''),
           new ListBlockPlaceholder('location_practices', $location_practices),
         ];

@@ -7,7 +7,7 @@ namespace Drupal\farm_rcd\Plugin\Log\LogType;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\farm_entity\Attribute\LogType;
 use Drupal\farm_entity\Plugin\Log\LogType\FarmLogType;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\RcdOptionLists;
 
 /**
  * Provides the RCD Intake log type.
@@ -49,7 +49,7 @@ class Intake extends FarmLogType {
       'intake_stakeholder_state' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder state'),
-        'allowed_values' => RcdHelper::states(),
+        'allowed_values' => RcdOptionLists::states(),
       ],
       'intake_stakeholder_zip' => [
         'type' => 'string',
@@ -58,12 +58,12 @@ class Intake extends FarmLogType {
       'intake_stakeholder_type' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder type'),
-        'allowed_values' => RcdHelper::stakeholderTypes(),
+        'allowed_values' => RcdOptionLists::stakeholderTypes(),
       ],
       'intake_stakeholder_group' => [
         'type' => 'list_string',
         'label' => $this->t('Stakeholder group'),
-        'allowed_values' => RcdHelper::stakeholderGroups(),
+        'allowed_values' => RcdOptionLists::stakeholderGroups(),
         'multiple' => TRUE,
       ],
 
@@ -104,7 +104,7 @@ class Intake extends FarmLogType {
       'intake_property_state' => [
         'type' => 'list_string',
         'label' => $this->t('Property state'),
-        'allowed_values' => RcdHelper::states(),
+        'allowed_values' => RcdOptionLists::states(),
       ],
       'intake_property_zip' => [
         'type' => 'string',
@@ -117,7 +117,7 @@ class Intake extends FarmLogType {
       'intake_property_use' => [
         'type' => 'list_string',
         'label' => $this->t('Land use'),
-        'allowed_values' => RcdHelper::landUses(),
+        'allowed_values' => RcdOptionLists::landUses(),
         'multiple' => TRUE,
       ],
       'intake_property_use_grazing_ac' => [
@@ -163,7 +163,7 @@ class Intake extends FarmLogType {
       'intake_goals' => [
         'type' => 'list_string',
         'label' => $this->t('Goals'),
-        'allowed_values' => RcdHelper::goals(),
+        'allowed_values' => RcdOptionLists::goals(),
         'multiple' => TRUE,
       ],
       'intake_goals_other' => [
@@ -175,7 +175,7 @@ class Intake extends FarmLogType {
       'intake_concerns' => [
         'type' => 'list_string',
         'label' => $this->t('Concerns'),
-        'allowed_values' => RcdHelper::concerns(),
+        'allowed_values' => RcdOptionLists::concerns(),
         'multiple' => TRUE,
       ],
       'intake_concerns_other' => [

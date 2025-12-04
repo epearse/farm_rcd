@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Drupal\farm_rcd;
 
 /**
- * Define allowed values RCP fields.
+ * Define option lists used by this module.
  *
  * @internal
  */
-class RcdHelper {
+class RcdOptionLists {
 
   /**
    * Stakeholder types.

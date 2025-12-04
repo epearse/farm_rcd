@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\farm_rcd\Functional;
 
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\RcdOptionLists;
 
 /**
  * Tests the intake form functionality.
@@ -277,7 +277,7 @@ class IntakeFormTest extends RcdTestBase {
       'intake_stakeholder_city' => $field_data[1]['stakeholder[personal][address][city]'],
       'intake_stakeholder_state' => $field_data[1]['stakeholder[personal][address][state]'],
       'intake_stakeholder_zip' => $field_data[1]['stakeholder[personal][address][zip]'],
-      'intake_stakeholder_group' => array_keys(RcdHelper::stakeholderGroups()),
+      'intake_stakeholder_group' => array_keys(RcdOptionLists::stakeholderGroups()),
       'intake_farm_name' => $field_data[2]['property[info][farm_name]'],
       'intake_property_own_or_lease' => $field_data[2]['property[info][own_or_lease]'],
       'intake_property_owner' => 'My sister',
@@ -288,7 +288,7 @@ class IntakeFormTest extends RcdTestBase {
       'intake_property_state' => $field_data[2]['property[info][state]'],
       'intake_property_zip' => $field_data[2]['property[info][zip]'],
       'intake_property_parcel_gps' => '',
-      'intake_property_use' => array_keys(RcdHelper::landUses()),
+      'intake_property_use' => array_keys(RcdOptionLists::landUses()),
       'intake_property_use_grazing_ac' => $field_data[2]['property[land_use][grazing_acreage]'],
       'intake_property_use_vineyard_ac' => $field_data[2]['property[land_use][vineyards_acreage]'],
       'intake_property_use_orchard_ac' => $field_data[2]['property[land_use][orchards_acreage]'],
@@ -297,9 +297,9 @@ class IntakeFormTest extends RcdTestBase {
       'intake_property_use_other' => $field_data[2]['property[land_use][other]'],
       'intake_property_use_other_ac' => $field_data[2]['property[land_use][other_acreage]'],
       'intake_property_use_crop_types' => $field_data[2]['property[land_use][crop_types]'],
-      'intake_goals' => array_keys(RcdHelper::goals()),
+      'intake_goals' => array_keys(RcdOptionLists::goals()),
       'intake_goals_other' => $field_data[3]['interests[goals][other]'],
-      'intake_concerns' => array_keys(RcdHelper::concerns()),
+      'intake_concerns' => array_keys(RcdOptionLists::concerns()),
       'intake_concerns_other' => $field_data[3]['interests[concerns][other]'],
       'intake_comments' => $field_data[3]['interests[comments]'],
       'intake_rcd_sharing_allowed' => TRUE,

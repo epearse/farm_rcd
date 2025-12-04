@@ -6,7 +6,7 @@ namespace Drupal\farm_rcd\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\RcdOptionLists;
 use Drupal\plan\Entity\PlanInterface;
 
 /**
@@ -111,7 +111,7 @@ class LocationsForm extends PlanningWorkflowFormBase {
     $form['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Type'),
-      '#options' => RcdHelper::landTypes(),
+      '#options' => RcdOptionLists::landTypes(),
       '#required' => !is_null($asset),
       '#default_value' => !is_null($asset) ? $asset->get('land_type')->value : NULL,
     ];

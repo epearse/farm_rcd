@@ -6,7 +6,7 @@ namespace Drupal\Tests\farm_rcd\Functional;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Tests\farm_rcd\Traits\PhpWordTestingTrait;
-use Drupal\farm_rcd\RcdHelper;
+use Drupal\farm_rcd\RcdOptionLists;
 use Drupal\plan\Entity\PlanInterface;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
@@ -671,10 +671,10 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'intake_stakeholder_type' => 'landowner',
       'intake_property_owner' => $this->randomMachineName(),
       'intake_property_acreage' => 100,
-      'intake_stakeholder_group' => array_keys(RcdHelper::stakeholderGroups()),
-      'intake_property_use' => array_keys(RcdHelper::landUses()),
-      'intake_goals' => array_keys(RcdHelper::goals()),
-      'intake_concerns' => array_keys(RcdHelper::concerns()),
+      'intake_stakeholder_group' => array_keys(RcdOptionLists::stakeholderGroups()),
+      'intake_property_use' => array_keys(RcdOptionLists::landUses()),
+      'intake_goals' => array_keys(RcdOptionLists::goals()),
+      'intake_concerns' => array_keys(RcdOptionLists::concerns()),
     ]);
     $intake->save();
 
