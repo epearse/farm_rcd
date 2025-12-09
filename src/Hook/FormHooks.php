@@ -18,9 +18,12 @@ class FormHooks {
   #[Hook('form_asset_form_alter')]
   public function formAssetFormAlter(&$form, FormStateInterface $form_state, $form_id) {
 
-    // Only show the "APN" field if the land type is "rcd_property".
+    // Only show the "APN", "Riparian areas", and "Wildlife" fields if the land
+    // type is "rcd_property".
     if (isset($form['land_type']) && isset($form['rcd_apn'])) {
       $form['rcd_apn']['#states']['visible'] = [':input[name="land_type"]' => ['value' => 'rcd_property']];
+      $form['rcd_riparian_areas']['#states']['visible'] = [':input[name="land_type"]' => ['value' => 'rcd_property']];
+      $form['rcd_wildlife']['#states']['visible'] = [':input[name="land_type"]' => ['value' => 'rcd_property']];
     }
   }
 
