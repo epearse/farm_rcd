@@ -668,6 +668,11 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('review', $practice_plan->get('status')->value);
+
+    // Confirm that submitting the form without changing any values does not
+    // save the plans.
+    $this->getSession()->getPage()->pressButton('Save conservation practices');
+    $this->assertSession()->pageTextContains('No practice implementation plans saved.');
   }
 
   /**

@@ -218,9 +218,14 @@ class PracticesForm extends PlanningWorkflowFormBase {
     }
 
     // For each set of values, generate/update and validate the practice plan.
+    // The generatePracticePlan() method will return NULL if nothing has
+    // changed on an existing plan, so we skip those.
     $plans = [];
     foreach ($practice_values as $values) {
       $plan = $this->generatePracticePlan($values);
+      if (is_null($plan)) {
+        continue;
+      }
       $violations = $plan->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('The practice implementation plan did not pass validation.'));
@@ -242,6 +247,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Load the practice plans from storage.
+    // Only new or modified plans will be included.
     $storage = $form_state->getStorage();
     $practice_plans = $storage['plans'] ?? [];
 
@@ -271,8 +277,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
    *   Submitted values from $form_state->getValue().
    *
    * @return \Drupal\plan\Entity\PlanInterface|null
-   *   Returns an unsaved practice plan entity, or null if something goes
-   *   wrong.
+   *   Returns an unsaved practice plan entity, or null if the plan already
+   *   exists and nothing has changed on it.
    */
   protected function generatePracticePlan(array $values): ?PlanInterface {
 
@@ -280,11 +286,13 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Otherwise, start a new one.
     $plan_storage = $this->entityTypeManager->getStorage('plan');
     if (!empty($values['plan_id'])) {
+      /** @var \Drupal\plan\Entity\PlanInterface $plan */
       $plan = $plan_storage->load($values['plan_id']);
     }
     else {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
       $land = $asset_storage->load($values['location']);
+      /** @var \Drupal\plan\Entity\PlanInterface $plan */
       $plan = $plan_storage->create([
         'type' => 'rcd_practice_implementation',
         'farm' => [$this->farm],
@@ -292,6 +300,9 @@ class PracticesForm extends PlanningWorkflowFormBase {
         'owner' => $this->plan->get('owner'),
       ]);
     }
+
+    // Keep track of whether the plan is changed. New plans always are.
+    $changed = $plan->isNew();
 
     // Set the name of the plan based on the land asset and practice.
     // Ensure the name is under 255 characters (we need to do this because the
@@ -302,15 +313,30 @@ class PracticesForm extends PlanningWorkflowFormBase {
       $name .= ': ' . $practice_info['label'];
     }
     $name = mb_strimwidth($name, 0, 255, '…');
-    $plan->set('name', $name);
+    if ($plan->get('name')->value != $name) {
+      $plan->set('name', $name);
+      $changed = TRUE;
+    }
 
     // Fill in the plan details from form values.
-    $plan->set('rcd_practice', $values['practice']);
-    $plan->set('notes', $values['notes']);
-    $plan->set('status', $values['status']);
+    $field_values = [
+      'rcd_practice' => $values['practice'],
+      'notes' => $values['notes'],
+      'status' => $values['status'],
+    ];
+    foreach ($field_values as $field => $value) {
+      if ($plan->get($field)->value != $value) {
+        $plan->set($field, $value);
+        $changed = TRUE;
+      }
+    }
 
-    /** @var \Drupal\plan\Entity\PlanInterface $plan */
-    return $plan;
+    // If the plan has changed, return it.
+    // Otherwise, return NULL.
+    if ($changed) {
+      return $plan;
+    }
+    return NULL;
   }
 
 }
