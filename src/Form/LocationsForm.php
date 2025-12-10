@@ -180,9 +180,14 @@ class LocationsForm extends PlanningWorkflowFormBase {
     }
 
     // For each set of values, generate/update and validate the land asset.
+    // The generateLandAsset() method will return NULL if nothing has changed
+    // on an existing asset, so we skip those.
     $assets = [];
     foreach ($location_values as $values) {
       $asset = $this->generateLandAsset($values);
+      if (is_null($asset)) {
+        continue;
+      }
       $violations = $asset->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('The land asset did not pass validation.'));
@@ -204,6 +209,7 @@ class LocationsForm extends PlanningWorkflowFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Load the land assets from storage.
+    // Only new or modified assets will be included.
     $storage = $form_state->getStorage();
     $land_assets = $storage['assets'] ?? [];
 
@@ -229,8 +235,8 @@ class LocationsForm extends PlanningWorkflowFormBase {
    *   Submitted values from $form_state->getValue().
    *
    * @return \Drupal\asset\Entity\AssetInterface|null
-   *   Returns an unsaved land asset entity, or null if something goes
-   *   wrong.
+   *   Returns an unsaved land asset entity, or null if the asset already
+   *   exists and nothing is changing on it.
    */
   protected function generateLandAsset(array $values): ?AssetInterface {
 
@@ -238,9 +244,11 @@ class LocationsForm extends PlanningWorkflowFormBase {
     // Otherwise, start a new one.
     $asset_storage = $this->entityTypeManager->getStorage('asset');
     if (!empty($values['asset_id'])) {
+      /** @var \Drupal\asset\Entity\AssetInterface $asset */
       $asset = $asset_storage->load($values['asset_id']);
     }
     else {
+      /** @var \Drupal\asset\Entity\AssetInterface $asset */
       $asset = $asset_storage->create([
         'type' => 'land',
         'parent' => [$this->property],
@@ -248,14 +256,34 @@ class LocationsForm extends PlanningWorkflowFormBase {
       ]);
     }
 
-    // Fill in the property details from form values.
-    $asset->set('land_type', $values['type']);
-    $asset->set('name', $values['label']);
-    $asset->set('notes', $values['description']);
-    $asset->set('intrinsic_geometry', ['value' => $values['boundary']]);
+    // Keep track of whether the asset is changed. New assets always are.
+    $changed = $asset->isNew();
 
-    /** @var \Drupal\asset\Entity\AssetInterface $asset */
-    return $asset;
+    // Fill in the asset details from form values, if they have changed.
+    $field_values = [
+      'land_type' => $values['type'],
+      'name' => $values['label'],
+      'notes' => $values['description'],
+    ];
+    foreach ($field_values as $field => $value) {
+      if ($asset->get($field)->value != $value) {
+        $asset->set($field, $value);
+        $changed = TRUE;
+      }
+    }
+
+    // Intrinsic geometry requires special handling.
+    if ($asset->get('intrinsic_geometry')->value != $values['boundary']) {
+      $asset->set('intrinsic_geometry', ['value' => $values['boundary']]);
+      $changed = TRUE;
+    }
+
+    // If the asset has changed, return it.
+    // Otherwise, return NULL.
+    if ($changed) {
+      return $asset;
+    }
+    return NULL;
   }
 
 }

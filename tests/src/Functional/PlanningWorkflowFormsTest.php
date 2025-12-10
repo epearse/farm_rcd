@@ -376,6 +376,11 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Apple orchard', $land_asset->label());
     $this->assertEquals('History haunts him who does not honour it.', $land_asset->get('notes')->value);
     $this->assertEquals('', $land_asset->get('intrinsic_geometry')->value);
+
+    // Confirm that submitting the form without changing any values does not
+    // save the assets.
+    $this->getSession()->getPage()->pressButton('Save land assets');
+    $this->assertSession()->pageTextContains('No land assets saved.');
   }
 
   /**
