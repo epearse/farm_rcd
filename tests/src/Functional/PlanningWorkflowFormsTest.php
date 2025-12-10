@@ -544,6 +544,11 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       $this->assertEquals($resource . ' goals!', $log->get('rcd_' . $resource . '_goals')->value);
       $this->assertEquals($resource . ' strategy!', $log->get('rcd_' . $resource . '_strategy')->value);
     }
+
+    // Confirm that submitting the form without changing any values does not
+    // save the logs.
+    $this->getSession()->getPage()->pressButton('Save site assessments');
+    $this->assertSession()->pageTextContains('No site assessment logs saved.');
   }
 
   /**

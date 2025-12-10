@@ -392,10 +392,14 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     }
 
     // For each set of values, generate/update and validate the site assessment
-    // log.
+    // log. The generateSiteAssessmentLog() method will return NULL if nothing
+    // has changed on an existing log, so we skip those.
     $logs = [];
     foreach ($assessment_values as $values) {
       $log = $this->generateSiteAssessmentLog($values);
+      if (is_null($log)) {
+        continue;
+      }
       $violations = $log->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('The site assessment log did not pass validation.'));
@@ -417,6 +421,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Load the site assessment logs from storage.
+    // Only new or modified logs will be included.
     $storage = $form_state->getStorage();
     $logs = $storage['logs'] ?? [];
 
@@ -442,8 +447,8 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
    *   Submitted values from $form_state->getValue().
    *
    * @return \Drupal\log\Entity\LogInterface|null
-   *   Returns an unsaved site assessment log entity, or null if something goes
-   *   wrong.
+   *   Returns an unsaved site assessment log entity, or null if the log
+   *   already exists and nothing is changing on it.
    */
   protected function generateSiteAssessmentLog(array $values): ?LogInterface {
 
@@ -451,11 +456,13 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
     // Otherwise, start a new one.
     $log_storage = $this->entityTypeManager->getStorage('log');
     if (!empty($values['log_id'])) {
+      /** @var \Drupal\log\Entity\LogInterface $log */
       $log = $log_storage->load($values['log_id']);
     }
     else {
       $asset_storage = $this->entityTypeManager->getStorage('asset');
       $land = $asset_storage->load($values['location']);
+      /** @var \Drupal\log\Entity\LogInterface $log */
       $log = $log_storage->create([
         'type' => 'rcd_site_assessment',
         'location' => [$land],
@@ -463,13 +470,26 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       ]);
     }
 
-    // Fill in the log details from form values.
-    $log->set('timestamp', strtotime($values['date']));
-    $log->set('rcd_land_use_history', $values['land_use_history']);
-    $log->set('rcd_infrastructure', $values['infrastructure']);
-    $log->set('rcd_priority_concerns', $values['priority_concerns']);
-    $log->set('rcd_landowner_objectives', $values['landowner_objectives']);
-    $log->set('notes', $values['notes']);
+    // Keep track of whether the log is changed. New logs always are.
+    $changed = $log->isNew();
+
+    // Fill in the log details from form values, if they have changed.
+    $field_values = [
+      'timestamp' => strtotime($values['date']),
+      'notes' => $values['notes'],
+      'rcd_land_use_history' => $values['land_use_history'],
+      'rcd_infrastructure' => $values['infrastructure'],
+      'rcd_priority_concerns' => $values['priority_concerns'],
+      'rcd_landowner_objectives' => $values['landowner_objectives'],
+    ];
+    foreach ($field_values as $field => $value) {
+      if ($log->get($field)->value != $value) {
+        $log->set($field, $value);
+        $changed = TRUE;
+      }
+    }
+
+    // Process resource field sets.
     foreach ([
       'soil',
       'water',
@@ -479,10 +499,14 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       'wildlife',
       'infrastructure',
     ] as $resource) {
-      $log->set('rcd_' . $resource . '_rating', $values['resources'][$resource]['rating']);
-      $log->set('rcd_' . $resource . '_baseline', $values['resources'][$resource]['baseline']);
-      $log->set('rcd_' . $resource . '_goals', $values['resources'][$resource]['goals']);
-      $log->set('rcd_' . $resource . '_strategy', $values['resources'][$resource]['strategy']);
+      foreach (['rating', 'baseline', 'goals', 'strategy'] as $resource_field) {
+        $field = 'rcd_' . $resource . '_' . $resource_field;
+        $value = $values['resources'][$resource][$resource_field];
+        if ($log->get($field)->value != $value) {
+          $log->set($field, $value);
+          $changed = TRUE;
+        }
+      }
     }
 
     // Process taxonomy reference fields.
@@ -494,9 +518,13 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       'plant_species',
     ] as $name) {
       $vid = 'rcd_' . $name;
-      $log->set($vid, []);
+      $existing_ids = array_map(function ($term) {
+        return $term->id();
+      }, $log->get($vid)->referencedEntities());
+      $updated_terms = [];
+      $updated_ids = [];
       if (!empty($values[$name])) {
-        $terms = array_map(function ($value) use ($term_storage, $vid) {
+        $updated_terms = array_map(function ($value) use ($term_storage, $vid) {
           if (!empty($value['entity_id'])) {
             return $term_storage->load($value['entity_id']);
           }
@@ -505,7 +533,14 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
           }
           return NULL;
         }, json_decode($values[$name], TRUE) ?? []);
-        $log->set($vid, $terms);
+        $updated_ids = array_map(function ($term) {
+          return $term->id();
+        }, $updated_terms);
+      }
+      if (!(empty(array_diff($existing_ids, $updated_ids)) && empty(array_diff($updated_ids, $existing_ids)))) {
+        $log->set($vid, []);
+        $log->set($vid, $updated_terms);
+        $changed = TRUE;
       }
     }
 
@@ -525,10 +560,17 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       $name .= ' (+ ' . ($count - 1) . ' more)';
     }
     $name = mb_strimwidth($name, 0, 255, '…');
-    $log->set('name', $name);
+    if ($log->get('name')->value != $name) {
+      $log->set('name', $name);
+      $changed = TRUE;
+    }
 
-    /** @var \Drupal\log\Entity\LogInterface $log */
-    return $log;
+    // If the log has changed, return it.
+    // Otherwise, return NULL.
+    if ($changed) {
+      return $log;
+    }
+    return NULL;
   }
 
   /**
