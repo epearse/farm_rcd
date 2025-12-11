@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] 2025-12-11
+
 ### Added
 
 The following features are added on top of the existing farmOS data model and
@@ -311,4 +313,5 @@ The following elements are removed/hidden from the default farmOS UI:
   - Add plan
 - Hide the breadcrumb region for anonymous users, to simplify the intake form.
 
-[Unreleased]: https://github.com/farmier/farm_sli/commits/1.x/
+[Unreleased]: https://github.com/farmier/farm_rcd/compare/1.0.0...1.x
+[1.0.0]: https://github.com/farmier/farm_rcd/releases/tag/1.0.0
