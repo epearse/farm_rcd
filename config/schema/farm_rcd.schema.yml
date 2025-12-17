@@ -22,3 +22,6 @@ farm_rcd.mail:
     intake_assigned_staff:
       type: mail
       label: 'Staff intake owner assignment notification email'
+    rcp_document:
+      type: mail
+      label: 'RCP document email'

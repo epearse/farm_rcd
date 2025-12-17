@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the farm_rcd module.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Implements hook_install().
+ */
+function farm_rcd_install() {
+
+  // Set Symfony Mailer Lite as the default mail system.
+  \Drupal::configFactory()->getEditable('mailsystem.settings')->set('defaults', ['sender' => 'symfony_mailer_lite', 'formatter' => 'symfony_mailer_lite'])->save();
+
+  // Set the default Symfony Mailer Lite transport to SMTP.
+  \Drupal::configFactory()->getEditable('symfony_mailer_lite.settings')->set('default_transport', 'smtp')->save();
+}

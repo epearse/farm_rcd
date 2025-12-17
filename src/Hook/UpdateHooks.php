@@ -41,6 +41,7 @@ class UpdateHooks {
       'log.type.rcd_site_assessment',
       'plan.type.rcd_practice_implementation',
       'plan.type.rcd_rcp',
+      'symfony_mailer_lite.symfony_mailer_lite_transport.smtp',
       'taxonomy.vocabulary.rcd_groundwater_basin',
       'taxonomy.vocabulary.rcd_plant_species',
       'taxonomy.vocabulary.rcd_watershed',

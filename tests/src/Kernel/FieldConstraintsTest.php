@@ -40,6 +40,7 @@ class FieldConstraintsTest extends KernelTestBase {
     'organization',
     'plan',
     'state_machine',
+    'symfony_mailer_lite',
     'system',
     'taxonomy',
     'text',

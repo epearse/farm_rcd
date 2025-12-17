@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - farm_rcd
+id: smtp
+label: SMTP
+plugin: smtp
+configuration:
+  user: username
+  pass: password
+  pass_key: ''
+  use_key_module: false
+  host: smtp.example.com
+  port: 587
+  query:
+    verify_peer: true
+    local_domain: ''
+    restart_threshold: 100
+    restart_threshold_sleep: 0
+    ping_threshold: 100

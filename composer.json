@@ -11,6 +11,7 @@
     }
   ],
   "require": {
+    "drupal/symfony_mailer_lite": "^2.0",
     "drupal/tagify": "^1.2",
     "farmos/farmos": "^4",
     "phpoffice/phpword": "^1.4",

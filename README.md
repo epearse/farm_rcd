@@ -17,6 +17,24 @@ Refer to the included CHANGELOG.md for an overview of all the additions,
 changes, and overrides this module makes to the default farmOS data model and
 UI.
 
+## Email setup
+
+This module depends on the
+[Symfony Mailer Lite](https://drupal.org/project/symfony_mailer_lite) module
+for sending email attachments. A default SMTP email transport is automatically
+configured for relaying emails through an existing SMTP server. To use this,
+add the following lines to `settings.php` to specify your SMTP credentials:
+
+```php
+$config['symfony_mailer_lite.symfony_mailer_lite_transport.smtp']['configuration']['user'] = 'my-username';
+$config['symfony_mailer_lite.symfony_mailer_lite_transport.smtp']['configuration']['pass'] = 'my-password';
+$config['symfony_mailer_lite.symfony_mailer_lite_transport.smtp']['configuration']['host'] = 'smtp.example.com';
+$config['symfony_mailer_lite.symfony_mailer_lite_transport.smtp']['configuration']['port'] = '587';
+```
+
+If a different type of transport is required, then you will need to manually
+configure it in `/admin/config/system/symfony-mailer-lite/transport`.
+
 ## Maintainers
 
 Current maintainers:

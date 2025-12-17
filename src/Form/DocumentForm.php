@@ -13,8 +13,11 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\farm_rcd\DocumentGeneratorInterface;
+use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\plan\Entity\PlanInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * Document form.
@@ -29,6 +32,7 @@ class DocumentForm extends PlanningWorkflowFormBase {
     protected DocumentGeneratorInterface $documentGenerator,
     protected FileSystemInterface $fileSystem,
     protected FileUrlGeneratorInterface $fileUrlGenerator,
+    protected MailerInterface $mailer,
   ) {
     parent::__construct($this->entityTypeManager);
   }
@@ -38,6 +42,18 @@ class DocumentForm extends PlanningWorkflowFormBase {
    */
   public function getFormId() {
     return 'farm_rcd_document_form';
+  }
+
+  /**
+   * Utility for getting RCP documents.
+   */
+  private function getPlanDocuments() {
+    $filenames = [];
+    $files = $this->plan->get('file')->referencedEntities();
+    foreach ($files as $file) {
+      $filenames[$file->id()] = $file->label();
+    }
+    return $filenames;
   }
 
   /**
@@ -75,11 +91,36 @@ class DocumentForm extends PlanningWorkflowFormBase {
       ],
     ];
 
+    $email_address = '';
+    if (!is_null($this->intake) && !$this->intake->get('intake_stakeholder_email')->isEmpty()) {
+      $email_address = $this->intake->get('intake_stakeholder_email')->value;
+    }
+    $form['document']['email'] = [
+      '#type' => 'email',
+      '#title' => $this->t('Email address'),
+      '#description' => $this->t('Use this to specify an email address to receive one or more documents, if desired.'),
+      '#default_value' => $email_address,
+    ];
+
+    $form['document']['include_docs'] = [
+      '#type' => 'checkboxes',
+      '#title' => $this->t('Documents to email'),
+      '#description' => $this->t('Which documents should be included in the email?'),
+      '#options' => $this->getPlanDocuments(),
+    ];
+
     // Save documents button.
     $form['document']['actions'] = [
       '#type' => 'actions',
       '#weight' => 1000,
     ];
+
+    $form['document']['actions']['email'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Email document'),
+      '#submit' => [[$this, 'submitEmail']],
+    ];
+
     $form['document']['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Save documents'),
@@ -123,6 +164,51 @@ class DocumentForm extends PlanningWorkflowFormBase {
     catch (\Exception $e) {
       $this->messenger()->addWarning($this->t('Document generation failed. @error', ['@error' => $e->getMessage()]));
     }
+  }
+
+  /**
+   * Submit function for generating and sending an email with chosen documents.
+   *
+   * @param array $form
+   *   An associative array containing the structure of the form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The current state of the form.
+   */
+  public function submitEmail(array &$form, FormStateInterface $form_state) {
+    $email_address = $form_state->getValue(['document', 'email']);
+    $document_fids = $form_state->getValue(['document', 'include_docs']);
+    $mail_config = $this->configFactory()->get('farm_rcd.mail');
+    $mail_key = 'rcp_document';
+
+    // Filter out empty values for files that were not selected.
+    $selected_fids = [];
+    foreach ($document_fids as $fid) {
+      if ($fid) {
+        $selected_fids[] = $fid;
+      }
+    }
+
+    $email = (new Email())
+      ->from($this->configFactory()->get('system.site')->get('mail'))
+      ->to($email_address)
+      ->subject($mail_config->get($mail_key . '.subject'))
+      ->text($mail_config->get($mail_key . '.body'));
+
+    if (count($selected_fids)) {
+      foreach ($selected_fids as $fid) {
+        $file_entity = File::load($fid);
+        $email->attachFromPath(
+          $file_entity->getFileUri(),
+          $file_entity->getFilename(),
+          $file_entity->getMimeType()
+        );
+      }
+    }
+
+    $this->mailer->send($email);
+
+    // Display a message.
+    $this->messenger()->addMessage($this->t('Documents emailed to %email.', ['%email' => $email_address]));
   }
 
   /**

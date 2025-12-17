@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - [Add a checkbox to intake form to prevent email to stakeholder (only visible to staff) #99](https://github.com/farmier/farm_rcd/issues/99)
+- [Provide a form for emailing RCP documents #54](https://github.com/farmier/farm_rcd/issues/54)
 
 ### Fixed
 
