@@ -802,8 +802,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('Updated via <a href="' . $plan->toUrl()->toString() . '">' . $plan->label() . '</a>.', $updated_practice_plan->getRevisionLogMessage());
 
     // Confirm that editing a single practice does not remove other practices.
-    // This is a regression test for:
-    // Adding/updating a single practice removes other practices from an RCP #94.
+    // This is a regression test for: "Adding/updating a single practice
+    // removes other practices from an RCP #94".
     // @see https://github.com/farmier/farm_rcd/issues/94
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers!');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
