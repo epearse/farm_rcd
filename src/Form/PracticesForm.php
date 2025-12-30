@@ -297,8 +297,15 @@ class PracticesForm extends PlanningWorkflowFormBase {
     $plan_revision = implode(' ', $plan_revisions);
 
     // Save practice plans and revision log message to the resource
-    // conservation plan.
-    $this->plan->set('practice_implementation_plan', $practice_plans);
+    // conservation plan. We need to add unchanging plans back to the list here
+    // because we only have new/updated ones.
+    $practice_plan_ids = array_map(function (PlanInterface $plan) {
+      return $plan->id();
+    }, $practice_plans);
+    $unchanged_plans = array_filter($this->plan->get('practice_implementation_plan')->referencedEntities(), function (PlanInterface $plan) use ($practice_plan_ids) {
+      return !in_array($plan->id(), $practice_plan_ids);
+    });
+    $this->plan->set('practice_implementation_plan', array_merge($practice_plans, $unchanged_plans));
     $this->plan->setRevisionLogMessage($plan_revision);
     $this->plan->save();
 

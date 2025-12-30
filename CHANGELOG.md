@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [Adding/updating a single practice removes other practices from an RCP #94](https://github.com/farmier/farm_rcd/issues/94)
+
 ## [1.0.0] 2025-12-11
 
 ### Added
