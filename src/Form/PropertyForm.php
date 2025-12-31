@@ -156,7 +156,6 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#title' => $this->t('Property description'),
       '#description' => $this->t('Provide a property description to be included in the resource conservation plan.'),
       '#default_value' => $this->property ? $this->property->get('notes')->value : '',
-      '#required' => TRUE,
     ];
 
     // Riparian areas.
@@ -165,7 +164,6 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#title' => $this->t('Riparian areas'),
       '#description' => $this->t('Name or describe the riparian areas on this property. USFWS Riparian Areas definition: <a href=":url" target="_blank">:url</a>', [':url' => 'https://www.fws.gov/glossary/riparian']),
       '#default_value' => $this->property ? $this->property->get('rcd_riparian_areas')->value : '',
-      '#required' => TRUE,
     ];
 
     // Wildlife.
@@ -174,7 +172,6 @@ class PropertyForm extends PlanningWorkflowFormBase {
       '#title' => $this->t('Wildlife'),
       '#description' => $this->t('Describe any wildlife on the property. Include known sightings or evidence of special status wildlife as well as nuisance animals, pests, problematic weeds and existing management strategies.'),
       '#default_value' => $this->property ? $this->property->get('rcd_wildlife')->value : '',
-      '#required' => TRUE,
     ];
 
     // Property boundary.
