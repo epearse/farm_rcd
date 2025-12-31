@@ -145,11 +145,6 @@ class LocationsForm extends PlanningWorkflowFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Description'),
       '#default_value' => !is_null($asset) ? $asset->get('notes')->value : '',
-      '#states' => [
-        'required' => [
-          ':input[name="' . $type_name . '"]' => ['filled' => TRUE],
-        ],
-      ],
     ];
 
     // Boundary.
