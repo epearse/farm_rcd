@@ -170,7 +170,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
     $form['wildlife'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Wildlife'),
-      '#description' => $this->t('Describe any wildlife on the property. Include known sightings or evidence of special status wildlife as well as nuisance animals, pests, problematic weeds and existing management strategies.'),
+      '#description' => $this->t('Describe any wildlife on the property. Include known sightings or evidence of special status wildlife as well as nuisance animals and pests, and existing management strategies.'),
       '#default_value' => $this->property ? $this->property->get('rcd_wildlife')->value : '',
     ];
 
