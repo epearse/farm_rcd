@@ -109,8 +109,8 @@ class RcdOptionLists {
     return [
       'soil' => t('Soil'),
       'water' => t('Water'),
-      'animals' => t('Animals (wildlife or livestock)'),
-      'plants' => t('Plants (crops or native vegetation)'),
+      'animals' => t('Animals'),
+      'plants' => t('Plants'),
       'air' => t('Air'),
       'human' => t('Human'),
       'energy' => t('Energy'),
