@@ -21,9 +21,9 @@ class ConservationPractices {
    *   Returns a conservation practice definition.
    */
   public static function get(string $name): ?array {
-    $definitons = static::definitions();
-    if (isset($definitons[$name])) {
-      return $definitons[$name];
+    $definitions = static::definitions();
+    if (isset($definitions[$name])) {
+      return $definitions[$name];
     }
     return NULL;
   }
