@@ -5,6 +5,7 @@ package: farmOS Contrib
 core_version_requirement: ^11
 dependencies:
   - drupal:help
+  - drupal:toolbar
   - drupal:views
   - farm_entity
   - farm_farm
