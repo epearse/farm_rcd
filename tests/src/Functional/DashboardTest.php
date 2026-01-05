@@ -10,6 +10,17 @@ namespace Drupal\Tests\farm_rcd\Functional;
 class DashboardTest extends RcdTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+
+    // Add UI modules to test that our alterations work.
+    'farm_ui_action',
+    'farm_ui_metrics',
+    'farm_ui_views',
+  ];
+
+  /**
    * Test dashboard panes.
    */
   public function testDashboard() {

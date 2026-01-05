@@ -21,11 +21,13 @@ class RcdTestBase extends FarmBrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'gin';
+
+  /**
+   * {@inheritdoc}
+   */
   protected static $modules = [
     'farm_rcd',
-
-    // Add farm_ui to test that our alterations work.
-    'farm_ui',
   ];
 
   /**
