@@ -6,6 +6,7 @@ namespace Drupal\Tests\farm_rcd\Functional;
 
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Tests\farm_rcd\Traits\PhpWordTestingTrait;
+use Drupal\farm_rcd\ConservationPractices;
 use Drupal\farm_rcd\RcdOptionLists;
 use Drupal\plan\Entity\PlanInterface;
 use PhpOffice\PhpWord\IOFactory;
@@ -857,6 +858,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
         $this->randomMachineName(),
         $this->randomMachineName(),
       ],
+      'rcd_riparian_areas' => $this->randomMachineName(),
+      'rcd_wildlife' => $this->randomMachineName(),
     ]);
     $property->save();
 
@@ -878,6 +881,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'type' => 'land',
       'land_type' => 'rcd_row_crops',
       'name' => $this->randomMachineName(),
+      'notes' => $this->randomMachineName(),
       'parent' => [$property],
       'farm' => [$farm],
     ]);
@@ -890,7 +894,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
       'land' => [$location],
-      'rcd_practice' => 'other',
+      'notes' => $this->randomMachineName(),
+      'rcd_practice' => 'cover_crop',
     ]);
     $practice_plan->save();
     $plan->set('practice_implementation_plan', [$practice_plan]);
@@ -1090,12 +1095,59 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // Confirm that there are no placeholders remaining in the document.
     $this->assertDocNotContainsText($doc, '${');
 
-    // Test that expected strings do exist.
+    // Build a list of expected strings to look for.
     $expected_strings = [
-      $plan->get('farm')->referencedEntities()[0]->label(),
+      'stakeholder_name' => $plan->get('intake')->referencedEntities()[0]->get('intake_stakeholder_name')->value,
+      'stakeholder_type' => 'Landowner',
+      'farm_name' => $plan->get('farm')->referencedEntities()[0]->label(),
+      'property_owner' => $plan->get('intake')->referencedEntities()[0]->get('intake_property_owner')->value,
+      'property_name' => $plan->get('property')->referencedEntities()[0]->label(),
+      'property_description' => $plan->get('property')->referencedEntities()[0]->get('notes')->value,
+      'property_apn1' => $plan->get('property')->referencedEntities()[0]->get('rcd_apn')[0]->value,
+      'property_apn2' => $plan->get('property')->referencedEntities()[0]->get('rcd_apn')[1]->value,
+      'property_riparian_areas' => $plan->get('property')->referencedEntities()[0]->get('rcd_riparian_areas')->value,
+      'property_wildlife' => $plan->get('property')->referencedEntities()[0]->get('rcd_wildlife')->value,
+      'property_acreage' => '100',
+      'practice_location_name' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('land')->referencedEntities()[0]->label(),
+      'practice_location_land_type' => 'Row crops',
+      'practice_location_overview' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('land')->referencedEntities()[0]->get('notes')->value,
+      'practice_name' => 'Cover crop',
+      'practice_overview' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('notes')->value,
     ];
-    foreach ($expected_strings as $string) {
-      $this->assertDocContainsText($doc, $string);
+
+    // Practice benefits.
+    foreach (ConservationPractices::get('cover_crop')['benefits'] as $key => $value) {
+      $expected_strings['practice_benefit_' . $key] = $value;
+    }
+
+    // Practice resources.
+    foreach (ConservationPractices::get('cover_crop')['resources'] as $key => $value) {
+      $expected_strings['practice_resource_' . $key] = $value;
+    }
+
+    // Stakeholder groups.
+    foreach (RcdOptionLists::stakeholderGroups() as $key => $value) {
+      $expected_strings['stakeholder_group_' . $key] = $value->render();
+    }
+
+    // Land uses.
+    foreach (RcdOptionLists::landUses() as $key => $value) {
+      $expected_strings['land_use_' . $key] = $value->render();
+    }
+
+    // Goals.
+    foreach (RcdOptionLists::goals() as $key => $value) {
+      $expected_strings['goal_' . $key] = $value->render();
+    }
+
+    // Concerns.
+    foreach (RcdOptionLists::concerns() as $key => $value) {
+      $expected_strings['concern_' . $key] = $value->render();
+    }
+
+    // Test that expected strings do exist.
+    foreach ($expected_strings as $name => $string) {
+      $this->assertDocContainsText($doc, $string, $name);
     }
   }
 

@@ -19,9 +19,15 @@ trait PhpWordTestingTrait {
    *   The document to search.
    * @param string $search
    *   The text to search for.
+   * @param string|null $name
+   *   An optional name for the string.
    */
-  protected function assertDocContainsText(PhpWord $doc, string $search): void {
-    $this->assertTrue($this->searchDoc($doc, $search), 'Search for string in document: ' . $search);
+  protected function assertDocContainsText(PhpWord $doc, string $search, ?string $name = NULL): void {
+    $message = 'Search for string in document: ' . $search;
+    if (!is_null($name)) {
+      $message .= ' (' . $name . ')';
+    }
+    $this->assertTrue($this->searchDoc($doc, $search), $message);
   }
 
   /**
