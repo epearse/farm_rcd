@@ -75,6 +75,12 @@ class PracticeImplementation extends FarmPlanType {
     foreach ($field_info as $name => $info) {
       $fields[$name] = $this->farmFieldFactory->bundleFieldDefinition($info);
     }
+
+    // Change the rcd_practice form widget to a dropdown.
+    $options = $fields['rcd_practice']->getDisplayOptions('form');
+    $options['type'] = 'options_select';
+    $fields['rcd_practice']->setDisplayOptions('form', $options);
+
     return $fields;
   }
 
