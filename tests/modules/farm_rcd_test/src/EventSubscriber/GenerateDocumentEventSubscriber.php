@@ -38,6 +38,9 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
     // Simple string.
     $placeholders[] = new StringPlaceholder('string', 'Replaced String');
 
+    // Heading string.
+    $placeholders[] = new StringPlaceholder('heading_string', 'Replaced Heading String');
+
     // Simple bulleted list of string.
     $placeholders[] = new ListStringPlaceholder('list', [
       'Replaced List Item 1',
@@ -75,6 +78,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
       [
         new ListBlockPlaceholder('block_block', [
           [
+            new StringPlaceholder('block_block_heading_string', 'Replaced Nested Block Heading String 1'),
             new StringPlaceholder('block_block_string', 'Replaced Nested Block String 1'),
             new ListStringPlaceholder('block_block_list', [
               'Replaced Nested Block List Item 1',
@@ -82,6 +86,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
             ]),
           ],
           [
+            new StringPlaceholder('block_block_heading_string', 'Replaced Nested Block Heading String 2'),
             new StringPlaceholder('block_block_string', 'Replaced Nested Block String 2'),
             new ListStringPlaceholder('block_block_list', [
               'Replaced Nested Block List Item 3',
@@ -93,6 +98,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
       [
         new ListBlockPlaceholder('block_block', [
           [
+            new StringPlaceholder('block_block_heading_string', 'Replaced Nested Block Heading String 3'),
             new StringPlaceholder('block_block_string', 'Replaced Nested Block String 3'),
             new ListStringPlaceholder('block_block_list', [
               'Replaced Nested Block List Item 5',
@@ -100,6 +106,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
             ]),
           ],
           [
+            new StringPlaceholder('block_block_heading_string', 'Replaced Nested Block Heading String 4'),
             new StringPlaceholder('block_block_string', 'Replaced Nested Block String 4'),
             new ListStringPlaceholder('block_block_list', [
               'Replaced Nested Block List Item 7',

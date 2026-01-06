@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\farm_rcd\Traits;
 
+use PhpOffice\PhpWord\Element\AbstractElement;
 use PhpOffice\PhpWord\PhpWord;
 
 /**
@@ -47,23 +48,42 @@ trait PhpWordTestingTrait {
    *   Returns TRUE if the search string was found, FALSE otherwise.
    */
   protected function searchDoc(PhpWord $doc, string $search): bool {
-    $found = FALSE;
     foreach ($doc->getSections() as $section) {
       foreach ($section->getElements() as $element) {
+        if ($this->searchDocElement($element, $search)) {
+          return TRUE;
+        }
         if (method_exists($element, 'getElements')) {
-          foreach ($element->getElements() as $textElement) {
-            if (method_exists($textElement, 'getText')) {
-              $text = $textElement->getText();
-              if (stripos($text, $search) !== FALSE) {
-                $found = TRUE;
-                break 3;
-              }
+          foreach ($element->getElements() as $sub_element) {
+            if ($this->searchDocElement($sub_element, $search)) {
+              return TRUE;
             }
           }
         }
       }
     }
-    return $found;
+    return FALSE;
+  }
+
+  /**
+   * Search a PhpWord element for a text string.
+   *
+   * @param \PhpOffice\PhpWord\Element\AbstractElement $element
+   *   The element to search.
+   * @param string $search
+   *   The text to search for.
+   *
+   * @return bool
+   *   Returns TRUE if the search string was found, FALSE otherwise.
+   */
+  protected function searchDocElement(AbstractElement $element, string $search): bool {
+    if (method_exists($element, 'getText')) {
+      $text = $element->getText();
+      if (stripos($text, $search) !== FALSE) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 }

@@ -89,6 +89,10 @@ class DocumentGeneratorTest extends KernelTestBase {
     $this->assertDocNotContainsText($doc, '${string}');
     $this->assertDocContainsText($doc, 'Replaced String');
 
+    // Confirm that heading string replacement works.
+    $this->assertDocNotContainsText($doc, '${heading_string}');
+    $this->assertDocContainsText($doc, 'Replaced Heading String');
+
     // Confirm that simple bulleted list item replacement works.
     $this->assertDocNotContainsText($doc, '${list}');
     $this->assertDocNotContainsText($doc, '${item}');
@@ -113,9 +117,14 @@ class DocumentGeneratorTest extends KernelTestBase {
     // Confirm repeating blocks inside a repeating block work.
     $this->assertDocNotContainsText($doc, '${block_blocks}');
     $this->assertDocNotContainsText($doc, '${block_block}');
+    $this->assertDocNotContainsText($doc, '${block_block_heading_string}');
     $this->assertDocNotContainsText($doc, '${block_block_string}');
     $this->assertDocNotContainsText($doc, '${block_block_list}');
     $this->assertDocNotContainsText($doc, '${item}');
+    $this->assertDocContainsText($doc, 'Replaced Nested Block Heading String 1');
+    $this->assertDocContainsText($doc, 'Replaced Nested Block Heading String 2');
+    $this->assertDocContainsText($doc, 'Replaced Nested Block Heading String 3');
+    $this->assertDocContainsText($doc, 'Replaced Nested Block Heading String 4');
     $this->assertDocContainsText($doc, 'Replaced Nested Block String 1');
     $this->assertDocContainsText($doc, 'Replaced Nested Block String 2');
     $this->assertDocContainsText($doc, 'Replaced Nested Block String 3');
