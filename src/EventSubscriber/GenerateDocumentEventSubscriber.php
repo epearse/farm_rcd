@@ -88,7 +88,7 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
 
       // Property owner and acreage.
       $intake_property_owner = $intake->get('intake_property_owner')->value;
-      $intake_property_acreage = $intake->get('intake_property_acreage')->value;
+      $intake_property_acreage = (string) ($intake->get('intake_property_acreage')->value + 0);
 
       // Disadvantaged groups.
       $socially_disadvantaged = implode(', ', array_map(function ($value) {
