@@ -13,6 +13,7 @@ use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\farm_rcd\Form\IntakeReviewForm;
+use Drupal\views\Views;
 
 /**
  * Theme hook implementations for farm_rcd.
@@ -60,6 +61,28 @@ class ThemeHooks implements ContainerInjectionInterface {
     if ($this->currentUser->isAnonymous()) {
       unset($variables['page']['breadcrumb']);
     }
+  }
+
+  /**
+   * Implements hook_ENTITY_TYPE_view().
+   */
+  #[Hook('organization_view')]
+  public function organizationView(array &$build, EntityInterface $organization, EntityViewDisplayInterface $display, $view_mode): void {
+
+    // Only modify farm organizations in full view mode.
+    if (!($organization->bundle() == 'farm' && $view_mode == 'full')) {
+      return;
+    }
+
+    // Add the View of farm plans.
+    $view = Views::getView('farm_rcd_farm_plan');
+    $build['farm_plans'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Plans'),
+      '#open' => TRUE,
+      '#access' => $view->access('default'),
+      'view' => $view->buildRenderable('default', [$organization->id()]),
+    ];
   }
 
   /**
@@ -142,6 +165,15 @@ class ThemeHooks implements ContainerInjectionInterface {
    */
   #[Hook('farm_ui_theme_region_items')]
   public function farmUiThemeRegionItems(string $entity_type): array {
+
+    // Place the View of farm plans in the bottom region.
+    if ($entity_type == 'organization') {
+      return [
+        'bottom' => [
+          'farm_plans',
+        ],
+      ];
+    }
 
     // Place the planning workflow forms in the bottom region.
     if ($entity_type == 'plan') {

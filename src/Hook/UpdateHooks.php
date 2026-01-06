@@ -49,6 +49,7 @@ class UpdateHooks {
       'user.role.rcd_staff',
       'views.view.farm_rcd_farm_organizations',
       'views.view.farm_rcd_intakes',
+      'views.view.farm_rcd_farm_plan',
     ];
   }
 
