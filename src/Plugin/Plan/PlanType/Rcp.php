@@ -25,16 +25,6 @@ class Rcp extends FarmPlanType {
     $fields = [];
     $field_info = [
 
-      // Farm organization entity.
-      'farm' => [
-        'type' => 'entity_reference',
-        'label' => $this->t('Farm'),
-        'description' => $this->t('Associates the resource conservation plan with a farm organization.'),
-        'target_type' => 'organization',
-        'target_bundle' => 'farm',
-        'required' => TRUE,
-      ],
-
       // Property land asset.
       'property' => [
         'type' => 'entity_reference',

@@ -6,6 +6,7 @@ namespace Drupal\farm_rcd\Hook;
 
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\farm_field\FarmFieldFactoryInterface;
@@ -21,6 +22,19 @@ class FieldHooks {
   public function __construct(
     protected FarmFieldFactoryInterface $farmFieldFactory,
   ) {}
+
+  /**
+   * Implements hook_base_field_info_alter().
+   */
+  #[Hook('base_field_info_alter')]
+  public function baseFieldInfoAlter(&$fields, EntityTypeInterface $entity_type) {
+    /** @var \Drupal\Core\Field\BaseFieldDefinition[] $fields */
+
+    // Require the farm reference field on plans.
+    if ($entity_type->id() == 'plan' && isset($fields['farm'])) {
+      $fields['farm']->setRequired(TRUE);
+    }
+  }
 
   /**
    * Implements hook_farm_entity_bundle_field_info().
