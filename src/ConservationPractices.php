@@ -38,6 +38,7 @@ class ConservationPractices {
     return [
       'brush_mgmt' => [
         'label' => t('Brush Management'),
+        'description' => 'The management or removal of woody (non-herbaceous or succulent) plants including those that are invasive and noxious. Brush management will be designed to achieve the desired plant community based on species composition, structure, density, and canopy (or foliar) cover or height. Brush management will be applied in a manner to achieve the desired control of the target woody species and protection of desired species. This will be accomplished by mechanical, chemical, burning, or biological methods, either alone or in combination. When prescribed burning is used as a method, CPS Prescribed Burning (Code 338) will also be applied.',
         'nrcs_code' => '314',
         'unit' => 'ac',
         'benefits' => [
@@ -54,6 +55,7 @@ class ConservationPractices {
       ],
       'conservation_cover' => [
         'label' => t('Conservation Cover'),
+        'description' => 'Establishing and maintaining permanent vegetative cover. This practice may be used to conserve and stabilize archaeological and historic sites. This practice does not apply to plantings for forage production or to critical area plantings that require special measures to ensure successful establishment. If the soil and water resource concerns meet minimum planning criteria and the only purpose of the planting is to provide wildlife habitat, Wildlife Habitat Planting (CPS 420) may be implemented.',
         'nrcs_code' => '327',
         'unit' => 'ac',
         'benefits' => [
@@ -73,6 +75,7 @@ class ConservationPractices {
       ],
       'constructed_wetland' => [
         'label' => t('Constructed Wetland'),
+        'description' => 'An artificial wetland ecosystem with hydrophytic vegetation for biological treatment of water.',
         'nrcs_code' => '656',
         'unit' => 'ac',
         'benefits' => [
@@ -85,6 +88,7 @@ class ConservationPractices {
       ],
       'contour_orchard_perennials' => [
         'label' => t('Contour Orchard and Perennials'),
+        'description' => 'This practice is used when orchards, vineyards, or other perennial crops are established on sloping land. Planting on the contour conserves and protects soil, water, and related natural resources.',
         'nrcs_code' => '331',
         'unit' => 'ac',
         'benefits' => [
@@ -98,6 +102,7 @@ class ConservationPractices {
       ],
       'cover_crop' => [
         'label' => t('Cover Crop'),
+        'description' => 'Cover crops include grasses, legumes, and other forms planted for seasonal vegetative cover. Cover crops are established as part of a cropping system between production crops in rotation. Cover crops may be inter-seeded into production crops or planted in the alleyways of perennial trees or vine crops. Select species and planting dates that will not adversely affect crop yield or interfere with the harvest process.',
         'nrcs_code' => '340',
         'unit' => 'ac',
         'benefits' => [
@@ -118,6 +123,14 @@ class ConservationPractices {
       ],
       'critical_area_planting' => [
         'label' => t('Critical Area Planting'),
+        'description' => 'Establishing permanent vegetation on sites that have, or are expected to have, high erosion rates, and on sites that have physical, chemical, or biological conditions that prevent the establishment of vegetation with normal seeding/planting methods. This practice applies to highly disturbed areas such as—
+• Active or abandoned mined lands.
+• Urban restoration sites.
+• Construction areas.
+• Conservation practice construction sites.
+• Areas needing stabilization before or after natural disasters such as floods, hurricanes, tornadoes, and wildfires.
+• Eroded banks of natural channels, banks of newly constructed channels, and lake shorelines.
+• Other areas degraded by human activities or natural events.',
         'nrcs_code' => '342',
         'unit' => 'ac',
         'benefits' => [
@@ -131,6 +144,7 @@ class ConservationPractices {
       ],
       'filter_strip' => [
         'label' => t('Filter Strip'),
+        'description' => 'A strip or area of herbaceous vegetation that removes contaminants from overland flow. Filter strips are established where environmentally sensitive areas need to be protected from sediment, other suspended solids, and dissolved contaminants in runoff.',
         'nrcs_code' => '393',
         'unit' => 'ac',
         'benefits' => [
@@ -144,6 +158,7 @@ class ConservationPractices {
       ],
       'forest_stand_mgmt' => [
         'label' => t('Forest Stand Management'),
+        'description' => 'The manipulation of species composition, stand structure, or stand density by cutting or killing selected trees or understory vegetation to achieve desired forest conditions or obtain ecosystem services.',
         'nrcs_code' => '666',
         'unit' => 'ac',
         'benefits' => [
@@ -161,6 +176,7 @@ class ConservationPractices {
       ],
       'fuel_break' => [
         'label' => t('Fuel Break'),
+        'description' => 'A strip or appropriately sized block of land on which the vegetation, debris, and litter have been reduced and/or modified to control or diminish the spread of fire. This practice applies to all lands where protection from wildfire or facilitation of prescribed fire is needed.',
         'nrcs_code' => '383',
         'unit' => 'ac',
         'benefits' => [
@@ -174,6 +190,7 @@ class ConservationPractices {
       ],
       'grassed_waterway' => [
         'label' => t('Grassed Waterway'),
+        'description' => 'A shaped or graded channel that is established with suitable vegetation to convey surface water at a non-erosive velocity using a broad and shallow cross section to a stable outlet. This practice is applied in areas where added water conveyance capacity and vegetative protection are needed to prevent erosion and improve runoff water quality resulting from concentrated surface flow.',
         'nrcs_code' => '412',
         'unit' => 'ac',
         'benefits' => [
@@ -187,6 +204,7 @@ class ConservationPractices {
       ],
       'hedgerow_planting' => [
         'label' => t('Hedgerow Planting'),
+        'description' => 'Establishment of dense perennial vegetation in a linear design to achieve a conservation purpose. Hedgerows must retain sufficient vertical structure throughout the year to achieve the desired function. In all cases, the width of the hedgerow must be sufficient to achieve the stated purpose. This may necessitate the establishment of more than one row of plants.',
         'nrcs_code' => '422',
         'unit' => 'ft',
         'benefits' => [
@@ -202,6 +220,7 @@ class ConservationPractices {
       ],
       'irrigation_water_mgmt' => [
         'label' => t('Irrigation Water Management'),
+        'description' => 'The process of determining and controlling the volume, frequency, and application rate of irrigation water. Develop an irrigation water management (IWM) plan that defines when irrigation is needed (timing) and the amount and rate of water to apply for each irrigation event.',
         'nrcs_code' => '449',
         'unit' => 'ac',
         'benefits' => [
@@ -218,6 +237,7 @@ class ConservationPractices {
       ],
       'keyline_plow' => [
         'label' => t('Keyline Plow'),
+        'description' => 'Two keyline design features are swales and rip lines. Swales are trenches dug along the contour lines of the landscape that have a berm, or higher wall of soil, on the downhill side of the swale. Swales slow and spread water to dry areas, with the berm acting as a steering bank to control surges caused by heavy precipitation. Thin and shallow rip lines are dug just above swales to collect precipitation, which allows water to infiltrate into the soil reducing runoff and soil erosion during heavy precipitation events. The ranches share the tools necessary to implement keyline design, including the technology required to map contour lines. In the dry climate of northern New Mexico, keyline design and treatment methods require at least five years of ongoing management, including maintaining swales and creating deeper rip lines, to see measurable increases in vegetation and soil organic matter.',
         'nrcs_code' => '',
         'unit' => 'ac',
         'benefits' => [
@@ -234,6 +254,7 @@ class ConservationPractices {
       ],
       'mulching' => [
         'label' => t('Mulching'),
+        'description' => 'Applying plant residues or other suitable materials to the land surface. The selection of mulching materials will depend primarily on the purpose(s) for the mulch application, site conditions, and the material’s availability. The mulch materials may consist of natural or artificial materials of sufficient dimension (depth or thickness) and durability to achieve the intended purpose for the required time period.',
         'nrcs_code' => '484',
         'unit' => 'ac',
         'benefits' => [
@@ -253,6 +274,7 @@ class ConservationPractices {
       ],
       'nutrient_mgmt' => [
         'label' => t('Nutrient Management'),
+        'description' => 'Management of the rate, source, placement, and timing of plant nutrients and soil amendments while reducing environmental impacts. Applies to all fields where plant nutrients and soil amendments are applied. Does not apply to one-time nutrient applications at establishment of permanent vegetation. Develop a nutrient management plan for nitrogen (N), phosphorus (P), and potassium (K), which accounts for all known measurable sources and removal of these nutrients. Sources of nutrients include, but are not limited to, commercial fertilizers (including starter and in-furrow starter/pop-up fertilizer), animal manures, legume fixation credits, green manures, plant or crop residues, compost, organic by-products, municipal and industrial biosolids, wastewater, organic materials, estimated plant available soil nutrients, and irrigation water.',
         'nrcs_code' => '590',
         'unit' => 'ac',
         'benefits' => [
@@ -271,6 +293,7 @@ class ConservationPractices {
       ],
       'pasture_hay_planting' => [
         'label' => t('Pasture and Hay Planting'),
+        'description' => 'Establishing adapted and compatible species, varieties, or cultivars of perennial herbaceous plants suitable for pasture or hay production. This practice applies on all lands suitable for the one-time establishment of perennial species for forage production that will likely persist for 5 years. This practice does not apply to the establishment of annually planted and mechanically harvested food, fiber, or oilseed crops planted on designated cropland.',
         'nrcs_code' => '512',
         'unit' => 'ac',
         'benefits' => [
@@ -287,6 +310,7 @@ class ConservationPractices {
       ],
       'prescribed_burn' => [
         'label' => t('Prescribed Burn'),
+        'description' => 'Prescribed burning is applying a planned fire to a predetermined area of land.',
         'nrcs_code' => '338',
         'unit' => 'ac',
         'benefits' => [
@@ -303,6 +327,7 @@ class ConservationPractices {
       ],
       'prescribed_grazing' => [
         'label' => t('Prescribed Grazing'),
+        'description' => 'Managing vegetation with grazing and browsing animals to achieve specific ecological, economic, and management objectives. This practice applies to all lands where grazing and browsing animals are managed. Manage livestock numbers and grazing periods to adjust the intensity, frequency, timing, duration, and distribution of grazing and browsing animals to meet the planned objectives for plant communities, the animals, and the associated resources. This includes adjusting animal numbers, grazing periods, and movements based on the rate of plant growth, available forage, livestock forage demand, or other desired objectives (e.g., degree of forage utilization, targeted plant height or standing biomass, residual forage mass, or animal performance).',
         'nrcs_code' => '528',
         'unit' => 'ac',
         'benefits' => [
@@ -322,6 +347,7 @@ class ConservationPractices {
       ],
       'range_planting' => [
         'label' => t('Range Planting'),
+        'description' => 'The seeding and establishment of herbaceous and woody species for the improvement of vegetation composition and productivity of the plant community to meet management goals.',
         'nrcs_code' => '550',
         'unit' => 'ac',
         'benefits' => [
@@ -339,6 +365,7 @@ class ConservationPractices {
       ],
       'residue_tillage_mgmt_no_till' => [
         'label' => t('Residue and Tillage Management, No Till'),
+        'description' => 'This practice includes tillage methods commonly referred to as mulch tillage where a majority of the soil surface is disturbed by non-inversion tillage operations such as vertical tillage, chiseling, and discing, and also includes tillage/planting systems with relatively minimal soil disturbance.',
         'nrcs_code' => '345',
         'unit' => 'ac',
         'benefits' => [
@@ -351,6 +378,7 @@ class ConservationPractices {
       ],
       'natural_restoration' => [
         'label' => t('Restoration of Rare or Declining Natural Communities'),
+        'description' => 'Reestablishment of abiotic (physical and chemical) and biotic (biological) conditions necessary to support rare or declining natural assemblages of native plants and animals. Applied on all lands, including degraded aquatic, terrestrial, or wetland sites, that historically supported a functional rare or declining (dwindling or imperiled) native plant or animal community, where restoration is needed to achieve identified abiotic and biotic target conditions. This practice can also be applied to efforts to restore natural communities of local cultural importance.',
         'nrcs_code' => '643',
         'unit' => 'ac',
         'benefits' => [
@@ -369,6 +397,7 @@ class ConservationPractices {
       ],
       'riparian_forest_buffer' => [
         'label' => t('Riparian Forest Buffer'),
+        'description' => 'An area predominantly covered by trees and/or shrubs located adjacent to and up-gradient from a watercourse or water body.',
         'nrcs_code' => '391',
         'unit' => 'ac',
         'benefits' => [
@@ -384,6 +413,7 @@ class ConservationPractices {
       ],
       'riparian_herbaceous_planting' => [
         'label' => t('Riparian Herbaceous Planting'),
+        'description' => 'Grasses, sedges, rushes, ferns, legumes, and forbs tolerant of intermittent flooding or saturated soils, established or managed as the dominant vegetation in the transitional zone between upland and aquatic habitats.',
         'nrcs_code' => '390',
         'unit' => 'ac',
         'benefits' => [
@@ -404,6 +434,7 @@ class ConservationPractices {
       ],
       'roof_runoff_strucfture' => [
         'label' => t('Roof Runoff Structure'),
+        'description' => 'A structure or system of structures to collect, control, and convey precipitation runoff from a roof. This practice applies to roof runoff from precipitation that needs to be diverted away from a contaminated area, collected and conveyed to a stable outlet or infiltration area, or collected and captured for other uses such as evaporative cooling systems, livestock water, or irrigation',
         'nrcs_code' => '558',
         'unit' => '',
         'benefits' => [
@@ -418,6 +449,7 @@ class ConservationPractices {
       ],
       'silvopasture' => [
         'label' => t('Silvopasture'),
+        'description' => 'Establishment and/or management of desired trees and forages on the same land unit. This practice may be applied on any area that is suitable for the desired forages, trees, and livestock.',
         'nrcs_code' => '381',
         'unit' => 'ac',
         'benefits' => [
@@ -437,6 +469,7 @@ class ConservationPractices {
       ],
       'soil_carbon_amendment' => [
         'label' => t('Soil Carbon Amendment'),
+        'description' => 'Application of carbon-based amendments derived from plant materials or treated animal byproducts. This practice applies to areas of Crop, Pasture, Range, Forest, Associated Agriculture Lands, Developed Land, and Farmstead where organic carbon amendment applications will improve soil conditions.',
         'nrcs_code' => '336',
         'unit' => 'ac',
         'benefits' => [
@@ -451,6 +484,11 @@ class ConservationPractices {
       ],
       'stream_habitat_mgmt' => [
         'label' => t('Stream Habitat Improvement and Management'),
+        'description' => 'Improve, restore, or maintain the ecological functions of a stream and its adjacent floodplain and riparian area. This applies to all streams and their associated backwaters, floodplains, wetlands, and riparian areas with impaired habitat.
+This practice does not apply to—
+• The management of fish and wildlife habitat on wetlands enhanced under this standard.
+• Streambed or bank stabilization; instead, use Conservation Practice Standard (CPS) Streambank and Shoreline Protection (Code 580), or CPS Channel Bed Stabilization (Code 584).
+This practice may be used in conjunction with other practices to address multiple resource concerns at the site.',
         'nrcs_code' => '395',
         'unit' => 'ac',
         'benefits' => [
@@ -462,6 +500,7 @@ class ConservationPractices {
       ],
       'streambank_shoreline_improvement' => [
         'label' => t('Streambank/Shoreline Improvement'),
+        'description' => 'Treatment(s) used to stabilize and protect banks of streams or constructed channels and shorelines of lakes, reservoirs, or estuaries. This practice applies to streambanks of natural or constructed channels and shorelines of lakes, reservoirs, or estuaries susceptible to erosion. It does not apply to erosion problems on main ocean fronts, beaches, or similar areas of complexity.',
         'nrcs_code' => '580',
         'unit' => 'ft',
         'benefits' => [
@@ -476,6 +515,7 @@ class ConservationPractices {
       ],
       'structure_water_control' => [
         'label' => t('Structure for Water Control'),
+        'description' => 'A structure in a water management system that conveys water, controls the direction or rate of flow, maintains a desired water surface elevation, or measures water.  Applies to structures that convey water from one elevation to a lower elevation within, to, or from a water conveyance system such as a ditch, channel, canal, or pipeline.Typical structures include drops, chutes, turnouts, surface water inlets, head gates, pump boxes, and stilling basins.',
         'nrcs_code' => '587',
         'unit' => '',
         'benefits' => [
@@ -497,6 +537,7 @@ class ConservationPractices {
       ],
       'structure_wildlife' => [
         'label' => t('Structures for Wildlife'),
+        'description' => 'A structure installed to replace or modify a missing or deficient wildlife habitat component. This practice applies to all lands where planting or managing vegetation fails to meet the short-term needs of the species or guild under consideration.',
         'nrcs_code' => '649',
         'unit' => '',
         'benefits' => [
@@ -509,6 +550,7 @@ class ConservationPractices {
       ],
       'tree_shrub_establishment' => [
         'label' => t('Tree/Shrub Establishment'),
+        'description' => 'Establishing woody plants by planting, by direct seeding, or through natural regeneration.',
         'nrcs_code' => '612',
         'unit' => 'ac',
         'benefits' => [
@@ -527,6 +569,7 @@ class ConservationPractices {
       ],
       'upland_wildlife_mgmt' => [
         'label' => t('Upland Wildlife Management'),
+        'description' => 'Provide and manage upland habitats and connectivity within the landscape for wildlife. This practice applies to land where the decision maker has identified an objective for conserving a wild animal species, guild, suite or ecosystem and land within the range of targeted wildlife species and capable of supporting the desired habitat.',
         'nrcs_code' => '645',
         'unit' => 'ac',
         'benefits' => [
@@ -538,6 +581,13 @@ class ConservationPractices {
       ],
       'water_sediment_control_basin' => [
         'label' => t('Water and Sediment Control Basin'),
+        'description' => 'An earth embankment or a combination ridge and channel constructed across the slope of a minor drainageway. This practice applies to sites where:
+• The topography is generally irregular.
+• Gully erosion is a problem.
+• Other conservation practices typically control sheet and rill erosion.
+• Runoff and sediment damages land and works of improvement.
+• Stable outlets are available.
+Do not use this standard in place of a terrace. Use NRCS Conservation Practice Standards (CPS) Terrace (Code 600) or CPS Diversion (Code 362) where the ridge or channel extends beyond the detention basin or level embankment.',
         'nrcs_code' => '638',
         'unit' => '',
         'benefits' => [
@@ -551,6 +601,7 @@ class ConservationPractices {
       ],
       'wildlife_habitat_planting' => [
         'label' => t('Wildlife Habitat Planting'),
+        'description' => 'Establishing wildlife habitat by planting herbaceous vegetation or shrubs. This practice applies to all lands where inadequate wildlife habitat is identified as a primary resource concern and a plant community inventory or wildlife habitat evaluation indicates a benefit in altering the current vegetative conditions (species diversity, richness, structure, and pattern) by establishing herbaceous plants or shrubs. The use of annuals that persist over the life of the practice, and annuals that serve as a nurse crop to support the establishment of the persistent vegetative species are appropriate under this conservation practice.',
         'nrcs_code' => '420',
         'unit' => 'ac',
         'benefits' => [
@@ -563,6 +614,7 @@ class ConservationPractices {
       ],
       'windbreak_shelterbelt' => [
         'label' => t('Windbreak/Shelterbelt'),
+        'description' => 'Establishing, enhancing, or renovating windbreaks, also known as shelterbelts, which are single or multiple rows of trees and/or shrubs in linear or curvilinear configurations. On all lands except forest land, apply this practice to establish, enhance, or renovate windbreaks where rows of woody plants are desired and suited for the intended purposes. Apply this practice to any existing windbreaks that are no longer functioning properly for the intended purpose, or where renovation can extend the functional life of a windbreak.',
         'nrcs_code' => '380',
         'unit' => 'ft',
         'benefits' => [
@@ -582,6 +634,7 @@ class ConservationPractices {
       ],
       'other' => [
         'label' => t('Other'),
+        'description' => '',
         'nrcs_code' => '',
         'unit' => '',
         'benefits' => [],

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Add acreage/linear ft to practice implementation plans #60](https://github.com/farmier/farm_rcd/issues/60)
 - [View of plans by farm #38](https://github.com/farmier/farm_rcd/issues/38)
+- [Auto-populate practice descriptions #86](https://github.com/farmier/farm_rcd/issues/86)
 
 ### Changed
 

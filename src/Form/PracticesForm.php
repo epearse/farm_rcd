@@ -213,6 +213,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
     ];
 
     // The rest of the form is only shown when editing an existing plan.
+    // This is primarily so that we can pre-populate the practice overview
+    // without using Ajax.
     if (is_null($plan)) {
       return $form;
     }
@@ -415,6 +417,12 @@ class PracticesForm extends PlanningWorkflowFormBase {
         $plan->set($field, $value);
         $changed = TRUE;
       }
+    }
+
+    // If the plan is new, populate the notes with a generic description of the
+    // practice.
+    if ($plan->isNew() && !empty($practice_info['description'])) {
+      $plan->set('notes', $practice_info['description']);
     }
 
     // If the plan has changed, return it.

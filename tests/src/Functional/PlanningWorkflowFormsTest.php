@@ -712,7 +712,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
 
     // Fill in the form and submit it.
     $this->getSession()->getPage()->fillField('practices[add][location]', $location->id());
-    $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
+    $this->getSession()->getPage()->fillField('practices[add][practice]', 'hedgerow_planting');
     $this->getSession()->getPage()->fillField('practices[add][acreage]', '');
     $this->getSession()->getPage()->fillField('practices[add][linear_feet]', '100');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
@@ -732,11 +732,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($plan->get('owner')->referencedEntities()[0]->id(), $practice_plan->get('owner')->referencedEntities()[0]->id());
-    $this->assertEquals($location->label() . ': Other', $practice_plan->label());
-    $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
+    $this->assertEquals($location->label() . ': Hedgerow Planting', $practice_plan->label());
+    $this->assertEquals('hedgerow_planting', $practice_plan->get('rcd_practice')->value);
     $this->assertTrue($practice_plan->get('rcd_acres')->isEmpty());
     $this->assertEquals(100, $practice_plan->get('rcd_linear_feet')->value);
-    $this->assertEquals('', $practice_plan->get('notes')->value);
+    $expected_notes = 'Establishment of dense perennial vegetation in a linear design to achieve a conservation purpose. Hedgerows must retain sufficient vertical structure throughout the year to achieve the desired function. In all cases, the width of the hedgerow must be sufficient to achieve the stated purpose. This may necessitate the establishment of more than one row of plants.';
+    $this->assertEquals($expected_notes, $practice_plan->get('notes')->value);
     $this->assertEquals('planning', $practice_plan->get('status')->value);
 
     // Confirm that revision log messages were added to both.
@@ -747,12 +748,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // are pre-filled.
     $this->drupalGet('/plan/' . $plan->id());
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][location][' . $location->id() . ']', $location->id());
-    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'other');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'hedgerow_planting');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][acreage]', '');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][linear_feet]', '100.00');
-    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', '');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', $expected_notes);
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'planning');
 
     // Edit the practice plan's fields and submit the form.
