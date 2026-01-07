@@ -7,7 +7,6 @@ namespace Drupal\farm_rcd\Form;
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\farm_rcd\ConservationPractices;
-use Drupal\plan\Entity\Plan;
 use Drupal\plan\Entity\PlanInterface;
 
 /**
@@ -213,21 +212,19 @@ class PracticesForm extends PlanningWorkflowFormBase {
       ],
     ];
 
-    // Practice overview (plan notes).
+    // The rest of the form is only shown when editing an existing plan.
+    if (is_null($plan)) {
+      return $form;
+    }
+
+    // Overview (plan notes).
     $form['notes'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Overview'),
-      '#default_value' => $plan ? $plan->get('notes')->value : '',
+      '#default_value' => $plan->get('notes')->value,
     ];
 
     // Status.
-    // Load available status options from a mock plan, if necessary.
-    if (is_null($plan)) {
-      $plan = Plan::create([
-        'type' => 'rcd_practice_implementation',
-        'status' => 'planning',
-      ]);
-    }
     /** @var \Drupal\state_machine\Plugin\Field\FieldType\StateItem $state_item */
     $state_item = $plan->get('status')->first();
     $form['status'] = [
@@ -380,6 +377,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
         'farm' => [$this->farm],
         'land' => [$land],
         'owner' => $this->plan->get('owner'),
+        'status' => 'planning',
       ]);
     }
 
@@ -400,15 +398,19 @@ class PracticesForm extends PlanningWorkflowFormBase {
       $changed = TRUE;
     }
 
-    // Fill in the plan details from form values.
+    // Fill in the plan details from form values, if available.
     $field_values = [
-      'rcd_practice' => $values['practice'],
-      'rcd_acres' => $values['acreage'],
-      'rcd_linear_feet' => $values['linear_feet'],
-      'notes' => $values['notes'],
-      'status' => $values['status'],
+      'rcd_practice' => 'practice',
+      'rcd_acres' => 'acreage',
+      'rcd_linear_feet' => 'linear_feet',
+      'notes' => 'notes',
+      'status' => 'status',
     ];
-    foreach ($field_values as $field => $value) {
+    foreach ($field_values as $field => $name) {
+      if (!isset($values[$name])) {
+        continue;
+      }
+      $value = $values[$name];
       if ($plan->get($field)->value != $value) {
         $plan->set($field, $value);
         $changed = TRUE;

@@ -715,8 +715,6 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
     $this->getSession()->getPage()->fillField('practices[add][acreage]', '');
     $this->getSession()->getPage()->fillField('practices[add][linear_feet]', '100');
-    $this->getSession()->getPage()->fillField('practices[add][notes]', 'Plant lots of sunflowers.');
-    $this->getSession()->getPage()->fillField('practices[add][status]', 'implementing');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
 
     // Confirm that a message was shown to the user.
@@ -738,8 +736,8 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals('other', $practice_plan->get('rcd_practice')->value);
     $this->assertTrue($practice_plan->get('rcd_acres')->isEmpty());
     $this->assertEquals(100, $practice_plan->get('rcd_linear_feet')->value);
-    $this->assertEquals('Plant lots of sunflowers.', $practice_plan->get('notes')->value);
-    $this->assertEquals('implementing', $practice_plan->get('status')->value);
+    $this->assertEquals('', $practice_plan->get('notes')->value);
+    $this->assertEquals('planning', $practice_plan->get('status')->value);
 
     // Confirm that revision log messages were added to both.
     $this->assertEquals('Created practice implementation plan: <a href="' . $practice_plan->toUrl()->toString() . '">' . $practice_plan->label() . '</a>.', $plan->getRevisionLogMessage());
@@ -754,15 +752,15 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][practice]', 'other');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][acreage]', '');
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][linear_feet]', '100.00');
-    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
-    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'implementing');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][notes]', '');
+    $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'planning');
 
     // Edit the practice plan's fields and submit the form.
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][practice]', 'cover_crop');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][acreage]', '2.5');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][linear_feet]', '');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of tillage radish.');
-    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'review');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'implementing');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
@@ -778,7 +776,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals(2.5, $practice_plan->get('rcd_acres')->value);
     $this->assertTrue($practice_plan->get('rcd_linear_feet')->isEmpty());
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
-    $this->assertEquals('review', $practice_plan->get('status')->value);
+    $this->assertEquals('implementing', $practice_plan->get('status')->value);
 
     // Confirm that revision log messages were added to both.
     /** @var \Drupal\plan\Entity\PlanInterface $plan */
