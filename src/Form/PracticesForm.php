@@ -213,10 +213,10 @@ class PracticesForm extends PlanningWorkflowFormBase {
       ],
     ];
 
-    // Notes.
+    // Practice overview (plan notes).
     $form['notes'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Notes'),
+      '#title' => $this->t('Overview'),
       '#default_value' => $plan ? $plan->get('notes')->value : '',
     ];
 
