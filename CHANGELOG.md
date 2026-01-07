@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Make property description fields optional #95](https://github.com/farmier/farm_rcd/issues/95)
 - [Make land use area description field optional #96](https://github.com/farmier/farm_rcd/issues/96)
+- [Prevent changing the practice of an implementation plan #113](https://github.com/farmier/farm_rcd/issues/113)
 
 ## [1.0.1] 2025-12-30
 

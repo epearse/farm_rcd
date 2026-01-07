@@ -171,6 +171,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
           ':input[name="' . $location_name . '"]' => ['filled' => TRUE],
         ],
       ],
+      '#disabled' => !is_null($plan),
     ];
 
     // Acreage/linear feet.

@@ -757,14 +757,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertSession()->fieldValueEquals('practices[' . $practice_plan->id() . '][status]', 'planning');
 
     // Edit the practice plan's fields and submit the form.
-    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][practice]', 'cover_crop');
-    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][acreage]', '2.5');
-    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][linear_feet]', '');
+    $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][linear_feet]', '101.00');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of tillage radish.');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][status]', 'implementing');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
 
     // Confirm that the new values were saved to the practice plan.
     /** @var \Drupal\plan\Entity\PlanInterface $practice_plan */
@@ -772,10 +770,10 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->assertEquals($farm->id(), $practice_plan->get('farm')->referencedEntities()[0]->id());
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
     $this->assertEquals($location->id(), $practice_plan->get('land')->referencedEntities()[0]->id());
-    $this->assertEquals($location->label() . ': Cover Crop', $practice_plan->label());
-    $this->assertEquals('cover_crop', $practice_plan->get('rcd_practice')->value);
-    $this->assertEquals(2.5, $practice_plan->get('rcd_acres')->value);
-    $this->assertTrue($practice_plan->get('rcd_linear_feet')->isEmpty());
+    $this->assertEquals($location->label() . ': Hedgerow Planting', $practice_plan->label());
+    $this->assertEquals('hedgerow_planting', $practice_plan->get('rcd_practice')->value);
+    $this->assertTrue($practice_plan->get('rcd_acres')->isEmpty());
+    $this->assertEquals(101, $practice_plan->get('rcd_linear_feet')->value);
     $this->assertEquals('Plant lots of tillage radish.', $practice_plan->get('notes')->value);
     $this->assertEquals('implementing', $practice_plan->get('status')->value);
 
@@ -792,7 +790,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
 
     // Reload the page and entities.
@@ -818,7 +816,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers!');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Cover Crop');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
 
     // Confirm that submitting the form without changing any values does not
