@@ -95,6 +95,10 @@ class PracticeImplementation extends FarmPlanType {
     $options['type'] = 'options_select';
     $fields['rcd_practice']->setDisplayOptions('form', $options);
 
+    // Make farm and land references immutable.
+    $fields['farm']->addConstraint('RcdImmutable');
+    $fields['land']->addConstraint('RcdImmutable');
+
     // Add practice measurement constraints to rcd_acres and rcd_linear_feet.
     $fields['rcd_acres']->addConstraint('PracticeMeasurement');
     $fields['rcd_linear_feet']->addConstraint('PracticeMeasurement');

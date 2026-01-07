@@ -81,6 +81,11 @@ class Rcp extends FarmPlanType {
     $field->setDisplayOptions('view', ['region' => 'hidden']);
     $fields['practice_implementation_plan'] = $field;
 
+    // Make farm, property, and intake references immutable.
+    $fields['farm']->addConstraint('RcdImmutable');
+    $fields['property']->addConstraint('RcdImmutable');
+    $fields['intake']->addConstraint('RcdImmutable');
+
     return $fields;
   }
 
