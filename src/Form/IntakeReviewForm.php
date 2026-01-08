@@ -270,6 +270,9 @@ class IntakeReviewForm extends FormBase {
       $violations = $organization->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
+        foreach ($violations as $violation) {
+          $this->messenger()->addWarning($violation->getMessage());
+        }
         return;
       }
     }
@@ -298,6 +301,9 @@ class IntakeReviewForm extends FormBase {
       $violations = $plan->validate();
       if ($violations->count() > 0) {
         $form_state->setErrorByName('', $this->t('A validation error occurred. Please contact the system administrator.'));
+        foreach ($violations as $violation) {
+          $this->messenger()->addWarning($violation->getMessage());
+        }
         return;
       }
       $storage['plan'] = $plan;
