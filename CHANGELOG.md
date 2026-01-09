@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [Fix access to View of plans by farm #120](https://github.com/farmier/farm_rcd/issues/120)
+
 ## [1.1.0] 2026-01-07
 
 ### Added

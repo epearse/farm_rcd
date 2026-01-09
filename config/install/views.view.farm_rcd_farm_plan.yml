@@ -4,8 +4,8 @@ dependencies:
   config:
     - organization.type.farm
   module:
+    - farm_entity_access
     - plan
-    - user
 id: farm_rcd_farm_plan
 label: 'RCD Farm Plans'
 module: views
@@ -325,9 +325,10 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: perm
+        type: farm_entity_collection
         options:
-          perm: 'access plan overview'
+          entity_type:
+            plan: plan
       cache:
         type: tag
         options: {  }

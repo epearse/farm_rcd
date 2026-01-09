@@ -24,6 +24,7 @@ class FieldConstraintsTest extends KernelTestBase {
     'entity',
     'entity_reference_validators',
     'farm_entity',
+    'farm_entity_access',
     'farm_farm',
     'farm_field',
     'farm_land',
