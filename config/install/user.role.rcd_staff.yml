@@ -26,7 +26,6 @@ weight: 2
 is_admin: false
 permissions:
   - 'access asset collection'
-  - 'access asset overview'
   - 'access content'
   - 'access farm dashboard'
   - 'access log collection'
