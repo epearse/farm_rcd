@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - [Fix access to View of plans by farm #120](https://github.com/farmier/farm_rcd/issues/120)
+- [Remove stray period prepended to numbered outline list items in RCP template #121](https://github.com/farmier/farm_rcd/issues/121)
 
 ## [1.1.0] 2026-01-07
 
