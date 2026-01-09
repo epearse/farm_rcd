@@ -70,6 +70,7 @@ permissions:
   - 'view flag'
   - 'view land_type'
   - 'view log_type'
+  - 'view organization_type'
   - 'view own asset'
   - 'view own farm organization'
   - 'view own land asset'
