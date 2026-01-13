@@ -36,7 +36,7 @@ class PropertyForm extends PlanningWorkflowFormBase {
 
     // Open if the status is "planning" and there is no property associated
     // with the plan.
-    $form['property']['#open'] = $this->plan->get('status')->value == 'planning' && is_null($this->property);
+    $form['property']['#open'] = TRUE;
 
     // If plan does not have a property associated with it, but the farm has
     // property land asset(s) already, provide the option to select one.

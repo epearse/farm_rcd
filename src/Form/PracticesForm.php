@@ -43,7 +43,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Open if the status is "planning" and there are no practice
     // implementation plans associated with the plan.
     else {
-      $form['practices']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->practicePlans);
+      $form['practices']['#open'] = TRUE;
     }
 
     // Build vertical tabs for each practice form.

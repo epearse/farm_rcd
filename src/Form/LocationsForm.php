@@ -44,7 +44,7 @@ class LocationsForm extends PlanningWorkflowFormBase {
     // Open if the status is "planning" and there are no land assets associated
     // with the property.
     else {
-      $form['locations']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->landAssets);
+      $form['locations']['#open'] = TRUE;
     }
 
     // Build vertical tabs for each location form.

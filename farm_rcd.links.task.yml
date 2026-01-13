@@ -1,3 +1,23 @@
+farm_rcd.plan.property:
+  base_route: entity.plan.canonical
+  route_name: farm_rcd.plan.property
+  title: Property description
+
+farm_rcd.plan.locations:
+  base_route: entity.plan.canonical
+  route_name: farm_rcd.plan.locations
+  title: Land use areas
+
+farm_rcd.plan.site_assessments:
+  base_route: entity.plan.canonical
+  route_name: farm_rcd.plan.site_assessments
+  title: Site assessments
+
+farm_rcd.plan.practices:
+  base_route: entity.plan.canonical
+  route_name: farm_rcd.plan.practices
+  title: Conservation practices
+
 farm_rcd.settings:
   base_route: farm_settings.settings_page
   route_name: farm_rcd.settings

@@ -35,14 +35,15 @@ class RcdOptionLists {
   public static function stakeholderGroups() {
     return [
       'beginning' => t('Beginning farmer or rancher (less than 10 years)'),
+      'family' => t('Family farm'),
       'female' => t('Female'),
+      'lgbtq' => t('LGBTQ+'),
       'veteran' => t('Veteran'),
       'black' => t('Black or African American'),
       'native' => t('American Indian or Alaska Native'),
       'hispanic' => t('Hispanic or Latino'),
       'asian' => t('Asian'),
       'pacific' => t('Pacific Islander'),
-      'na' => t('Not applicable'),
       'optout' => t('Prefer not to answer'),
     ];
   }
@@ -55,10 +56,12 @@ class RcdOptionLists {
    */
   public static function landUses() {
     return [
-      'grazing' => t('Grazing'),
+      'rangeland' => t('Rangeland'),
+      'pasture' => t('Pasture'),
       'vineyards' => t('Vineyards'),
       'orchards' => t('Orchards'),
       'rowcrops' => t('Row crops'),
+      'forestry' => t('Managed forest'),
       'natural' => t('Natural lands'),
       'other' => t('Other'),
     ];

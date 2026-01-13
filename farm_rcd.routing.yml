@@ -6,6 +6,62 @@ farm_rcd.intake:
   requirements:
     _custom_access: '\Drupal\farm_rcd\Form\IntakeForm::access'
 
+farm_rcd.plan.property:
+  path: '/plan/{plan}/property'
+  defaults:
+    _form: '\Drupal\farm_rcd\Form\PropertyForm'
+    _title_callback: '\Drupal\farm_rcd\Form\PropertyForm::title'
+  requirements:
+    _entity_access: plan.update
+  options:
+    parameters:
+      plan:
+        type: entity:plan
+        bundle:
+          - rcd_rcp
+
+farm_rcd.plan.locations:
+  path: '/plan/{plan}/locations'
+  defaults:
+    _form: '\Drupal\farm_rcd\Form\LocationsForm'
+    _title_callback: '\Drupal\farm_rcd\Form\LocationsForm::title'
+  requirements:
+    _entity_access: plan.update
+  options:
+    parameters:
+      plan:
+        type: entity:plan
+        bundle:
+          - rcd_rcp
+
+farm_rcd.plan.site_assessments:
+  path: '/plan/{plan}/site-assessments'
+  defaults:
+    _form: '\Drupal\farm_rcd\Form\SiteAssessmentsForm'
+    _title_callback: '\Drupal\farm_rcd\Form\SiteAssessmentsForm::title'
+  requirements:
+    _entity_access: plan.update
+  options:
+    parameters:
+      plan:
+        type: entity:plan
+        bundle:
+          - rcd_rcp
+
+farm_rcd.plan.practices:
+  path: '/plan/{plan}/practices'
+  defaults:
+    _form: '\Drupal\farm_rcd\Form\PracticesForm'
+    _title_callback: '\Drupal\farm_rcd\Form\PracticesForm::title'
+  requirements:
+    _entity_access: plan.update
+  options:
+    parameters:
+      plan:
+        type: entity:plan
+        bundle:
+          - rcd_rcp
+
 farm_rcd.settings:
   path: 'farm/settings/rcd'
   defaults:

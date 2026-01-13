@@ -73,6 +73,10 @@ abstract class PlanningWorkflowFormBase extends FormBase {
     protected EntityTypeManagerInterface $entityTypeManager,
   ) {}
 
+  public function title(?PlanInterface $plan = NULL) {
+    return $plan->label();
+  }
+
   /**
    * {@inheritdoc}
    */

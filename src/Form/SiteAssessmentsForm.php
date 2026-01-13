@@ -43,7 +43,7 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
 
     // Open if the status is "planning" and there are no site assessment logs.
     else {
-      $form['assessments']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->siteAssessmentLogs);
+      $form['assessments']['#open'] = TRUE;
     }
 
     // Build vertical tabs for each site assessment form.

@@ -10,8 +10,10 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\farm_rcd\Form\IntakeReviewForm;
 use Drupal\views\Views;
 
@@ -96,11 +98,32 @@ class ThemeHooks implements ContainerInjectionInterface {
       return;
     }
 
+    $build['rcd_overview'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Planning overview'),
+      '#description' => $this->t('The following steps will guide you through the process of building a resource conservation plan. (blah blah blah - more intro/description text here?)'),
+      '#open' => TRUE,
+    ];
+    $build['rcd_overview']['items'] = [
+      '#theme' => 'item_list',
+      '#list_type' => 'ol',
+      '#items' => [
+        Link::fromTextAndUrl('Create a new property description (or add an existing one)', Url::fromUri('base:<front>')),
+        Link::fromTextAndUrl('Define land use areas', Url::fromUri('base:<front>')),
+        Link::fromTextAndUrl('Perform site assessments', Url::fromUri('base:<front>')),
+        Link::fromTextAndUrl('Propose conservation practices', Url::fromUri('base:<front>')),
+        'Generate a document from template',
+        'Send document to stakeholder',
+        'Make adjustments based on stakeholder feedback',
+        'Upload the final document for future reference',
+      ],
+    ];
+
     // Add planning workflow forms.
-    $build['rcd_property'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PropertyForm', $plan);
-    $build['rcd_locations'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\LocationsForm', $plan);
-    $build['rcd_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\SiteAssessmentsForm', $plan);
-    $build['rcd_practices'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PracticesForm', $plan);
+//    $build['rcd_property'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PropertyForm', $plan);
+//    $build['rcd_locations'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\LocationsForm', $plan);
+//    $build['rcd_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\SiteAssessmentsForm', $plan);
+//    $build['rcd_practices'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PracticesForm', $plan);
     $build['rcd_document'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\DocumentForm', $plan);
     $build['rcd_status'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\StatusForm', $plan);
 
@@ -179,6 +202,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     if ($entity_type == 'plan') {
       return [
         'bottom' => [
+          'rcd_overview',
           'rcd_property',
           'rcd_locations',
           'rcd_site_assessments',
