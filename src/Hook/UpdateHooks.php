@@ -37,7 +37,6 @@ class UpdateHooks {
       'farm_map.layer_style.land_type_rcd_riparian_area',
       'farm_map.layer_style.land_type_rcd_row_crops',
       'farm_map.layer_style.land_type_rcd_vineyard',
-      'farm_rcd.mail',
       'log.type.rcd_intake',
       'log.type.rcd_site_assessment',
       'plan.type.rcd_practice_implementation',
