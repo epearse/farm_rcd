@@ -89,3 +89,11 @@ function farm_rcd_post_update_rcp_document(&$sandbox) {
     'body' => 'Your prepared Resource Conservation Plan document(s) are attached.',
   ])->save();
 }
+
+/**
+ * Remove "not applicable" demographic option.
+ */
+function farm_rcd_post_update_na_demographic_option(&$sandbox) {
+  \Drupal::database()->query("DELETE FROM log__intake_stakeholder_group WHERE intake_stakeholder_group_value = 'na'");
+  \Drupal::database()->query("DELETE FROM log_revision__intake_stakeholder_group WHERE intake_stakeholder_group_value = 'na'");
+}

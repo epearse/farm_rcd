@@ -39,7 +39,6 @@ class IntakeFormTest extends RcdTestBase {
         'stakeholder[personal][group][hispanic]' => TRUE,
         'stakeholder[personal][group][asian]' => TRUE,
         'stakeholder[personal][group][pacific]' => TRUE,
-        'stakeholder[personal][group][na]' => TRUE,
         'stakeholder[personal][group][optout]' => TRUE,
         'stakeholder[personal][share_rcds]' => 'yes',
       ],
