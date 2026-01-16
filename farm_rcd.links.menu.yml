@@ -1,0 +1,7 @@
+farm_rcd.farms:
+  title: Farms
+  parent: farm.records
+  route_name: view.farm_organization.page_type
+  route_parameters:
+    arg_0: farm
+  weight: -10
