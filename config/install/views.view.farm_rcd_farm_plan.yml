@@ -6,6 +6,9 @@ dependencies:
   module:
     - farm_entity_access
     - plan
+  enforced:
+    module:
+      - farm_rcd
 id: farm_rcd_farm_plan
 label: 'RCD Farm Plans'
 module: views
