@@ -116,6 +116,7 @@ abstract class PlanningWorkflowFormBase extends FormBase {
       $this->landAssets = $this->entityTypeManager->getStorage('asset')->loadByProperties([
         'type' => 'land',
         'parent' => $this->property->id(),
+        'archived' => FALSE,
       ]);
     }
 
