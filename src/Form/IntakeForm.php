@@ -262,7 +262,6 @@ class IntakeForm extends FormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Phone'),
       '#default_value' => $saved_values['personal']['phone'] ?? '',
-      '#required' => TRUE,
     ];
 
     // Stakeholder mailing address section.
@@ -380,9 +379,6 @@ class IntakeForm extends FormBase {
       '#title' => $this->t('When does the lease expire?'),
       '#default_value' => $saved_values['info']['lease_expiration'] ?? NULL,
       '#states' => [
-        'required' => [
-          ':input[name="property[info][own_or_lease]"]' => ['value' => 'lease'],
-        ],
         'visible' => [
           ':input[name="property[info][own_or_lease]"]' => ['value' => 'lease'],
         ],
@@ -510,9 +506,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['grazing_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][grazing]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][grazing]"]' => ['checked' => TRUE],
         ],
@@ -527,9 +520,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['vineyards_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][vineyards]"]' => ['checked' => TRUE],
         ],
@@ -544,9 +534,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['orchards_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][orchards]"]' => ['checked' => TRUE],
         ],
@@ -561,9 +548,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['rowcrops_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][rowcrops]"]' => ['checked' => TRUE],
         ],
@@ -578,9 +562,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['natural_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][natural]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][natural]"]' => ['checked' => TRUE],
         ],
@@ -610,9 +591,6 @@ class IntakeForm extends FormBase {
       '#step' => 0.1,
       '#default_value' => $saved_values['land_use']['other_acreage'] ?? '',
       '#states' => [
-        'required' => [
-          ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
-        ],
         'visible' => [
           ':input[name="property[land_use][land_use][other]"]' => ['checked' => TRUE],
         ],
