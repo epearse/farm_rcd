@@ -840,6 +840,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'intake_property_owner' => $this->randomMachineName(),
       'intake_property_acreage' => 100,
       'intake_stakeholder_group' => array_keys(RcdOptionLists::stakeholderGroups()),
+      'intake_stakeholder_group_other' => 'Over 65',
       'intake_property_use' => array_keys(RcdOptionLists::landUses()),
       'intake_goals' => array_keys(RcdOptionLists::goals()),
       'intake_concerns' => array_keys(RcdOptionLists::concerns()),
@@ -1198,10 +1199,11 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       $expected_strings['practice_resource_' . $key] = $value;
     }
 
-    // Stakeholder groups.
+    // Stakeholder groups (and other).
     foreach (RcdOptionLists::stakeholderGroups() as $key => $value) {
       $expected_strings['stakeholder_group_' . $key] = $value->render();
     }
+    $expected_strings['stakeholder_group_other_value'] = 'Other: Over 65';
 
     // Land uses.
     foreach (RcdOptionLists::landUses() as $key => $value) {
