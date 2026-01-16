@@ -77,6 +77,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->doTestSiteAssessmentsForm();
     $this->doTestPracticesForm();
     $this->doTestDocumentForm();
+    $this->doTestDocumentEmailForm();
     $this->doTestStatusForm();
   }
 
@@ -973,6 +974,69 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->attachFileToField('files[document]', $real_path);
     $this->getSession()->getpage()->pressButton('Save documents');
     $this->assertSession()->pageTextContains('Documents can only be uploaded to plans that are in the planning stage. This plan has been marked as done.');
+  }
+
+  /**
+   * Test document email form.
+   */
+  public function doTestDocumentEmailForm() {
+
+    // Create a farm organization.
+    /** @var \Drupal\organization\Entity\OrganizationInterface $farm */
+    $farm = $this->organizationStorage->create([
+      'type' => 'farm',
+      'name' => $this->randomMachineName(),
+    ]);
+    $farm->save();
+
+    // Create an intake log with minimum data for these tests.
+    /** @var \Drupal\log\Entity\LogInterface $intake */
+    $intake = $this->logStorage->create([
+      'type' => 'rcd_intake',
+      'intake_stakeholder_email' => 'test@test.com',
+    ]);
+    $intake->save();
+
+    // Create a resource conservation plan associated with the farm and intake.
+    /** @var \Drupal\plan\Entity\PlanInterface $plan */
+    $plan = $this->planStorage->create([
+      'type' => 'rcd_rcp',
+      'name' => 'Test RCP',
+      'farm' => [$farm],
+      'intake' => [$intake],
+    ]);
+    $plan->save();
+
+    // Go to the plan entity view display and confirm that the document email
+    // form is present but not accessible yet.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Email Document');
+    $this->assertSession()->pageTextContains('One or more documents must be uploaded before they can be sent via email. ');
+    $this->assertSession()->responseNotContains('Send email');
+
+    // Create a file entity associated with the plan.
+    $file = $this->fileStorage->create([
+      'filename' => 'test.pdf',
+      'uri' => 'test.pdf',
+    ]);
+    $file->save();
+    $plan->set('file', [$file]);
+    $plan->save();
+
+    // Reload the form and confirm that the document email form is accessible.
+    $this->drupalGet('/plan/' . $plan->id());
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('Email Document');
+    $this->assertSession()->responseContains('Send email');
+
+    // Confirm that the email field is populated.
+    $this->assertSession()->fieldValueEquals('email[email]', 'test@test.com');
+
+    // Confirm that the documents field options are populated.
+    $this->assertSession()->pageTextContains('test.pdf');
+
+    // @todo Test email sending.
   }
 
   /**

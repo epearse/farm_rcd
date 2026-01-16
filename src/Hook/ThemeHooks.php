@@ -102,6 +102,7 @@ class ThemeHooks implements ContainerInjectionInterface {
     $build['rcd_site_assessments'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\SiteAssessmentsForm', $plan);
     $build['rcd_practices'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\PracticesForm', $plan);
     $build['rcd_document'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\DocumentForm', $plan);
+    $build['rcd_email'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\DocumentEmailForm', $plan);
     $build['rcd_status'] = $this->formBuilder->getForm('Drupal\farm_rcd\Form\StatusForm', $plan);
 
     // Attach behavior for disabling forms when one is updated.
@@ -111,6 +112,7 @@ class ThemeHooks implements ContainerInjectionInterface {
       'farm-rcd-site-assessment-form',
       'farm-rcd-practice-form',
       'farm-rcd-document-form',
+      'farm-rcd-document-email-form',
       'farm-rcd-status-form',
     ];
     $build['#attached']['library'][] = 'farm_rcd/disable_forms';
@@ -184,6 +186,7 @@ class ThemeHooks implements ContainerInjectionInterface {
           'rcd_site_assessments',
           'rcd_practices',
           'rcd_document',
+          'rcd_email',
           'rcd_status',
         ],
       ];
