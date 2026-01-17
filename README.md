@@ -1,7 +1,7 @@
 # farmOS Conservation Planner
 
-Provides farmOS features for Resource Conservation Districts to aid in the
-conservation planning processes.
+Provides farmOS features for Resource Conservation Districts to facilitate and accelerate the
+conservation planning processes. Please see the [User's Guide](https://docs.google.com/document/d/16iH6pDua5P8h9jwwMcFFI97ApQfVMSo4AjvnXbCmC7Q/edit?tab=t.0#heading=h.xhitsmsyplk) for more information on how it works and what it can do for your RCD.
 
 This module is an add-on for the [farmOS](http://drupal.org/project/farm)
 Drupal distribution.
