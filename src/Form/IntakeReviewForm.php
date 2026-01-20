@@ -11,6 +11,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\farm_form\Traits\FarmFormProtectionTrait;
 use Drupal\log\Entity\LogInterface;
 use Drupal\organization\Entity\Organization;
 use Drupal\organization\Entity\OrganizationInterface;
@@ -24,6 +25,7 @@ use Drupal\user\UserInterface;
 class IntakeReviewForm extends FormBase {
 
   use AutowireTrait;
+  use FarmFormProtectionTrait;
 
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
@@ -241,6 +243,9 @@ class IntakeReviewForm extends FormBase {
         ],
       ],
     ];
+
+    // Enable form protection.
+    $this->enableFormProtection($form);
 
     return $form;
   }

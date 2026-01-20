@@ -109,3 +109,12 @@ function farm_rcd_post_update_intake_other_group(&$sandbox) {
   $field_definition = \Drupal::service('farm_field.factory')->bundleFieldDefinition($options);
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('intake_stakeholder_group_other', 'log', 'farm_rcd', $field_definition);
 }
+
+/**
+ * Install the farm_form module.
+ */
+function farm_rcd_post_update_install_farm_form(&$sandbox = NULL) {
+  if (!\Drupal::service('module_handler')->moduleExists('farm_form')) {
+    \Drupal::service('module_installer')->install(['farm_form']);
+  }
+}

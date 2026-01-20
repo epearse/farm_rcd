@@ -9,6 +9,7 @@ dependencies:
   - drupal:views
   - farm_entity
   - farm_farm
+  - farm_form
   - farm_land
   - farm_log
   - farm_ui_dashboard

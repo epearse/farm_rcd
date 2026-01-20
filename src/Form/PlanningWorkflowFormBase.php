@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\asset\Entity\AssetInterface;
+use Drupal\farm_form\Traits\FarmFormProtectionTrait;
 use Drupal\log\Entity\LogInterface;
 use Drupal\organization\Entity\OrganizationInterface;
 use Drupal\plan\Entity\PlanInterface;
@@ -19,6 +20,7 @@ use Drupal\plan\Entity\PlanInterface;
 abstract class PlanningWorkflowFormBase extends FormBase {
 
   use AutowireTrait;
+  use FarmFormProtectionTrait;
 
   /**
    * Plan entity.
@@ -79,6 +81,7 @@ abstract class PlanningWorkflowFormBase extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state, ?PlanInterface $plan = NULL) {
     $form = ['#tree' => TRUE];
     $this->loadPlanEntities($plan);
+    $this->enableFormProtection($form);
     return $form;
   }
 

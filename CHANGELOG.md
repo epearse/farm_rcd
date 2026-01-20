@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Provide a form for emailing RCP documents #54](https://github.com/farmier/farm_rcd/issues/54)
 - [Add "Unknown" option to lease/own question #124](https://github.com/farmier/farm_rcd/issues/124)
 - [Add demographic options to intake form: Family farm, LGBTQ+, Other #117](https://github.com/farmier/farm_rcd/issues/117)
+- [Warn users before navigating away from forms with unsaved changes #78](https://github.com/farmier/farm_rcd/issues/78)
 
 ### Changed
 
