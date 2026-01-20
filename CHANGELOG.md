@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Enable staff to comment on plans #126](https://github.com/farmier/farm_rcd/issues/126)
 - [View of plans by intake #125](https://github.com/farmier/farm_rcd/issues/125)
 
+### Changed
+
+- [Zoom to property in land use areas form #104](https://github.com/farmier/farm_rcd/issues/104)
+
 ## [1.2.0] 2026-01-21
 
 ### Added

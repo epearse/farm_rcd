@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\farm_map\Entity\MapBehavior;
+use Drupal\farm_map\Entity\MapType;
 use Drupal\symfony_mailer_lite\Entity\Transport;
 
 /**
@@ -195,4 +197,44 @@ function farm_rcd_post_update_create_farm_rcd_intake_plan(&$sandbox = NULL) {
   /** @var \Drupal\config_update\ConfigReverter $config_update */
   $config_update = \Drupal::service('config_update.config_update');
   $config_update->import('view', 'farm_rcd_intake_plan');
+}
+
+/**
+ * Add zoom to property map behavior.
+ */
+function farm_rcd_post_update_map_zoom_to_property(&$sandbox) {
+
+  // Create the RCD map type.
+  $map_type = MapType::create([
+    'id' => 'rcd',
+    'label' => 'RCD map',
+    'description' => 'Map for RCD module use cases.',
+    'behaviors' => [],
+    'options' => [],
+    'dependencies' => [
+      'enforced' => [
+        'module' => [
+          'farm_rcd',
+        ],
+      ],
+    ],
+  ]);
+  $map_type->save();
+
+  // Create the zoom behavior.
+  $behavior = MapBehavior::create([
+    'id' => 'rcd_property_zoom',
+    'label' => 'Zoom to property',
+    'description' => 'Zooms to a property.',
+    'library' => 'farm_rcd/behavior_rcd_property_zoom',
+    'settings' => [],
+    'dependencies' => [
+      'enforced' => [
+        'module' => [
+          'farm_rcd',
+        ],
+      ],
+    ],
+  ]);
+  $behavior->save();
 }

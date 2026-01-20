@@ -161,9 +161,20 @@ class LocationsForm extends PlanningWorkflowFormBase {
     $form['boundary'] = [
       '#type' => 'farm_map_input',
       '#title' => $this->t('Boundary'),
-      '#description' => $this->t('Draw the boundary using the map below, or paste geometry data (WKT, KML, or GeoJSON) into the box below the map.'),
+      '#description' => $this->t('Draw the boundary using the map below, or paste geometry data (WKT, KML, or GeoJSON) into the box below the map. The property boundary is visible in blue and the current land use area is visible in orange.'),
       '#display_raw_geometry' => TRUE,
       '#default_value' => !is_null($asset) ? $asset->get('geometry')->value : '',
+      '#map_type' => 'rcd',
+      '#behaviors' => [
+        'rcd_property_zoom',
+      ],
+      '#map_settings' => [
+        'behaviors' => [
+          'rcd_property_zoom' => [
+            'property_geometry' => $this->property->get('geometry')->value,
+          ],
+        ],
+      ],
     ];
 
     return $form;
