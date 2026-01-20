@@ -78,6 +78,7 @@ class Intake extends FarmLogType {
         'allowed_values' => [
           'own' => $this->t('Own'),
           'lease' => $this->t('Lease'),
+          'unknown' => $this->t('Unknown'),
         ],
       ],
       'intake_property_owner' => [

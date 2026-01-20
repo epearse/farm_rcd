@@ -360,6 +360,7 @@ class IntakeForm extends FormBase {
       '#options' => [
         'own' => $this->t('Own'),
         'lease' => $this->t('Lease'),
+        'unknown' => $this->t('Unknown'),
       ],
       '#default_value' => $saved_values['info']['own_or_lease'] ?? '',
       '#required' => TRUE,
