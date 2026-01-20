@@ -64,6 +64,13 @@ class PracticeImplementation extends FarmPlanType {
         'required' => TRUE,
       ],
 
+      // Other practice name.
+      'rcd_practice_other' => [
+        'type' => 'string',
+        'label' => $this->t('Other practice name'),
+        'description' => $this->t('If "Other" was selected for the practice, give the practice a name.'),
+      ],
+
       // Acreage.
       'rcd_acres' => [
         'type' => 'decimal',

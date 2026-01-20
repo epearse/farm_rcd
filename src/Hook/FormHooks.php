@@ -34,6 +34,12 @@ class FormHooks {
   #[Hook('form_plan_form_alter')]
   public function formPlanFormAlter(&$form, FormStateInterface $form_state, $form_id) {
 
+    // Only show the "Other practice name" field if the selected practice is
+    // "Other".
+    if (isset($form['rcd_practice']) && isset($form['rcd_practice_other'])) {
+      $form['rcd_practice_other']['#states']['visible'] = [':input[name="rcd_practice"]' => ['value' => 'other']];
+    }
+
     // Conditionally show/hide the acreage/linear feet fields based on the
     // practice type. Show both if the practice is "other".
     $area_practices = array_filter(ConservationPractices::definitions(), function ($practice) {

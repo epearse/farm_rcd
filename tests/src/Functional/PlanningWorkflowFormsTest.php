@@ -788,11 +788,12 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     // expected.
     $this->getSession()->getPage()->fillField('practices[add][location]', $location->id());
     $this->getSession()->getPage()->fillField('practices[add][practice]', 'other');
+    $this->getSession()->getPage()->fillField('practices[add][practice_other]', 'Bioremediation');
     $this->getSession()->getPage()->fillField('practices[' . $practice_plan->id() . '][notes]', 'Plant lots of sunflowers.');
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Bioremediation');
 
     // Reload the page and entities.
     $this->drupalGet('/plan/' . $plan->id());
@@ -818,7 +819,7 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     $this->getSession()->getPage()->pressButton('Save conservation practices');
     $this->assertSession()->pageTextContains('Practice implementation plans saved.');
     $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Hedgerow Planting');
-    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Other');
+    $this->assertSession()->pageTextContains('Practice implementation plan: ' . $location->label() . ': Bioremediation');
 
     // Confirm that submitting the form without changing any values does not
     // save the plans.
@@ -896,9 +897,9 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
     ]);
     $location->save();
 
-    // Create a practice implementation plan and link it to the resource
+    // Create two practice implementation plans and link them to the resource
     // conservation plan.
-    $practice_plan = $this->planStorage->create([
+    $practice_plan1 = $this->planStorage->create([
       'type' => 'rcd_practice_implementation',
       'name' => $this->randomMachineName(),
       'farm' => [$farm],
@@ -907,8 +908,19 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'rcd_practice' => 'cover_crop',
       'rcd_acres' => 10,
     ]);
-    $practice_plan->save();
-    $plan->set('practice_implementation_plan', [$practice_plan]);
+    $practice_plan1->save();
+    $practice_plan2 = $this->planStorage->create([
+      'type' => 'rcd_practice_implementation',
+      'name' => $this->randomMachineName(),
+      'farm' => [$farm],
+      'land' => [$location],
+      'notes' => 'Plant a row of sunflowers!',
+      'rcd_practice' => 'other',
+      'rcd_practice_other' => 'Bioremediation',
+      'rcd_linear_feet' => 10,
+    ]);
+    $practice_plan1->save();
+    $plan->set('practice_implementation_plan', [$practice_plan1, $practice_plan2]);
     $plan->save();
 
     // Go to the plan entity view display and confirm that the document form is
@@ -1187,6 +1199,9 @@ class PlanningWorkflowFormsTest extends RcdTestBase {
       'practice_name' => 'Cover crop',
       'practice_overview' => $plan->get('practice_implementation_plan')->referencedEntities()[0]->get('notes')->value,
       'practice_measurement' => '10 acres',
+      'other_practice_name' => 'Bioremediation',
+      'other_practice_measurement' => '10 linear feet',
+      'other_practice_overview' => 'Plant a row of sunflowers!',
     ];
 
     // Practice benefits.

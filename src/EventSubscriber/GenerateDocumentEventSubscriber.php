@@ -157,6 +157,9 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
             continue;
           }
           $practice_name = $practice_info['label']->render();
+          if ($plan->get('rcd_practice')->value == 'other' && !$plan->get('rcd_practice_other')->isEmpty()) {
+            $practice_name = $plan->get('rcd_practice_other')->value;
+          }
           if (!empty($practice_info['nrcs_code'])) {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';
           }

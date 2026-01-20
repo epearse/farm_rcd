@@ -151,8 +151,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
       $form['location']['#default_value'] = NULL;
     }
 
-    // Build the name of the location field for #states below.
-    $location_name = !is_null($plan) ? 'practices[' . $plan->id() . '][location]' : 'practices[add][location]';
+    // Build the name prefix of this sub-form for #states below.
+    $states_name_prefix = !is_null($plan) ? 'practices[' . $plan->id() . ']' : 'practices[add]';
 
     // Practice.
     $form['practice'] = [
@@ -168,10 +168,23 @@ class PracticesForm extends PlanningWorkflowFormBase {
       '#default_value' => $plan ? $plan->get('rcd_practice')->value : NULL,
       '#states' => [
         'required' => [
-          ':input[name="' . $location_name . '"]' => ['filled' => TRUE],
+          ':input[name="' . $states_name_prefix . '[location]"]' => ['filled' => TRUE],
         ],
       ],
       '#disabled' => !is_null($plan),
+    ];
+
+    // Other practice name.
+    $form['practice_other'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Other practice name'),
+      '#description' => $this->t('If "Other" was selected for the practice, give the practice a name.'),
+      '#default_value' => $plan?->get('rcd_practice_other')->value,
+      '#states' => [
+        'visible' => [
+          ':input[name="' . $states_name_prefix . '[practice]"]' => ['value' => 'other'],
+        ],
+      ],
     ];
 
     // Acreage/linear feet.
@@ -391,9 +404,14 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Ensure the name is under 255 characters (we need to do this because the
     // user can't).
     $name = $plan->get('land')->referencedEntities()[0]->label();
-    $practice_info = ConservationPractices::get($values['practice']);
-    if (!is_null($practice_info)) {
-      $name .= ': ' . $practice_info['label'];
+    if ($values['practice'] == 'other') {
+      $name .= ': ' . $values['practice_other'];
+    }
+    else {
+      $practice_info = ConservationPractices::get($values['practice']);
+      if (!is_null($practice_info)) {
+        $name .= ': ' . $practice_info['label'];
+      }
     }
     $name = mb_strimwidth($name, 0, 255, '…');
     if ($plan->get('name')->value != $name) {
@@ -404,6 +422,7 @@ class PracticesForm extends PlanningWorkflowFormBase {
     // Fill in the plan details from form values, if available.
     $field_values = [
       'rcd_practice' => 'practice',
+      'rcd_practice_other' => 'practice_other',
       'rcd_acres' => 'acreage',
       'rcd_linear_feet' => 'linear_feet',
       'notes' => 'notes',

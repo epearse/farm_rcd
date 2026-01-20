@@ -118,3 +118,16 @@ function farm_rcd_post_update_install_farm_form(&$sandbox = NULL) {
     \Drupal::service('module_installer')->install(['farm_form']);
   }
 }
+
+/**
+ * Add a field for other practice names.
+ */
+function farm_rcd_post_update_other_practice_name(&$sandbox) {
+  $options = [
+    'type' => 'string',
+    'label' => t('Other practice name'),
+    'description' => t('If "Other" was selected for the practice, give the practice a name.'),
+  ];
+  $field_definition = \Drupal::service('farm_field.factory')->bundleFieldDefinition($options);
+  \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('rcd_practice_other', 'plan', 'farm_rcd', $field_definition);
+}
