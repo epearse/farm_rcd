@@ -47,6 +47,16 @@ class LocationsForm extends PlanningWorkflowFormBase {
       $form['locations']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->landAssets);
     }
 
+    // Do not open if the "open" query parameter is set, unless it is set to
+    // "locations".
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['locations']['#open'] = FALSE;
+      if ($this->getRequest()->query->get('open') == 'locations') {
+        $form['locations']['#open'] = TRUE;
+      }
+    }
+
     // Build vertical tabs for each location form.
     $form['locations']['tabs'] = [
       '#type' => 'vertical_tabs',
@@ -257,6 +267,12 @@ class LocationsForm extends PlanningWorkflowFormBase {
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Land assets saved.'));
+
+    // If new assets were created, set a query parameter to keep the form open.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if (!empty($created_assets)) {
+      $form_state->setRedirectUrl($this->plan->toUrl()->setOption('query', ['open' => 'locations']));
+    }
   }
 
   /**

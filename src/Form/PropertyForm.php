@@ -38,6 +38,12 @@ class PropertyForm extends PlanningWorkflowFormBase {
     // with the plan.
     $form['property']['#open'] = $this->plan->get('status')->value == 'planning' && is_null($this->property);
 
+    // Do not open if the "open" query parameter is set.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['property']['#open'] = FALSE;
+    }
+
     // If plan does not have a property associated with it, but the farm has
     // property land asset(s) already, provide the option to select one.
     $existing_properties = [];

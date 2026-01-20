@@ -34,6 +34,12 @@ class StatusForm extends PlanningWorkflowFormBase {
     // Open if the status is "planning" and there are files attached.
     $form['status']['#open'] = $this->plan->get('status')->value == 'planning' && !$this->plan->get('file')->isEmpty();
 
+    // Do not open if the "open" query parameter is set.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['status']['#open'] = FALSE;
+    }
+
     // Comments.
     $form['status']['comments'] = [
       '#type' => 'textfield',

@@ -56,6 +56,12 @@ class DocumentForm extends PlanningWorkflowFormBase {
     // plans associated with the plan, but no files are attached.
     $form['document']['#open'] = $this->plan->get('status')->value == 'planning' && !empty($this->practicePlans) && $this->plan->get('file')->isEmpty();
 
+    // Do not open if the "open" query parameter is set.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['document']['#open'] = FALSE;
+    }
+
     // Generate document button.
     $form['document']['generate'] = [
       '#type' => 'submit',

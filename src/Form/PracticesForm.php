@@ -46,6 +46,16 @@ class PracticesForm extends PlanningWorkflowFormBase {
       $form['practices']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->practicePlans);
     }
 
+    // Do not open if the "open" query parameter is set, unless it is set to
+    // "practices".
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['practices']['#open'] = FALSE;
+      if ($this->getRequest()->query->get('open') == 'practices') {
+        $form['practices']['#open'] = TRUE;
+      }
+    }
+
     // Build vertical tabs for each practice form.
     $form['practices']['tabs'] = [
       '#type' => 'vertical_tabs',
@@ -363,6 +373,12 @@ class PracticesForm extends PlanningWorkflowFormBase {
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Practice implementation plans saved.'));
+
+    // If new plans were created, set a query parameter to keep the form open.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if (!empty($created_plans)) {
+      $form_state->setRedirectUrl($this->plan->toUrl()->setOption('query', ['open' => 'practices']));
+    }
   }
 
   /**

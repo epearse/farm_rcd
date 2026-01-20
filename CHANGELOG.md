@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - [Make intake fields optional #112](https://github.com/farmier/farm_rcd/issues/112)
+- [Keep RCP forms open after adding new land use areas, site assessments, or practices #97](https://github.com/farmier/farm_rcd/issues/97)
 
 ### Fixed
 

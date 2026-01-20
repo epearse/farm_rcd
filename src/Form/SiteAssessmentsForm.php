@@ -46,6 +46,16 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
       $form['assessments']['#open'] = $this->plan->get('status')->value == 'planning' && empty($this->siteAssessmentLogs);
     }
 
+    // Do not open if the "open" query parameter is set, unless it is set to
+    // "assessments".
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if ($this->getRequest()->query->has('open')) {
+      $form['assessments']['#open'] = FALSE;
+      if ($this->getRequest()->query->get('open') == 'assessments') {
+        $form['assessments']['#open'] = TRUE;
+      }
+    }
+
     // Build vertical tabs for each site assessment form.
     $form['assessments']['tabs'] = [
       '#type' => 'vertical_tabs',
@@ -473,6 +483,12 @@ class SiteAssessmentsForm extends PlanningWorkflowFormBase {
 
     // Show a message.
     $this->messenger()->addMessage($this->t('Site assessment logs saved.'));
+
+    // If new logs were created, set a query parameter to keep the form open.
+    // @todo https://github.com/farmier/farm_rcd/issues/57
+    if (!empty($created_logs)) {
+      $form_state->setRedirectUrl($this->plan->toUrl()->setOption('query', ['open' => 'assessments']));
+    }
   }
 
   /**
