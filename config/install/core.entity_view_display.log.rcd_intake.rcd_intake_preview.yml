@@ -19,14 +19,14 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 33
+    weight: 35
     region: content
   intake_concerns:
     type: list_default
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 31
+    weight: 33
     region: content
   intake_concerns_other:
     type: string
@@ -34,7 +34,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 32
+    weight: 34
     region: content
   intake_farm_name:
     type: string
@@ -49,7 +49,7 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 29
+    weight: 31
     region: content
   intake_goals_other:
     type: string
@@ -57,7 +57,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 30
+    weight: 32
     region: content
   intake_property_acreage:
     type: number_decimal
@@ -148,9 +148,9 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 28
+    weight: 30
     region: content
-  intake_property_use_grazing_ac:
+  intake_property_use_forestry_ac:
     type: number_decimal
     label: inline
     settings:
@@ -159,7 +159,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 21
+    weight: 26
     region: content
   intake_property_use_natural_ac:
     type: number_decimal
@@ -170,7 +170,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 25
+    weight: 27
     region: content
   intake_property_use_orchard_ac:
     type: number_decimal
@@ -181,7 +181,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 23
+    weight: 24
     region: content
   intake_property_use_other:
     type: string
@@ -189,7 +189,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 26
+    weight: 28
     region: content
   intake_property_use_other_ac:
     type: number_decimal
@@ -200,7 +200,29 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 27
+    weight: 29
+    region: content
+  intake_property_use_pasture_ac:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  intake_property_use_rangeland_ac:
+    type: number_decimal
+    label: inline
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 21
     region: content
   intake_property_use_rowcrop_ac:
     type: number_decimal
@@ -211,7 +233,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 24
+    weight: 25
     region: content
   intake_property_use_vineyard_ac:
     type: number_decimal
@@ -222,7 +244,7 @@ content:
       scale: 2
       prefix_suffix: true
     third_party_settings: {  }
-    weight: 22
+    weight: 23
     region: content
   intake_property_zip:
     type: string
@@ -240,7 +262,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 34
+    weight: 36
     region: content
   intake_stakeholder_city:
     type: string

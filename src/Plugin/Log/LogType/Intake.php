@@ -125,9 +125,14 @@ class Intake extends FarmLogType {
         'allowed_values' => RcdOptionLists::landUses(),
         'multiple' => TRUE,
       ],
-      'intake_property_use_grazing_ac' => [
+      'intake_property_use_rangeland_ac' => [
         'type' => 'decimal',
-        'label' => $this->t('Grazing land use acreage'),
+        'label' => $this->t('Rangeland land use acreage'),
+        'min' => 0,
+      ],
+      'intake_property_use_pasture_ac' => [
+        'type' => 'decimal',
+        'label' => $this->t('Pasture land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_vineyard_ac' => [
@@ -143,6 +148,11 @@ class Intake extends FarmLogType {
       'intake_property_use_rowcrop_ac' => [
         'type' => 'decimal',
         'label' => $this->t('Row crops land use acreage'),
+        'min' => 0,
+      ],
+      'intake_property_use_forestry_ac' => [
+        'type' => 'decimal',
+        'label' => $this->t('Forestry land use acreage'),
         'min' => 0,
       ],
       'intake_property_use_natural_ac' => [

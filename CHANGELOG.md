@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Add demographic options to intake form: Family farm, LGBTQ+, Other #117](https://github.com/farmier/farm_rcd/issues/117)
 - [Warn users before navigating away from forms with unsaved changes #78](https://github.com/farmier/farm_rcd/issues/78)
 - [Add an "Other" textbox for the "Other" practice option #119](https://github.com/farmier/farm_rcd/issues/119)
+- [Add Rangeland, Forestry, and Pasture land use types (remove Grazing) #93](https://github.com/farmier/farm_rcd/issues/93)
 
 ### Changed
 

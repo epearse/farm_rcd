@@ -57,10 +57,12 @@ class RcdOptionLists {
    */
   public static function landUses() {
     return [
-      'grazing' => t('Grazing'),
+      'rangeland' => t('Rangeland'),
+      'pasture' => t('Pasture'),
       'vineyards' => t('Vineyards'),
       'orchards' => t('Orchards'),
       'rowcrops' => t('Row crops'),
+      'forestry' => t('Forestry'),
       'natural' => t('Natural lands'),
       'other' => t('Other'),
     ];
