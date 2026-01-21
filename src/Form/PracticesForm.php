@@ -243,6 +243,24 @@ class PracticesForm extends PlanningWorkflowFormBase {
       return $form;
     }
 
+    // Target implementation start date.
+    $form['target_start_date'] = [
+      '#type' => 'date',
+      '#date_date_element' => 'date',
+      '#date_time_element' => 'none',
+      '#title' => $this->t('Target start date'),
+      '#default_value' => !$plan->get('rcd_target_start_date')->isEmpty() ? date('Y-m-d', (int) $plan->get('rcd_target_start_date')->value) : NULL,
+    ];
+
+    // Target implementation end date.
+    $form['target_end_date'] = [
+      '#type' => 'date',
+      '#date_date_element' => 'date',
+      '#date_time_element' => 'none',
+      '#title' => $this->t('Target end date'),
+      '#default_value' => !$plan->get('rcd_target_end_date')->isEmpty() ? date('Y-m-d', (int) $plan->get('rcd_target_end_date')->value) : NULL,
+    ];
+
     // Overview (plan notes).
     $form['notes'] = [
       '#type' => 'textarea',
@@ -441,6 +459,8 @@ class PracticesForm extends PlanningWorkflowFormBase {
       'rcd_practice_other' => 'practice_other',
       'rcd_acres' => 'acreage',
       'rcd_linear_feet' => 'linear_feet',
+      'rcd_target_start_date' => 'target_start_date',
+      'rcd_target_end_date' => 'target_end_date',
       'notes' => 'notes',
       'status' => 'status',
     ];
@@ -449,6 +469,13 @@ class PracticesForm extends PlanningWorkflowFormBase {
         continue;
       }
       $value = $values[$name];
+
+      // If this is one of the date fields, convert value to timestamp.
+      if (in_array($name, ['target_start_date', 'target_end_date'])) {
+        $value = strtotime($value);
+      }
+
+      // Update the field on the plan.
       if ($plan->get($field)->value != $value) {
         $plan->set($field, $value);
         $changed = TRUE;
