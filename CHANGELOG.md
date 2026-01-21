@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] 2026-01-21
+
 ### Added
 
 - [Add a checkbox to intake form to prevent email to stakeholder (only visible to staff) #99](https://github.com/farmier/farm_rcd/issues/99)
@@ -359,7 +361,8 @@ The following elements are removed/hidden from the default farmOS UI:
   - Add plan
 - Hide the breadcrumb region for anonymous users, to simplify the intake form.
 
-[Unreleased]: https://github.com/farmier/farm_rcd/compare/1.1.0...1.x
+[Unreleased]: https://github.com/farmier/farm_rcd/compare/1.2.0...1.x
+[1.2.0]: https://github.com/farmier/farm_rcd/releases/tag/1.2.0
 [1.1.0]: https://github.com/farmier/farm_rcd/releases/tag/1.1.0
 [1.0.1]: https://github.com/farmier/farm_rcd/releases/tag/1.0.1
 [1.0.0]: https://github.com/farmier/farm_rcd/releases/tag/1.0.0
