@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Enable staff to comment on plans #126](https://github.com/farmier/farm_rcd/issues/126)
 - [View of plans by intake #125](https://github.com/farmier/farm_rcd/issues/125)
 - [Add practice implementation timeline fields #71](https://github.com/farmier/farm_rcd/issues/71)
+- [Save a plan revision log message when document emailed #128](https://github.com/farmier/farm_rcd/issues/128)
 
 ### Changed
 

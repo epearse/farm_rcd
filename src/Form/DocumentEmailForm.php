@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\farm_rcd\Form;
 
+use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\DependencyInjection\AutowireTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -114,7 +115,8 @@ class DocumentEmailForm extends PlanningWorkflowFormBase {
       ->subject($mail_config->get($mail_key . '.subject'))
       ->text($mail_config->get($mail_key . '.body'));
 
-    // Attach documents.
+    // Attach documents and remember filenames.
+    $filenames = [];
     if (count($selected_fids)) {
       foreach ($selected_fids as $fid) {
         $file_entity = File::load($fid);
@@ -123,14 +125,23 @@ class DocumentEmailForm extends PlanningWorkflowFormBase {
           $file_entity->getFilename(),
           $file_entity->getMimeType()
         );
+        $filenames[] = $file_entity->getFilename();
       }
     }
 
     // Send the email.
     $this->mailer->send($email);
 
-    // Display a message.
-    $this->messenger()->addMessage($this->t('Email sent to %email.', ['%email' => $email_address]));
+    // Construct a revision log and message for the user.
+    $args = ['@email' => $email_address, '@filenames' => implode(', ', $filenames)];
+
+    // Update plan's revision log message.
+    $this->plan->setRevisionLogMessage((string) new FormattableMarkup('Document(s) emailed to @email: @filenames', $args));
+    $this->plan->save();
+
+    // Display message.
+    // phpcs:ignore
+    $this->messenger()->addMessage($this->t('Document(s) emailed to @email: @filenames', $args));
   }
 
 }
