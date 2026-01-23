@@ -1,0 +1,13 @@
+rcd_staff:
+  description: 'Grants access to the RCD Staff role.'
+  umbrella: false
+  grant_types:
+    authorization_code:
+      status: true
+    client_credentials:
+      status: true
+    refresh_token:
+      status: true
+  granularity_id: 'role'
+  granularity_configuration:
+    role: 'rcd_staff'
