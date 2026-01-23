@@ -5,6 +5,7 @@ dependencies:
     - filter.format.default
   module:
     - asset
+    - comment
     - farm_flag
     - farm_id_tag
     - farm_land
@@ -26,6 +27,7 @@ weight: 2
 is_admin: false
 permissions:
   - 'access asset collection'
+  - 'access comments'
   - 'access content'
   - 'access farm dashboard'
   - 'access log collection'
@@ -36,6 +38,9 @@ permissions:
   - 'access user profiles'
   - 'change own username'
   - 'delete own files'
+  - 'edit own comments'
+  - 'post comments'
+  - 'skip comment approval'
   - 'update any farm organization'
   - 'update any land asset'
   - 'update any rcd_intake log'

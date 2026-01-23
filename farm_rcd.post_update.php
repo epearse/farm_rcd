@@ -178,3 +178,12 @@ function farm_rcd_post_update_update_land_use_types(&$sandbox) {
   $storage_definition = $update_manager->getFieldStorageDefinition('intake_property_use_grazing_ac', 'log');
   $update_manager->uninstallFieldStorageDefinition($storage_definition);
 }
+
+/**
+ * Install the farm_comment_plan module.
+ */
+function farm_rcd_post_update_install_farm_comment_plan(&$sandbox = NULL) {
+  if (!\Drupal::service('module_handler')->moduleExists('farm_comment_plan')) {
+    \Drupal::service('module_installer')->install(['farm_comment_plan']);
+  }
+}

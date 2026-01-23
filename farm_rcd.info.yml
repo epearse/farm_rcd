@@ -8,6 +8,7 @@ dependencies:
   - drupal:toolbar
   - drupal:views
   - farm_entity
+  - farm_comment_plan
   - farm_farm
   - farm_form
   - farm_land
