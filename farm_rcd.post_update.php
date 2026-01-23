@@ -187,3 +187,12 @@ function farm_rcd_post_update_install_farm_comment_plan(&$sandbox = NULL) {
     \Drupal::service('module_installer')->install(['farm_comment_plan']);
   }
 }
+
+/**
+ * Import farm_rcd_intake_plan View.
+ */
+function farm_rcd_post_update_create_farm_rcd_intake_plan(&$sandbox = NULL) {
+  /** @var \Drupal\config_update\ConfigReverter $config_update */
+  $config_update = \Drupal::service('config_update.config_update');
+  $config_update->import('view', 'farm_rcd_intake_plan');
+}

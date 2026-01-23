@@ -4,6 +4,7 @@ type: module
 package: farmOS Contrib
 core_version_requirement: ^11
 dependencies:
+  - config_update:config_update
   - drupal:help
   - drupal:toolbar
   - drupal:views

@@ -138,6 +138,16 @@ class ThemeHooks implements ContainerInjectionInterface {
       '#access' => IntakeReviewForm::access($this->currentUser, $entity),
       'form' => $this->formBuilder->getForm('Drupal\farm_rcd\Form\IntakeReviewForm', $entity),
     ];
+
+    // Add the View of plans associated with the intake.
+    $view = Views::getView('farm_rcd_intake_plan');
+    $build['intake_plans'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Plans'),
+      '#open' => TRUE,
+      '#access' => $view->access('default'),
+      'view' => $view->buildRenderable('default', [$entity->id()]),
+    ];
   }
 
   /**
@@ -197,6 +207,9 @@ class ThemeHooks implements ContainerInjectionInterface {
       return [
         'top' => [
           'review_intake',
+        ],
+        'bottom' => [
+          'intake_plans',
         ],
       ];
     }
