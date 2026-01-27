@@ -164,19 +164,19 @@ class GenerateDocumentEventSubscriber implements EventSubscriberInterface {
             $practice_name .= ' (NRCS code ' . $practice_info['nrcs_code'] . ')';
           }
           $practice_measurement = '';
-          if (!empty($plan->get('rcd_acres')->value)) {
+          if (!$plan->get('rcd_acres')->isEmpty()) {
             $practice_measurement = ($plan->get('rcd_acres')->value + 0) . ' acres';
           }
-          elseif (!empty($plan->get('rcd_linear_feet')->value)) {
+          elseif (!$plan->get('rcd_linear_feet')->isEmpty()) {
             $practice_measurement = ($plan->get('rcd_linear_feet')->value + 0) . ' linear feet';
           }
           $practice_start = '';
-          if (!empty($plan->get('rcd_target_start_date')->value)) {
+          if (!$plan->get('rcd_target_start_date')->isEmpty()) {
             $start_timestamp = $plan->get('rcd_target_start_date')->value;
             $practice_start = date('m/d/Y', (int) $start_timestamp);
           }
           $practice_end = '';
-          if (!empty($plan->get('rcd_target_end_date')->value)) {
+          if (!$plan->get('rcd_target_end_date')->isEmpty()) {
             $end_timestamp = $plan->get('rcd_target_end_date')->value;
             $practice_end = date('m/d/Y', (int) $end_timestamp);
           }
