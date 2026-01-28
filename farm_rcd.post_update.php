@@ -260,3 +260,12 @@ function farm_rcd_post_update_add_implementation_timeline(&$sandbox) {
   $field_definition = \Drupal::service('farm_field.factory')->bundleFieldDefinition($options);
   \Drupal::entityDefinitionUpdateManager()->installFieldStorageDefinition('rcd_target_end_date', 'plan', 'farm_rcd', $field_definition);
 }
+
+/**
+ * Install the farm_report module.
+ */
+function farm_rcd_post_update_install_farm_report(&$sandbox = NULL) {
+  if (!\Drupal::service('module_handler')->moduleExists('farm_report')) {
+    \Drupal::service('module_installer')->install(['farm_report']);
+  }
+}
