@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] 2026-01-28
+
 ### Added
 
 - [Report of aggregated practice implementation plan statistics #82](https://github.com/farmier/farm_rcd/issues/82)
@@ -374,7 +376,8 @@ The following elements are removed/hidden from the default farmOS UI:
   - Add plan
 - Hide the breadcrumb region for anonymous users, to simplify the intake form.
 
-[Unreleased]: https://github.com/farmier/farm_rcd/compare/1.2.0...1.x
+[Unreleased]: https://github.com/farmier/farm_rcd/compare/1.3.0...1.x
+[1.3.0]: https://github.com/farmier/farm_rcd/releases/tag/1.3.0
 [1.2.0]: https://github.com/farmier/farm_rcd/releases/tag/1.2.0
 [1.1.0]: https://github.com/farmier/farm_rcd/releases/tag/1.1.0
 [1.0.1]: https://github.com/farmier/farm_rcd/releases/tag/1.0.1
