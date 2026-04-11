@@ -43,6 +43,7 @@ Current maintainers:
 
 This project has been supported by:
 
+- [University of California Research Grants Program Office (UC-RGPO)](https://uckeepresearching.org/california-climate-action/), Climate Action Seed Grant R02CP7344
 - [Upper Salinas-Las Tablas Resource Conservation District](https://www.us-ltrcd.org/)
 - [Coastal San Luis Resource Conservation District](https://www.coastalrcd.org/)
 - [CalPoly Initiative for Climate Leadership and Resilience](https://climate.calpoly.edu/)
